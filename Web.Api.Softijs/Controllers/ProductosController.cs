@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Api.Softijs.Services;
 
 namespace Web.Api.Softijs.Controllers
 {
@@ -11,8 +12,8 @@ namespace Web.Api.Softijs.Controllers
     [ApiController]
     public class ProductosController : ControllerBase
     {
-        private readonly IServicioProducto servicio;
-        public ProductosController(IServicioProducto _servicio)
+        private readonly IServicioProductos servicio;
+        public ProductosController(IServicioProductos _servicio)
         {
             this.servicio = _servicio;
         }

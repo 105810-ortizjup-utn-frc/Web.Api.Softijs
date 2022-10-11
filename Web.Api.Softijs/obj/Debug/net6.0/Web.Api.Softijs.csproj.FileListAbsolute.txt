@@ -55,7 +55,7 @@ C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\staticw
 C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\scopedcss\bundle\Web.Api.Softijs.styles.css
 C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\Web.Api.Softijs.csproj.CopyComplete
 C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\Web.Api.Softijs.dll
-C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\refint\Web.Api.Softijs.dll
 C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\Web.Api.Softijs.pdb
 C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\Web.Api.Softijs.genruntimeconfig.cache
 C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\obj\Debug\net6.0\ref\Web.Api.Softijs.dll
+C:\Users\Iñaki\Desktop\Web.Api.Softijs\Web.Api.Softijs\bin\Debug\net6.0\ref\Web.Api.Softijs.dll

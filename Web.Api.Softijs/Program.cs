@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.DataContext;
+using Web.Api.Softijs.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
