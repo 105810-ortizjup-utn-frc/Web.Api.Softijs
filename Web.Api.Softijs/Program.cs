@@ -1,4 +1,3 @@
-using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Services;
@@ -6,7 +5,7 @@ using Web.Api.Softijs.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IServicioProductos,ServicioProductos>();
+builder.Services.AddScoped<IServicioProductos, ServicioProductos>();
 
 
 builder.Services.AddControllers();
@@ -17,8 +16,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddCors();
-builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>
-(options => options.UseSqlServer(builder.Configuration.GetConnectionString("connectionString")));
+builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
 
 
 var app = builder.Build();
@@ -32,7 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(c=>{
+app.UseCors(c =>
+{
     c.AllowAnyHeader();
     c.AllowAnyMethod();
     c.AllowAnyOrigin();
