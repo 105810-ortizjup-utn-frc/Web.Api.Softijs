@@ -1,0 +1,9 @@
+using Web.Api.Softijs.Models;
+
+namespace Web.Api.Softijs.Services
+{
+    public interface IServicioProductos
+    {
+        List<Producto> GetProductos();
+    }
+}
