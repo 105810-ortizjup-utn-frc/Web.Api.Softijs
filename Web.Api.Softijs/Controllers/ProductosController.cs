@@ -17,11 +17,10 @@ namespace Web.Api.Softijs.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IServicioProductos servicio;
-        private readonly SoftijsDevContext context;
+
         public ProductosController(IServicioProductos _servicio, SoftijsDevContext _context)
         {
             this.servicio = _servicio;
-            this.context = _context;
         }
 
         [HttpGet]
