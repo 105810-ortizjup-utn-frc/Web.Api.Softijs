@@ -37,6 +37,7 @@ namespace Web.Api.Softijs.Controllers
         public async Task<ActionResult<ResultadoBase>> PostProducto([FromBody] ComandoProducto comando)
         {
             Producto p = new Producto();
+            p.Codigo = comando.Codigo;
             p.Nombre = comando.Nombre;
             p.FechaVencimiento = comando.FechaVencimiento;
             p.IdProveedor = comando.IdProveedor;

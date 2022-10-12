@@ -22,22 +22,35 @@ namespace Web.Api.Softijs.Services
         public async Task<ResultadoBase> PostProducto(Producto  p)
         {
             ResultadoBase resultado = new ResultadoBase();
-            try
+            if (this.Validar(p.Codigo))
             {
-             
-                context.Add(p);
-                context.SaveChanges();
-                resultado.Ok = true;
-                resultado.CodigoEstado = 200;
-                return resultado;
+                try
+                {
+
+                    context.Add(p);
+                    context.SaveChanges();
+                    resultado.Ok = true;
+                    resultado.CodigoEstado = 200;
+                    return resultado;
+                }
+                catch (Exception)
+                {
+                    resultado.Ok = false;
+                    resultado.CodigoEstado = 400;
+                    resultado.Error = "Error al ingresar un producto";
+                    return resultado;
+                }
             }
-            catch (Exception)
-            {
-                resultado.Ok = false;
-                resultado.CodigoEstado = 400;
-                resultado.Error = "Error al ingresar un producto";
-               return resultado;
-            }
+            resultado.Ok = false;
+            resultado.CodigoEstado = 400;
+            resultado.Error = "Ya existe este producto";
+            return resultado;
+        }
+
+        private bool Validar(int codigo)
+        {
+            var producto = context.Productos.Where(c => c.Codigo.Equals(codigo));
+            return producto == null || codigo == 0;
         }
     }
 }

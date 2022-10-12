@@ -12,7 +12,9 @@ namespace Web.Api.Softijs.Models
             Puntos = new HashSet<Punto>();
         }
 
+
         public int NroProducto { get; set; }
+        public int Codigo { get; set; }
         public string Nombre { get; set; } = null!;
         public DateTime FechaVencimiento { get; set; }
         public int IdProveedor { get; set; }

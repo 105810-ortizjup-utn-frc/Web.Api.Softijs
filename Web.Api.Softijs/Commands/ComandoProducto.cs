@@ -7,6 +7,7 @@ namespace Web.Api.Softijs.Commands
 {
     public class ComandoProducto
     {
+        public int Codigo { set; get; }
         public string Nombre { set; get; }
         public DateTime FechaVencimiento { set; get; }
         public int IdProveedor { set; get; }
