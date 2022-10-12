@@ -9,6 +9,8 @@ builder.Services.AddScoped<IServicioProductos, ServicioProductos>();
 builder.Services.AddScoped<IServicioGustos, ServicioGustos>();
 builder.Services.AddScoped<IServicioMarcas, ServicioMarcas>();
 builder.Services.AddScoped<IServicioCategoria, ServicioCategoria>();
+builder.Services.AddScoped<IServicioUnidadesMedidas, ServicioUnidadesMedida>();
+builder.Services.AddScoped<IServicioProveedores, ServicioProveedores>();
 
 
 
