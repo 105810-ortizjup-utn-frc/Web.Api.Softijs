@@ -22,22 +22,22 @@ namespace Web.Api.Softijs.Services
         public async Task<ResultadoBase> PostProducto(Producto  p)
         {
             ResultadoBase resultado = new ResultadoBase();
-            //try
-            //{
+            try
+            {
              
                 context.Add(p);
                 context.SaveChanges();
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
                 return resultado;
-            //}
-            //catch (Exception)
-            //{
-            //    resultado.Ok = false;
-            //    resultado.CodigoEstado = 400;
-            //    resultado.Error = "Error al ingresar un producto";
-            //    return resultado;
-            //}
+            }
+            catch (Exception)
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Error = "Error al ingresar un producto";
+               return resultado;
+            }
         }
     }
 }
