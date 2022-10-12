@@ -11,6 +11,7 @@ builder.Services.AddScoped<IServicioMarcas, ServicioMarcas>();
 builder.Services.AddScoped<IServicioCategoria, ServicioCategoria>();
 builder.Services.AddScoped<IServicioUnidadesMedidas, ServicioUnidadesMedida>();
 builder.Services.AddScoped<IServicioProveedores, ServicioProveedores>();
+builder.Services.AddScoped<IServicioLogin, ServicioLogin > ();
 
 
 
