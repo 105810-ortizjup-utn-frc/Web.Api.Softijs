@@ -1,34 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ortiz\\source\\repos\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj": {}
+    "C:\\Users\\Iñaki\\Desktop\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ortiz\\source\\repos\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj": {
+    "C:\\Users\\Iñaki\\Desktop\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ortiz\\source\\repos\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj",
+        "projectUniqueName": "C:\\Users\\Iñaki\\Desktop\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj",
         "projectName": "Web.Api.Softijs",
-        "projectPath": "C:\\Users\\ortiz\\source\\repos\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj",
-        "packagesPath": "C:\\Users\\ortiz\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ortiz\\source\\repos\\Web.Api.Softijs\\Web.Api.Softijs\\obj\\",
+        "projectPath": "C:\\Users\\Iñaki\\Desktop\\Web.Api.Softijs\\Web.Api.Softijs\\Web.Api.Softijs.csproj",
+        "packagesPath": "C:\\Users\\Iñaki\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Iñaki\\Desktop\\Web.Api.Softijs\\Web.Api.Softijs\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ortiz\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Iñaki\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://pkgs.dev.azure.com/Exploratorios/_packaging/Exploratorios/nuget/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
@@ -85,8 +79,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -98,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

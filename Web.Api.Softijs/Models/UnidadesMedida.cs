@@ -12,7 +12,7 @@ namespace Web.Api.Softijs.Models
         }
 
         public int IdUnidadMedida { get; set; }
-        public byte[] Codigo { get; set; } = null!;
+        public string Codigo { get; set; } = null!;
         public string Descripcion { get; set; } = null!;
         public string CreadoPor { get; set; } = null!;
         public DateTime FechaCreacion { get; set; }

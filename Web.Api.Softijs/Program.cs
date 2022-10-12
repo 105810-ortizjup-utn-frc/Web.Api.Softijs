@@ -6,6 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IServicioProductos, ServicioProductos>();
+builder.Services.AddScoped<IServicioGustos, ServicioGustos>();
+builder.Services.AddScoped<IServicioMarcas, ServicioMarcas>();
+builder.Services.AddScoped<IServicioCategoria, ServicioCategoria>();
+builder.Services.AddScoped<IServicioUnidadesMedidas, ServicioUnidadesMedida>();
+builder.Services.AddScoped<IServicioProveedores, ServicioProveedores>();
+
 
 
 builder.Services.AddControllers();
@@ -36,7 +42,6 @@ app.UseCors(c =>
     c.AllowAnyMethod();
     c.AllowAnyOrigin();
 });
-
 
 app.UseHttpsRedirection();
 
