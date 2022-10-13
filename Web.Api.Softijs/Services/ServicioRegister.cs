@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.DataContext;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Web.Api.Softijs.Commands;
 
 namespace Web.Api.Softijs.Services
@@ -11,15 +10,19 @@ namespace Web.Api.Softijs.Services
 {
     public class ServicioRegister : IServicioRegister
     {
+        
+       
+
         private readonly SoftijsDevContext context;
         public ServicioRegister(SoftijsDevContext _context) { this.context = _context; }
-        public async Task<ResultadoBase> PostRegister(Usuario  u, ComandoRegister comando)
+        public async Task<ResultadoBase> PostRegister(Usuario  u) 
         {
             ResultadoBase resultado = new ResultadoBase();
             
             try
             {
-                if (u.Email != "") //agregar que pasa si el email ya existe|| u.Email == 
+                /*
+                if (u.Email != "") //agregar validacion ¿que pasa si el mail ya existe?
                 {
                     context.Add(u);
                     context.SaveChanges();
@@ -33,8 +36,10 @@ namespace Web.Api.Softijs.Services
                     resultado.CodigoEstado = 400;
                     resultado.Error = "Existe un problema en el Email";
                 }
+                  */
 
-                if (u.HashContrasenia != null) {
+                
+                  if (u.HashContrasenia != null) {
                     context.Add(u);
                     context.SaveChanges();
                     resultado.Ok = true;
@@ -46,6 +51,7 @@ namespace Web.Api.Softijs.Services
                     resultado.CodigoEstado = 400;
                     resultado.Error = "La contraseña es necesaria";
                 }
+              
 
 
                 return resultado;
@@ -61,12 +67,9 @@ namespace Web.Api.Softijs.Services
 
         }
 
-        public Task<ResultadoBase> PostRegister(Usuario usuario)
-        {
-            throw new NotImplementedException();
-        }
+       
 
-    
+      
 
     }
 }
