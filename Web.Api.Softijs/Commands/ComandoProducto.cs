@@ -16,13 +16,9 @@ namespace Web.Api.Softijs.Commands
         public int PuntosNecesarios { set; get; }
         public int PuntosOtorgados { set; get; }
         public bool Activo { set; get; }
-        public DateTime FechaCreacion { set; get; }
-        public string ModificadoPor { set; get; }
-        public DateTime FechaModificacion { set; get; }
         public int IdUnidadMedida { set; get; }
         public int IdGusto { set; get; }
         public int IdMarca { set; get; }
-        public string CreadoPor { set; get; }
         public int IdCategoria { set; get; }
 
     }

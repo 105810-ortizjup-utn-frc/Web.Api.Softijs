@@ -7,6 +7,7 @@ using Web.Api.Softijs.Services;
 
 namespace Web.Api.Softijs.Controllers
 {
+    [Route("api/[controller]")]
     public class ProveedoresController : Controller
     {
         private readonly IServicioProveedores servicio;

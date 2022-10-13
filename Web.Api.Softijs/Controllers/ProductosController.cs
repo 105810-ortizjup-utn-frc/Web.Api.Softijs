@@ -50,10 +50,10 @@ namespace Web.Api.Softijs.Controllers
             p.IdGusto = comando.IdGusto;
             p.IdMarca = comando.IdMarca;
             p.IdCategoria = comando.IdCategoria;
-            p.CreadoPor = comando.CreadoPor;
-            p.ModificadoPor = comando.ModificadoPor;
-            p.FechaCreacion = comando.FechaCreacion;
-            p.FechaModificacion = comando.FechaModificacion;
+            p.CreadoPor = "Inaki";
+            p.ModificadoPor = "Inaki";
+            p.FechaCreacion = Convert.ToDateTime( DateTime.Now.ToString());
+            p.FechaModificacion = Convert.ToDateTime(DateTime.Now.ToString());
 
             return Ok(this.servicio.PostProducto(p));
         }

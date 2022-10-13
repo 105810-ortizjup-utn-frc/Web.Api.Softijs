@@ -26,7 +26,6 @@ namespace Web.Api.Softijs.Services
             {
                 try
                 {
-
                     context.Add(p);
                     context.SaveChanges();
                     resultado.Ok = true;
@@ -50,7 +49,12 @@ namespace Web.Api.Softijs.Services
         private bool Validar(int codigo)
         {
             var producto = context.Productos.Where(c => c.Codigo.Equals(codigo));
-            return producto == null || codigo == 0;
+            if (producto == null || codigo == 0)
+            {
+                return false;
+            }
+            else
+                return true;
         }
     }
 }
