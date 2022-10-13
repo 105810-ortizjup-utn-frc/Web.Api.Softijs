@@ -22,30 +22,6 @@ namespace Web.Api.Softijs.Services
             return context.Usuarios.AsNoTracking().ToList();
         }
 
-        //public void Agregar()
-        //{
-        //    try
-        //    {
-        //        var usuario = new Usuario { Email = "test@test.com", HashContrasenia = this.GetHash("Test123465*"), Activo = true, IdTipoUsuario = 1 };
-        //        var usuarioCheck = (this.context.Usuarios.FirstOrDefault(x => x.Email == usuario.Email));
-        //        if (usuarioCheck != null)
-        //        {
-        //            this.context.Remove(usuarioCheck);
-        //            //await this.context.SaveChangesAsync("Lucio");
-
-        //        }
-        //        this.context.Add(usuario);
-        //        this.context.SaveChanges("Lucio");
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw;
-        //    }
-
-
-        //}
-
         public async Task<ActionResult<ResultadoLogin>> Login([FromBody] ComandoLogin comando)
         {
             var resultado = new ResultadoLogin();
@@ -53,17 +29,49 @@ namespace Web.Api.Softijs.Services
             {
 
                 byte[] ePass = GetHash(comando.Contrasenia);
-                var usuario = await context.Usuarios.FirstOrDefaultAsync(c => c.Activo && c.Email == comando.Email && c.HashContrasenia == ePass);
-                if (usuario != null)
+                //var usuario = await context.Usuarios.FirstOrDefaultAsync(c => c.Activo && c.Email == comando.Email && c.HashContrasenia == ePass);
+                //if (usuario != null)
+                //{
+                //    resultado.resultadoLogin = true;
+                //    resultado.Ok = true;
+                //    resultado.CodigoEstado = 200;
+                //    return resultado;
+                //}
+                //resultado.Error = ("Email o password incorrecto");
+                //return resultado;
+
+
+                var activo = await context.Usuarios.FirstOrDefaultAsync(c => c.Activo);
+
+                var emailPass = await context.Usuarios.FirstOrDefaultAsync(c => c.Email == comando.Email && c.HashContrasenia == ePass);
+                if (emailPass != null)
                 {
-                    resultado.resultadoLogin = true;
-                    resultado.Ok = true;
-                    resultado.CodigoEstado = 200;
+                   
+                    if (emailPass.Activo && activo != null)
+                    {
+                        resultado.resultadoLogin = true;
+                        resultado.Ok = true;
+                        resultado.CodigoEstado = 200;
+                        resultado.Error = "Es activo y valido";
+                        return resultado;
+                    }
+                    else
+                    {
+                        resultado.resultadoLogin = false;
+                        resultado.Ok = false;
+                        resultado.CodigoEstado = 400;
+                        resultado.Error = ("El email no esta activo");
+                        return resultado;
+                    }
+                }
+                else
+                {
+                    resultado.resultadoLogin = false;
+                    resultado.Ok = false;
+                    resultado.CodigoEstado = 400;
+                    resultado.Error = ("El email o contraseña no existe");
                     return resultado;
                 }
-                resultado.Error = ("Email o password incorrecto");
-                return resultado;
-
 
             }
             catch (Exception ex)
