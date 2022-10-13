@@ -30,6 +30,7 @@ namespace Web.Api.Softijs.Services
                     context.SaveChanges();
                     resultado.Ok = true;
                     resultado.CodigoEstado = 200;
+                    resultado.Error = "Se ingreso un nuevo producto";
                     return resultado;
                 }
                 catch (Exception)
@@ -46,15 +47,17 @@ namespace Web.Api.Softijs.Services
             return resultado;
         }
 
-        private bool Validar(int codigo)
+        private  bool Validar(int codigo)
         {
-            var producto = context.Productos.Where(c => c.Codigo.Equals(codigo));
-            if (producto == null || codigo == 0)
+            var producto = context.Productos.Where(c => c.Codigo.Equals(codigo)).FirstOrDefault();
+            if(producto != null)
             {
                 return false;
             }
             else
+            {
                 return true;
+            }
         }
     }
 }
