@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Web.Api.Softijs.Models.Interfaces;
+﻿using Web.Api.Softijs.Models.Interfaces;
 
 namespace Web.Api.Softijs.Models
 {
-    public partial class ComprobantesPago 
+    public partial class ComprobantesPago : IAuditable
     {
         public ComprobantesPago()
         {
@@ -13,11 +11,11 @@ namespace Web.Api.Softijs.Models
 
         public int IdComprobantePago { get; set; }
         public int NroComprobante { get; set; }
-        public string CreadoPor { get; set; } = null!;
-        public string FechaCreacion { get; set; } = null!;
-        public string ModificadoPor { get; set; } = null!;
-        public string FechaModificacion { get; set; } = null!;
         public string? Descripcion { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public string ModificadoPor { get; set; } = null!;
+        public DateTime FechaModificacion { get; set; }
+        public string CreadoPor { get; set; } = null!;
 
         public virtual ICollection<DetallesOrdenesPago> DetallesOrdenesPagos { get; set; }
     }

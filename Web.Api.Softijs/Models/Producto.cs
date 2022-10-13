@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Web.Api.Softijs.Models.Interfaces;
+﻿using Web.Api.Softijs.Models.Interfaces;
 
 namespace Web.Api.Softijs.Models
 {
@@ -29,6 +27,7 @@ namespace Web.Api.Softijs.Models
         public int IdMarca { get; set; }
         public string CreadoPor { get; set; } = null!;
         public int IdCategoria { get; set; }
+        public int Codigo { get; set; }
 
         public virtual Categoria IdCategoriaNavigation { get; set; } = null!;
         public virtual Gusto IdGustoNavigation { get; set; } = null!;

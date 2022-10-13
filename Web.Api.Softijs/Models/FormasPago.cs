@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Web.Api.Softijs.Models.Interfaces;
+﻿using Web.Api.Softijs.Models.Interfaces;
 
 namespace Web.Api.Softijs.Models
 {
@@ -10,6 +8,7 @@ namespace Web.Api.Softijs.Models
         {
             DetallesOrdenesPagos = new HashSet<DetallesOrdenesPago>();
             Pagos = new HashSet<Pago>();
+            Pedidos = new HashSet<Pedido>();
         }
 
         public int IdFormaPago { get; set; }
@@ -22,5 +21,6 @@ namespace Web.Api.Softijs.Models
 
         public virtual ICollection<DetallesOrdenesPago> DetallesOrdenesPagos { get; set; }
         public virtual ICollection<Pago> Pagos { get; set; }
+        public virtual ICollection<Pedido> Pedidos { get; set; }
     }
 }

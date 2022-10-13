@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Web.Api.Softijs.Models.Interfaces;
+﻿using Web.Api.Softijs.Models.Interfaces;
 
 namespace Web.Api.Softijs.Models
 {
-    public partial class TiposFidelizacione 
-    { 
+    public partial class TiposFidelizacione : IAuditable
+    {
         public TiposFidelizacione()
         {
             Clientes = new HashSet<Cliente>();
@@ -18,7 +16,7 @@ namespace Web.Api.Softijs.Models
         public string CreadoPor { get; set; } = null!;
         public DateTime FechaCreacion { get; set; }
         public string ModificadoPor { get; set; } = null!;
-        public string FechaModificacion { get; set; } = null!;
+        public DateTime FechaModificacion { get; set; }
 
         public virtual ICollection<Cliente> Clientes { get; set; }
     }

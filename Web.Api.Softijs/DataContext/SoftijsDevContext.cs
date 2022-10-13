@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Models.Interfaces;
 
@@ -27,6 +24,7 @@ namespace Web.Api.Softijs.DataContext
         public virtual DbSet<DetallesOrdenesPago> DetallesOrdenesPagos { get; set; } = null!;
         public virtual DbSet<DetallesPedido> DetallesPedidos { get; set; } = null!;
         public virtual DbSet<EstadosOrdenesPago> EstadosOrdenesPagos { get; set; } = null!;
+        public virtual DbSet<EstadosPedido> EstadosPedidos { get; set; } = null!;
         public virtual DbSet<FormasPago> FormasPagos { get; set; } = null!;
         public virtual DbSet<Gusto> Gustos { get; set; } = null!;
         public virtual DbSet<InformacionesContacto> InformacionesContactos { get; set; } = null!;
@@ -53,7 +51,7 @@ namespace Web.Api.Softijs.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Persist Security Info = False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev");
+                optionsBuilder.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev");
             }
         }
 
@@ -129,9 +127,31 @@ namespace Web.Api.Softijs.DataContext
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
+                entity.Property(e => e.CreadoPor)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Creado_Por")
+                    .HasDefaultValueSql("('joritz')");
+
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Creacion")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Modificacion")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModificadoPor)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Modificado_Por")
+                    .HasDefaultValueSql("('jortiz')");
             });
 
             modelBuilder.Entity<Ciudade>(entity =>
@@ -262,26 +282,28 @@ namespace Web.Api.Softijs.DataContext
                 entity.Property(e => e.CreadoPor)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("Creado_Por");
+                    .HasColumnName("Creado_Por")
+                    .HasDefaultValueSql("('joritz')");
 
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FechaCreacion)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("Fecha_Creacion");
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Creacion")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.FechaModificacion)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("Fecha_Modificacion");
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Modificacion")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModificadoPor)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("Modificado_Por");
+                    .HasColumnName("Modificado_Por")
+                    .HasDefaultValueSql("('jortiz')");
 
                 entity.Property(e => e.NroComprobante).HasColumnName("Nro_Comprobante");
             });
@@ -397,6 +419,7 @@ namespace Web.Api.Softijs.DataContext
                 entity.HasOne(d => d.IdPagoNavigation)
                     .WithMany(p => p.DetallesPedidos)
                     .HasForeignKey(d => d.IdPago)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_DetallesPedidos_Pagos");
 
                 entity.HasOne(d => d.NroPedidoNavigation)
@@ -422,6 +445,41 @@ namespace Web.Api.Softijs.DataContext
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("Creado_Por");
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Creacion");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Modificacion");
+
+                entity.Property(e => e.ModificadoPor)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Modificado_Por");
+            });
+
+            modelBuilder.Entity<EstadosPedido>(entity =>
+            {
+                entity.HasKey(e => e.IdEstadoPedido);
+
+                entity.ToTable("Estados_Pedidos");
+
+                entity.Property(e => e.IdEstadoPedido).HasColumnName("Id_Estado_Pedido");
+
+                entity.Property(e => e.Codigo)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreadoPor)
+                   .HasMaxLength(50)
+                   .IsUnicode(false)
+                   .HasColumnName("Creado_Por");
 
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(50)
@@ -526,7 +584,9 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false)
                     .HasColumnName("Creado_Por");
 
-                entity.Property(e => e.Email).HasMaxLength(50);
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
@@ -735,6 +795,10 @@ namespace Web.Api.Softijs.DataContext
 
                 entity.Property(e => e.IdCliente).HasColumnName("Id_Cliente");
 
+                entity.Property(e => e.IdEstadoPedido).HasColumnName("Id_Estado_Pedido");
+
+                entity.Property(e => e.IdFormaPago).HasColumnName("Id_Forma_Pago");
+
                 entity.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
 
                 entity.Property(e => e.ModificadoPor)
@@ -742,12 +806,20 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false)
                     .HasColumnName("Modificado_Por");
 
-                entity.Property(e => e.Total).HasColumnType("decimal(8, 2)");
-
                 entity.HasOne(d => d.IdClienteNavigation)
                     .WithMany(p => p.Pedidos)
                     .HasForeignKey(d => d.IdCliente)
                     .HasConstraintName("FK_Pedidos_Clientes");
+
+                entity.HasOne(d => d.IdEstadoPedidoNavigation)
+                    .WithMany(p => p.Pedidos)
+                    .HasForeignKey(d => d.IdEstadoPedido)
+                    .HasConstraintName("FK_Pedidos_EstadosPedidos");
+
+                entity.HasOne(d => d.IdFormaPagoNavigation)
+                    .WithMany(p => p.Pedidos)
+                    .HasForeignKey(d => d.IdFormaPago)
+                    .HasConstraintName("FK_Pedidos_FormasPagos");
 
                 entity.HasOne(d => d.IdUsuarioNavigation)
                     .WithMany(p => p.Pedidos)
@@ -1021,9 +1093,8 @@ namespace Web.Api.Softijs.DataContext
                     .HasColumnName("Fecha_Creacion");
 
                 entity.Property(e => e.FechaModificacion)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("Fecha_Modificacion");
+                     .HasColumnType("datetime")
+                     .HasColumnName("Fecha_Modificacion");
 
                 entity.Property(e => e.ModificadoPor)
                     .HasMaxLength(50)
@@ -1144,7 +1215,9 @@ namespace Web.Api.Softijs.DataContext
 
                 entity.Property(e => e.IdUnidadMedida).HasColumnName("Id_Unidad_Medida");
 
-                entity.Property(e => e.Codigo).HasMaxLength(10);
+                entity.Property(e => e.Codigo)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.CreadoPor)
                     .HasMaxLength(50)
@@ -1299,7 +1372,7 @@ namespace Web.Api.Softijs.DataContext
         }
 
         public async Task<int> SaveChangesAsync(string userName)
-        {   
+        {
             this.ApplyAuditForModifiedEntries(userName);
             return await base.SaveChangesAsync();
         }

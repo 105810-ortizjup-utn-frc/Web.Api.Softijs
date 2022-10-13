@@ -35,7 +35,7 @@ namespace Web.Api.Softijs.Services
             {
                 resultado.Ok = false;
                 resultado.CodigoEstado = 400;
-                resultado.Error = "Error al ingresar un producto";
+                resultado.Message = "Error al ingresar un producto";
                return resultado;
             }
         }

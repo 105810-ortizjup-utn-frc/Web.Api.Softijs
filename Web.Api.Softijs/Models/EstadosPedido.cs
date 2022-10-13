@@ -2,21 +2,21 @@
 
 namespace Web.Api.Softijs.Models
 {
-    public partial class TiposOrdenesPago : IAuditable
+    public partial class EstadosPedido : IAuditable
     {
-        public TiposOrdenesPago()
+        public EstadosPedido()
         {
-            OrdenesPagos = new HashSet<OrdenesPago>();
+            Pedidos = new HashSet<Pedido>();
         }
 
-        public int IdTipoOrdenPago { get; set; }
+        public int IdEstadoPedido { get; set; }
         public string Codigo { get; set; } = null!;
         public string Descripcion { get; set; } = null!;
+        public string CreadoPor { get; set; } = null!;
         public DateTime FechaCreacion { get; set; }
         public string ModificadoPor { get; set; } = null!;
         public DateTime FechaModificacion { get; set; }
-        public string CreadoPor { get; set; } = null!;
 
-        public virtual ICollection<OrdenesPago> OrdenesPagos { get; set; }
+        public virtual ICollection<Pedido> Pedidos { get; set; }
     }
 }

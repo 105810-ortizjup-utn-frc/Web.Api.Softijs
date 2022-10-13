@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Web.Api.Softijs.Models.Interfaces;
+﻿using Web.Api.Softijs.Models.Interfaces;
 
 namespace Web.Api.Softijs.Models
 {
