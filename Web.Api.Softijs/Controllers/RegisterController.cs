@@ -27,17 +27,17 @@ namespace Web.Api.Softijs.Controllers
         public async Task<ActionResult<ResultadoBase>> PostRegister([FromBody] ComandoRegister comando)
         {
             Usuario r = new Usuario();
-            byte[] ePass = GetHash(comando.HashContrasenia);
+
+            byte[] ePass = GetHash(comando.Contrasenia);
 
             r.Nombre = comando.Nombre;
             r.Email = comando.Email;
+            r.Apellido = comando.Apellido;
+            r.Legajo = comando.legajo;
             r.IdTipoUsuario = 1;
             r.Activo = false;
             r.HashContrasenia = ePass;
-            r.CreadoPor = comando.CreadoPor;
-            r.ModificadoPor = comando.ModificadoPor;
-            r.FechaCreacion = comando.FechaCreacion;
-            r.FechaModificacion = comando.FechaModificacion;
+          
 
 
             return Ok(this.servicio.PostRegister(r));
@@ -48,14 +48,6 @@ namespace Web.Api.Softijs.Controllers
             var bytes = Encoding.UTF8.GetBytes(key);
             return new SHA256Managed().ComputeHash(bytes);
         }
-
-
-
-
-
-
-
-
 
     }
 }

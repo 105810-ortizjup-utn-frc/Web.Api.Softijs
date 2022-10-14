@@ -1,16 +1,21 @@
-﻿namespace Web.Api.Softijs.Commands
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Web.Api.Softijs.Commands
 {
     public class ComandoRegister
     {
-        public string Nombre { set; get; }
+        //[MaxLength(2,ErrorMessage = "Te pasaste")]
+        [Required(ErrorMessage = "El Nombre es requerido.")]
+        public string Nombre { get; set; }
+        [Required(ErrorMessage = "El apellido es requerido.")]
+        public string Apellido { get; set; }
+        [Required(ErrorMessage = "El legajo es requerido.")]
+        public string legajo { get; set; }
         public string Email { get; set; }
-        public string HashContrasenia { get; set; }
-        public int IdTipoUsuario { get; set; }
-        public bool Activo { get; set; }
-        public string CreadoPor { set; get; }
-        public DateTime FechaCreacion { set; get; }
-        public string ModificadoPor { set; get; }
-        public DateTime FechaModificacion { set; get; }
+
+        [Required(ErrorMessage = "La contraseña es requerida.")]
+        public string Contrasenia { get; set; }
+ 
 
     }
 }
