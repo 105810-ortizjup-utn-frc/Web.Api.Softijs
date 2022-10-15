@@ -45,19 +45,19 @@ namespace Web.Api.Softijs.Services
                          }
                     resultado.Ok = false;
                     resultado.CodigoEstado = 400;
-                    resultado.Error = "El Legajo ya pertenece a un usuario";
+                    resultado.Error = "El legajo ya pertenece a un usuario";
                     return resultado;
 
                 }
                 resultado.Ok = false;
                 resultado.CodigoEstado = 400;
-                resultado.Error = "El Email no es valido, utilice expresiones correspondientes";
+                resultado.Error = "El correo no es valido, utilice expresiones correspondientes";
                 return resultado;
 
             }
             resultado.Ok = false;
             resultado.CodigoEstado = 400;
-            resultado.Error = "Ya existe el Email ingresado";
+            resultado.Error = "Ya existe el correo ingresado";
             return resultado;
 
         }
