@@ -25,8 +25,9 @@ namespace Web.Api.Softijs.Services
 
             if (this.ValidarMail(u.Email)) {
                 if (this.validarExpresion(u.Email)) {
-                           
-            try
+                    if (this.ValidarLegajo(u.Legajo)) { 
+
+                        try
             {    
                     context.Add(u);
                     context.SaveChanges("jero");
@@ -41,7 +42,12 @@ namespace Web.Api.Softijs.Services
                 resultado.Error = "Error al registrar un usuario";
                 return resultado;
             }
-                    
+                         }
+                    resultado.Ok = false;
+                    resultado.CodigoEstado = 400;
+                    resultado.Error = "El Legajo ya pertenece a un usuario";
+                    return resultado;
+
                 }
                 resultado.Ok = false;
                 resultado.CodigoEstado = 400;
@@ -56,16 +62,21 @@ namespace Web.Api.Softijs.Services
 
         }
 
-
-        private byte[] GetHash(string key)
-        {
-            var bytes = Encoding.UTF8.GetBytes(key);
-            return new SHA256Managed().ComputeHash(bytes);
-        }
-
         private bool ValidarMail(string email)
         {
             var usuario = context.Usuarios.Where(c => c.Email.Equals(email)).FirstOrDefault();
+            if (usuario != null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        private bool ValidarLegajo(string legajo)
+        {
+            var usuario = context.Usuarios.Where(c => c.Legajo.Equals(legajo)).FirstOrDefault();
             if (usuario != null)
             {
                 return false;

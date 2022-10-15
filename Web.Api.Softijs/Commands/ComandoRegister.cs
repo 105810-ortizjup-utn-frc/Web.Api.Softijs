@@ -10,9 +10,9 @@ namespace Web.Api.Softijs.Commands
         [Required(ErrorMessage = "El apellido es requerido.")]
         public string Apellido { get; set; }
         [Required(ErrorMessage = "El legajo es requerido.")]
-        public string legajo { get; set; }
+        public string Legajo { get; set; }
+        [Required(ErrorMessage = "El email es requerido.")]
         public string Email { get; set; }
-
         [Required(ErrorMessage = "La contraseña es requerida.")]
         public string Contrasenia { get; set; }
  
