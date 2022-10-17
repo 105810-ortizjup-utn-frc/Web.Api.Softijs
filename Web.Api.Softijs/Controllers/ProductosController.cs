@@ -23,6 +23,18 @@ namespace Web.Api.Softijs.Controllers
             this.servicio = _servicio;
         }
 
+        [HttpGet("getPrecioProductoByProductoId/{id}")]
+        public async Task<IActionResult> GetPrecioProductoByProductoId(int id)
+        {
+            return Ok(await servicio.GetInformacionProductoDtoById(id));
+        }
+
+        [HttpGet("getProductosForComboBox")]
+        public async Task<ActionResult> GetProductosForCoboBox()
+        {
+            return Ok(await servicio.GetProductosForComboBox());
+        }
+
         [HttpGet]
         [Route("GetProductos")]
 

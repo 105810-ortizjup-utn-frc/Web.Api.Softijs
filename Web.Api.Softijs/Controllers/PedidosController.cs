@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Commands.Ventas;
-using Web.Api.Softijs.Services;
+using Web.Api.Softijs.Services.Ventas;
 
 namespace Web.Api.Softijs.Controllers
 {
@@ -15,14 +15,19 @@ namespace Web.Api.Softijs.Controllers
             _servicioPedidos = servicioPedidos;
         }
 
-        [HttpPost]
-        [Route("RegistrarPedido")]
+        [HttpGet("getPedidosForComboBox")]
+        public async Task<IActionResult> GetPedidosForComboBox()
+        {
+            return Ok(await _servicioPedidos.GetPedidosForComboBox());
+        }
+
+        [HttpPost("registrarPedido")]
         public async Task<IActionResult> RegistrarPedido([FromBody] PedidoDto pedidoDto)
         {
             var retVal = await _servicioPedidos.RegistrarPedido(pedidoDto);
 
             if (retVal.Ok)
-                return Ok(retVal.Message);
+                return Ok(retVal);
 
             return BadRequest(retVal.Message);
         }

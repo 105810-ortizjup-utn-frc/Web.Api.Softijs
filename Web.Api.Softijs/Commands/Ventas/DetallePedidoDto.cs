@@ -4,6 +4,7 @@ namespace Web.Api.Softijs.Commands.Ventas
 {
     public class DetallePedidoDto
     {
+        public int NroDetallePedido { get; set; }
         public int Nro_Pedido { get; set; }
         public int Cantidad { get; set; }
         public int IdProducto { get; set; }
@@ -17,6 +18,7 @@ namespace Web.Api.Softijs.Commands.Ventas
 
             return new DetallesPedido
             {
+                NroDetallePedido = detallePedidoDto.NroDetallePedido,
                 NroPedido = detallePedidoDto.Nro_Pedido,
                 NroProducto = detallePedidoDto.IdProducto,
                 Cantidad = detallePedidoDto.Cantidad,
@@ -31,6 +33,7 @@ namespace Web.Api.Softijs.Commands.Ventas
 
             return new DetallePedidoDto
             {
+                NroDetallePedido = entity.NroDetallePedido,
                 Nro_Pedido = entity.NroPedido,
                 IdProducto = entity.NroProducto,
                 Cantidad = entity.Cantidad,

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Services;
+using Web.Api.Softijs.Services.Comunes;
+using Web.Api.Softijs.Services.Ventas;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +14,13 @@ builder.Services.AddScoped<IServicioCategoria, ServicioCategoria>();
 builder.Services.AddScoped<IServicioUnidadesMedidas, ServicioUnidadesMedida>();
 builder.Services.AddScoped<IServicioProveedores, ServicioProveedores>();
 builder.Services.AddScoped<IServicioPedidos, ServicioPedidos>();
+builder.Services.AddScoped<IServicioClientes, ServicioClientes>();
+builder.Services.AddScoped<IServicioFormasPagos, ServicioFormasPagos>();
+builder.Services.AddScoped<IServicioUsuarios, ServicioUsuarios>();
+builder.Services.AddScoped<IServicioEstadosPedidos, ServicioEstadosPedidos>();
 
 
-
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,7 +28,8 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddCors();
-builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
+builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options
+.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
 
 
 var app = builder.Build();
