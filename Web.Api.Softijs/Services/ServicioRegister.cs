@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
@@ -25,7 +26,7 @@ namespace Web.Api.Softijs.Services
                         try
                         {
                             await context.AddAsync(u);
-                            await context.SaveChangesAsync("jero");
+                            await context.SaveChangesAsync(Constantes.DefaultSecurityValues.DefaultUserName); //TODO: replace this with the logged in user.
                             resultado.Ok = true;
                             resultado.CodigoEstado = 200;
                             return resultado;

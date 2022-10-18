@@ -27,7 +27,7 @@ namespace Web.Api.Softijs.Services.Ventas
             {
                 ExecuteCustomValidations(pedido);
                 await _softijsDevContext.AddAsync(pedido);
-                await _softijsDevContext.SaveChangesAsync("ortizjup"); //TODO: replace this with the logged in user.
+                await _softijsDevContext.SaveChangesAsync(Constantes.DefaultSecurityValues.DefaultUserName); //TODO: replace this with the logged in user.
             }
             catch (Exception ex)
             {

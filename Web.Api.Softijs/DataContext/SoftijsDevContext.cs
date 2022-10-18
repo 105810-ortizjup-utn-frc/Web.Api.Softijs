@@ -477,9 +477,9 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false);
 
                 entity.Property(e => e.CreadoPor)
-                   .HasMaxLength(50)
-                   .IsUnicode(false)
-                   .HasColumnName("Creado_Por");
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Creado_Por");
 
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(50)
@@ -1093,8 +1093,8 @@ namespace Web.Api.Softijs.DataContext
                     .HasColumnName("Fecha_Creacion");
 
                 entity.Property(e => e.FechaModificacion)
-                     .HasColumnType("datetime")
-                     .HasColumnName("Fecha_Modificacion");
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_Modificacion");
 
                 entity.Property(e => e.ModificadoPor)
                     .HasMaxLength(50)
@@ -1365,6 +1365,7 @@ namespace Web.Api.Softijs.DataContext
 
             OnModelCreatingPartial(modelBuilder);
         }
+
         public virtual int SaveChanges(string userName)
         {
             this.ApplyAuditForModifiedEntries(userName);
