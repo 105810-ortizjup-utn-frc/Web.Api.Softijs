@@ -18,6 +18,8 @@ builder.Services.AddScoped<IServicioClientes, ServicioClientes>();
 builder.Services.AddScoped<IServicioFormasPagos, ServicioFormasPagos>();
 builder.Services.AddScoped<IServicioUsuarios, ServicioUsuarios>();
 builder.Services.AddScoped<IServicioEstadosPedidos, ServicioEstadosPedidos>();
+builder.Services.AddScoped<IServicioLogin, ServicioLogin > ();
+
 
 
 builder.Services.AddControllers().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
