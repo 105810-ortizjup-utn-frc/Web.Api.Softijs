@@ -19,6 +19,7 @@ builder.Services.AddScoped<IServicioFormasPagos, ServicioFormasPagos>();
 builder.Services.AddScoped<IServicioUsuarios, ServicioUsuarios>();
 builder.Services.AddScoped<IServicioEstadosPedidos, ServicioEstadosPedidos>();
 builder.Services.AddScoped<IServicioLogin, ServicioLogin > ();
+builder.Services.AddScoped<IServicioRegister, ServicioRegister>();
 
 
 
