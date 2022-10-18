@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
-using Web.Api.Softijs.Results.Login;
-using System.Security.Cryptography;
+using Web.Api.Softijs.Results;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Web.Api.Softijs.Services
@@ -22,34 +23,28 @@ namespace Web.Api.Softijs.Services
             return context.Usuarios.AsNoTracking().ToList();
         }
 
-        public async Task<ActionResult<ResultadoLogin>> Login([FromBody] ComandoLogin comando)
+        public async Task<ActionResult<ResultadoBase>> Login([FromBody] ComandoLogin comando)
         {
-            var resultado = new ResultadoLogin();
+            var resultado = new ResultadoBase();
             try
             {
 
                 byte[] ePass = GetHash(comando.Contrasenia);
-              
-
-
                 var activo = await context.Usuarios.FirstOrDefaultAsync(c => c.Activo);
 
                 var emailPass = await context.Usuarios.FirstOrDefaultAsync(c => c.Email == comando.Email && c.HashContrasenia == ePass);
+
                 if (emailPass != null)
                 {
-                   
                     if (emailPass.Activo && activo != null)
                     {
-                        resultado.resultadoLogin = true;
                         resultado.Ok = true;
                         resultado.CodigoEstado = 200;
                         resultado.Error = "Es activo y valido";
                         return resultado;
                     }
-
                     else
                     {
-                        resultado.resultadoLogin = false;
                         resultado.Ok = false;
                         resultado.CodigoEstado = 400;
                         resultado.Error = ("El email no esta activo");
@@ -58,17 +53,14 @@ namespace Web.Api.Softijs.Services
                 }
                 else
                 {
-                    resultado.resultadoLogin = false;
                     resultado.Ok = false;
                     resultado.CodigoEstado = 400;
                     resultado.Error = ("El email o contraseña no existe");
                     return resultado;
                 }
-
             }
             catch (Exception ex)
             {
-                resultado.resultadoLogin = false;
                 resultado.Ok = false;
                 resultado.CodigoEstado = 400;
                 resultado.Error = "Error al ingresar al login";

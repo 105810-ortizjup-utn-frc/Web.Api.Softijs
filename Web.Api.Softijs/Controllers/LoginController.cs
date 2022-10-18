@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.DataContext;
-using Web.Api.Softijs.Models;
-using Web.Api.Softijs.Results.Login;
+using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services;
 
 namespace Web.Api.Softijs.Controllers
@@ -30,14 +28,11 @@ namespace Web.Api.Softijs.Controllers
 
         [HttpPost]
         [Route("PostLogin")]
-        public async Task<ActionResult<ResultadoLogin>> Login([FromBody]ComandoLogin comando)
+        public async Task<ActionResult<ResultadoBase>> Login([FromBody] ComandoLogin comando)
         {
-         
-           return Ok(await this.servicio.Login(comando));        
-          
+
+            return Ok(await this.servicio.Login(comando));
+
         }
-
-
-        
     }
 }
