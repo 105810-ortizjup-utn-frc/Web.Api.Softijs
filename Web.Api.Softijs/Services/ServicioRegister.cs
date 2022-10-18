@@ -1,12 +1,6 @@
-﻿using System.Text;
-using System.Security.Cryptography;
-using Web.Api.Softijs.Results;
+﻿using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.DataContext;
-using Web.Api.Softijs.Commands;
-using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
 namespace Web.Api.Softijs.Services
