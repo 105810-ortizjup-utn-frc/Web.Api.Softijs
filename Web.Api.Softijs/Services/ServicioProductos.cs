@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Commands.Ventas;
 using Web.Api.Softijs.DataContext;
@@ -34,9 +33,9 @@ namespace Web.Api.Softijs.Services
             return await context.Productos.AsNoTracking().Where(x => x.Activo).Select<Producto, ComboBoxItemDto>(x => x).ToListAsync();
         }
 
-        public List<Producto> GetProductos()
+        public async Task<List<Producto>> GetProductos()
         {
-            return context.Productos.AsNoTracking().ToList();
+            return await context.Productos.AsNoTracking().ToListAsync();
         }
 
         public async Task<ResultadoBase> PostProducto(Producto p)
@@ -45,8 +44,8 @@ namespace Web.Api.Softijs.Services
             try
             {
 
-                context.Add(p);
-                context.SaveChanges();
+                await context.AddAsync(p);
+                await context.SaveChangesAsync();
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
                 return resultado;

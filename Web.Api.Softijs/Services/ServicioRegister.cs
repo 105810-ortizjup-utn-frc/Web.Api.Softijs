@@ -1,42 +1,44 @@
-﻿using Web.Api.Softijs.Results;
-using Web.Api.Softijs.Models;
-using Web.Api.Softijs.DataContext;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using Web.Api.Softijs.DataContext;
+using Web.Api.Softijs.Models;
+using Web.Api.Softijs.Results;
 
 namespace Web.Api.Softijs.Services
 
 {
     public class ServicioRegister : IServicioRegister
     {
-        
-       
-
         private readonly SoftijsDevContext context;
         public ServicioRegister(SoftijsDevContext _context) { this.context = _context; }
-        public async Task<ResultadoBase> PostRegister(Usuario u) 
+        public async Task<ResultadoBase> PostRegister(Usuario u)
         {
             ResultadoBase resultado = new ResultadoBase();
 
-            if (this.ValidarMail(u.Email)) {
-                if (this.validarExpresion(u.Email)) {
-                    if (this.ValidarLegajo(u.Legajo)) { 
+            if (this.ValidarMail(u.Email))
+            {
+                if (this.validarExpresion(u.Email))
+                {
+                    if (await this.ValidarLegajo(u.Legajo))
+                    {
 
                         try
-            {    
-                    context.Add(u);
-                    context.SaveChanges("jero");
-                    resultado.Ok = true;
-                    resultado.CodigoEstado = 200;
-                    return resultado;   
+                        {
+                            await context.AddAsync(u);
+                            await context.SaveChangesAsync("jero");
+                            resultado.Ok = true;
+                            resultado.CodigoEstado = 200;
+                            return resultado;
 
-            } catch (Exception )
-            {
-                resultado.Ok = false;
-                resultado.CodigoEstado = 400;
-                resultado.Error = "Error al registrar un usuario";
-                return resultado;
-            }
-                         }
+                        }
+                        catch (Exception)
+                        {
+                            resultado.Ok = false;
+                            resultado.CodigoEstado = 400;
+                            resultado.Error = "Error al registrar un usuario";
+                            return resultado;
+                        }
+                    }
                     resultado.Ok = false;
                     resultado.CodigoEstado = 400;
                     resultado.Error = "El legajo ya pertenece a un usuario";
@@ -68,9 +70,9 @@ namespace Web.Api.Softijs.Services
                 return true;
             }
         }
-        private bool ValidarLegajo(string legajo)
+        private async Task<bool> ValidarLegajo(string legajo)
         {
-            var usuario = context.Usuarios.Where(c => c.Legajo.Equals(legajo)).FirstOrDefault();
+            var usuario = await context.Usuarios.FirstOrDefaultAsync(c => c.Legajo == legajo);
             if (usuario != null)
             {
                 return false;
@@ -85,8 +87,5 @@ namespace Web.Api.Softijs.Services
         {
             return email != null && Regex.IsMatch(email, "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@(([a-zA-Z]+[\\w-]+\\.){1,2}[a-zA-Z]{2,4})$");
         }
-
-       
-        
     }
 }

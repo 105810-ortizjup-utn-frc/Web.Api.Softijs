@@ -1,4 +1,3 @@
-using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Commands.Ventas;
 using Web.Api.Softijs.Models;
@@ -10,7 +9,7 @@ namespace Web.Api.Softijs.Services
     {
         Task<InformacionProductoDto> GetInformacionProductoDtoById(int id);
         Task<List<ComboBoxItemDto>> GetProductosForComboBox();
-        List<Producto> GetProductos();
+        Task<List<Producto>> GetProductos();
         Task<ResultadoBase> PostProducto(Producto producto);
     }
 }

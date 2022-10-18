@@ -18,7 +18,7 @@ namespace Web.Api.Softijs.Services.Ventas
 
         public async Task<List<ComboBoxItemDto>> GetPedidosForComboBox()
         {
-            return _softijsDevContext.Pedidos.AsNoTracking().Select<Pedido, ComboBoxItemDto>(x => x).ToList();
+            return await _softijsDevContext.Pedidos.AsNoTracking().Select<Pedido, ComboBoxItemDto>(x => x).ToListAsync();
         }
 
         public async Task<ResultadoBase> RegistrarPedido(Pedido pedido)

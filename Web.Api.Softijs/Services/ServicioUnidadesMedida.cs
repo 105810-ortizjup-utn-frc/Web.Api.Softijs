@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Web.Api.Softijs.Services
 {
@@ -15,9 +11,9 @@ namespace Web.Api.Softijs.Services
         {
             this.context = _context;
         }
-        public List<UnidadesMedida> GetUnidadesMedida()
+        public async Task<List<UnidadesMedida>> GetUnidadesMedida()
         {
-            return this.context.UnidadesMedidas.AsNoTracking().ToList();
+            return await this.context.UnidadesMedidas.AsNoTracking().ToListAsync();
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
 
@@ -15,9 +11,9 @@ namespace Web.Api.Softijs.Services
         {
             this.context = _context;
         }
-        public List<Gusto> GetGustos()
+        public async Task<List<Gusto>> GetGustos()
         {
-            return this.context.Gustos.AsNoTracking().ToList();
+            return await this.context.Gustos.AsNoTracking().ToListAsync();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Web.Api.Softijs.Controllers
         [Route("GetProveedores")]
         public async Task<ActionResult> GetGustos()
         {
-            return Ok(this.servicio.GetProveedores());
+            return Ok(await this.servicio.GetProveedores());
         }
     }
 }

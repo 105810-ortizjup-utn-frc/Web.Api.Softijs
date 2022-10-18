@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Web.Api.Softijs.Services
 {
@@ -16,9 +12,9 @@ namespace Web.Api.Softijs.Services
             this.context = _context;
         }
 
-        public List<Categoria> GetCategorias()
+        public async Task<List<Categoria>> GetCategorias()
         {
-            return this.context.Categorias.AsNoTracking().ToList();
+            return await this.context.Categorias.AsNoTracking().ToListAsync();
         }
     }
 }

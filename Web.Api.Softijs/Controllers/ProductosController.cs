@@ -40,7 +40,7 @@ namespace Web.Api.Softijs.Controllers
 
         public async Task<ActionResult> GetProductos()
         {
-            return Ok(this.servicio.GetProductos());
+            return Ok(await this.servicio.GetProductos());
         }
 
         [HttpPost]
@@ -66,7 +66,7 @@ namespace Web.Api.Softijs.Controllers
             p.FechaCreacion = comando.FechaCreacion;
             p.FechaModificacion = comando.FechaModificacion;
 
-            return Ok(this.servicio.PostProducto(p));
+            return Ok(await this.servicio.PostProducto(p));
         }
     }
 }

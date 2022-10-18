@@ -23,7 +23,7 @@ namespace Web.Api.Softijs.Controllers
 
         public async Task<ActionResult> GetMarcas()
         {
-            return Ok(this.servicio.GetMarcas());
+            return Ok(await this.servicio.GetMarcas());
         }
     }
 }

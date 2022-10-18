@@ -2,12 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Web.Api.Softijs.Services
 {
