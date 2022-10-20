@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Services;
 using Web.Api.Softijs.Services.Comunes;
+using Web.Api.Softijs.Services.Pagos;
 using Web.Api.Softijs.Services.Ventas;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IServicioUsuarios, ServicioUsuarios>();
 builder.Services.AddScoped<IServicioEstadosPedidos, ServicioEstadosPedidos>();
 builder.Services.AddScoped<IServicioLogin, ServicioLogin > ();
 builder.Services.AddScoped<IServicioRegister, ServicioRegister>();
+builder.Services.AddScoped<IServicioPagos, ServicioPagos>();
 
 
 
