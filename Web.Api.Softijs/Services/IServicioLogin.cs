@@ -14,6 +14,7 @@ namespace Web.Api.Softijs.Services
     {
         List<Usuario> GetUsuarios();    
         Task<ActionResult<ResultadoBase>> Login([FromBody]ComandoLogin comando);
+        //Task<Usuario> LoginUser(string email, string password);
 
         //void Agregar();
     }
