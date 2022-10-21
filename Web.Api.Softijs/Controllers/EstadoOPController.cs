@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Services;
 using Web.Api.Softijs.Services.Pagos;
 
@@ -8,24 +7,20 @@ namespace Web.Api.Softijs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PagosController : ControllerBase
+    public class EstadoOPController : ControllerBase
     {
-
-        private readonly IServicioPagos servicio;
-        public PagosController(IServicioPagos _servicio)
+        private readonly IServicioEstadoOP servicio;
+        public EstadoOPController(IServicioEstadoOP _servicio)
         {
             this.servicio = _servicio;
         }
 
-
-
         [HttpGet]
-        [Route("GetOrdenesDePagos")]
+        [Route("GetEstado")]
 
-        public async Task<ActionResult> GetOrdenP()
+        public async Task<ActionResult> GetEstado()
         {
-            return Ok(await this.servicio.GetOrdenP());
+            return Ok(await this.servicio.GetEstado());
         }
-
     }
 }
