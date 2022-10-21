@@ -8,7 +8,7 @@ namespace Web.Api.Softijs.Services
 {
     public interface IServicioLogin
     {
-        List<Usuario> GetUsuarios();
+        Task<List<Usuario>> GetUsuarios();
         Task<ActionResult<ResultadoBase>> Login([FromBody] ComandoLogin comando);
     }
 }

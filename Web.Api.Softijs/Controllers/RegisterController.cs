@@ -40,7 +40,7 @@ namespace Web.Api.Softijs.Controllers
           
 
 
-            return Ok(this.servicio.PostRegister(r));
+            return Ok(await this.servicio.PostRegister(r));
         }
 
         private byte[] GetHash(string key)

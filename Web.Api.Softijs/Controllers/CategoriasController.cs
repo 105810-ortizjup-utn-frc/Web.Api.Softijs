@@ -23,7 +23,7 @@ namespace Web.Api.Softijs.Controllers
 
         public async Task<ActionResult> GetCategorias()
         {
-            return Ok(this.servicio.GetCategorias());
+            return Ok(await this.servicio.GetCategorias());
         }
     }
 }

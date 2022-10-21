@@ -16,9 +16,9 @@ namespace Web.Api.Softijs.Services
         {
             this.context = _context;
         }
-        public List<Usuario> GetUsuarios()
+        public async Task<List<Usuario>> GetUsuarios()
         {
-            return context.Usuarios.AsNoTracking().ToList();
+            return await context.Usuarios.AsNoTracking().ToListAsync();
         }
 
         public async Task<ActionResult<ResultadoBase>> Login([FromBody] ComandoLogin comando)

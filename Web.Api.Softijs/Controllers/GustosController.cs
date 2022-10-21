@@ -22,7 +22,7 @@ namespace Web.Api.Softijs.Controllers
         [Route("GetGustos")]
         public async Task<ActionResult> GetGustos()
         {
-            return Ok(this.servicio.GetGustos());
+            return Ok(await this.servicio.GetGustos());
         }
     }
 }

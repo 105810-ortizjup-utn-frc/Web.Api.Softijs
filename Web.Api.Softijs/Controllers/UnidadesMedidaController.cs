@@ -22,7 +22,7 @@ namespace Web.Api.Softijs.Controllers
         [Route("GetUnidadesMedidas")]
         public async Task<ActionResult> GetUnidadesMedidas()
         {
-            return Ok(this.servicio.GetUnidadesMedida());
+            return Ok(await this.servicio.GetUnidadesMedida());
         }
     }
 }

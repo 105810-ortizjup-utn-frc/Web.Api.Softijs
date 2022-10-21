@@ -23,7 +23,7 @@ namespace Web.Api.Softijs.Controllers
 
         public async Task<ActionResult> GetUsuarios()
         {
-            return Ok(this.servicio.GetUsuarios());
+            return Ok(await this.servicio.GetUsuarios());
         }
 
         [HttpPost]
