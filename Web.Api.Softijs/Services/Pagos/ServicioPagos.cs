@@ -18,6 +18,6 @@ namespace Web.Api.Softijs.Services.Pagos
         {
             return await context.OrdenesPagos.AsNoTracking().ToListAsync();
         }
-    
+
     }
 }

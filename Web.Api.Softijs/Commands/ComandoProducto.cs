@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Web.Api.Softijs.Commands
+﻿namespace Web.Api.Softijs.Commands
 {
     public class ComandoProducto
     {

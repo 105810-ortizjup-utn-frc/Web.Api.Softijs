@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Web.Api.Softijs.DataContext;
-using Web.Api.Softijs.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Services.Pagos;
 
 namespace Web.Api.Softijs.Controllers

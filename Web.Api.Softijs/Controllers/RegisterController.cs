@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 using System.Text;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services;
-using System.Security.Cryptography;
 
 namespace Web.Api.Softijs.Controllers
 {
@@ -37,7 +36,7 @@ namespace Web.Api.Softijs.Controllers
             r.IdTipoUsuario = 1;
             r.Activo = false;
             r.HashContrasenia = ePass;
-          
+
 
 
             return Ok(await this.servicio.PostRegister(r));

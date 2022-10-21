@@ -15,7 +15,7 @@ namespace Web.Api.Softijs.Commands
         public string Email { get; set; }
         [Required(ErrorMessage = "La contraseña es requerida.")]
         public string Contrasenia { get; set; }
- 
+
 
     }
 }
