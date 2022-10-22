@@ -12,10 +12,9 @@ namespace Web.Api.Softijs.Services
 {
     public interface IServicioLogin
     {
-        List<Usuario> GetUsuarios();    
-        Task<ActionResult<ResultadoBase>> Login([FromBody]ComandoLogin comando);
-        //Task<Usuario> LoginUser(string email, string password);
 
-        //void Agregar();
+        List<Usuario> GetUsuarios();
+        Task<ActionResult<ResultadoBase>> Login([FromBody] ComandoLogin comando);
+
     }
 }
