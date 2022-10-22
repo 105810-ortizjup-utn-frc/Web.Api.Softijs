@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Web.Mvc;
+//using System.Web.Mvc;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
@@ -17,13 +12,11 @@ namespace Web.Api.Softijs.Services
 {
     public class ServicioLogin : IServicioLogin
     {
-        private readonly IServicioLogin loginServicio;
         private readonly IConfiguration config;
         private readonly SoftijsDevContext context;
-        public ServicioLogin(SoftijsDevContext _context, IServicioLogin _loginServicio, IConfiguration _config)
+        public ServicioLogin(SoftijsDevContext _context, IConfiguration _config)
         {
             this.context = _context;
-            this.loginServicio = _loginServicio;
             this.config = _config;
         }
         public async Task<List<Usuario>> GetUsuarios()
@@ -71,7 +64,7 @@ namespace Web.Api.Softijs.Services
             {
                 resultado.Ok = false;
                 resultado.CodigoEstado = 400;
-                resultado.Error = "Error al ingresar al login";
+                resultado.Error = ex.Message;
                 return resultado;
             }
         }
