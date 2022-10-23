@@ -23,6 +23,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DbSchema\Dev\v2\" />
     <Folder Include="DbSchema\Dev\v1\" />
   </ItemGroup>
 </Project>

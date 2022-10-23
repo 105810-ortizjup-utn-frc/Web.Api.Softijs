@@ -1,16 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Web.Api.Softijs.Models;
-using Web.Api.Softijs.Models.Interfaces;
 
 namespace Web.Api.Softijs.DataContext
 {
-    public partial class SoftijsDevContext : DbContext
+    public partial class _2022softijssqldbdevContext : DbContext
     {
-        public SoftijsDevContext()
+        public _2022softijssqldbdevContext()
         {
         }
 
-        public SoftijsDevContext(DbContextOptions<SoftijsDevContext> options)
+        public _2022softijssqldbdevContext(DbContextOptions<_2022softijssqldbdevContext> options)
             : base(options)
         {
         }
@@ -1394,53 +1396,6 @@ namespace Web.Api.Softijs.DataContext
             });
 
             OnModelCreatingPartial(modelBuilder);
-        }
-
-        public virtual int SaveChanges(string userName)
-        {
-            this.ApplyAuditForModifiedEntries(userName);
-            return base.SaveChanges();
-        }
-
-        public async Task<int> SaveChangesAsync(string userName)
-        {
-            this.ApplyAuditForModifiedEntries(userName);
-            return await base.SaveChangesAsync();
-        }
-
-        private void ApplyAuditForModifiedEntries(string userName = null, bool systemChanges = false)
-        {
-            this.ChangeTracker?
-                .Entries<IAuditable>()
-                .ToList()
-                .ForEach(e => this.ApplyAudit(e.Entity, e.State, userName, systemChanges));
-        }
-
-        private void ApplyAudit(IAuditable entity, EntityState state, string userName, bool systemChanges = false)
-        {
-            var date = DateTime.Now;
-
-            var currentUser = userName;
-
-            if (state == EntityState.Added)
-            {
-                // new horsemen
-                entity.CreadoPor = currentUser;
-                entity.FechaCreacion = date;
-
-                // new horsemen
-                entity.ModificadoPor = currentUser;
-                entity.FechaModificacion = date;
-                return;
-            }
-
-            if (state == EntityState.Modified)
-            {
-                // new horsemen
-                entity.ModificadoPor = currentUser;
-                entity.FechaModificacion = date;
-                return;
-            }
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

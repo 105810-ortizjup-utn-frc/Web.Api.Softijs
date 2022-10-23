@@ -8,7 +8,7 @@ namespace Web.Api.Softijs.Models
         {
             DetallesOrdenesPagos = new HashSet<DetallesOrdenesPago>();
             Pagos = new HashSet<Pago>();
-            Pedidos = new HashSet<Pedido>();
+            PedidosFormasPagos = new HashSet<PedidosFormasPago>();
         }
 
         public int IdFormaPago { get; set; }
@@ -21,6 +21,6 @@ namespace Web.Api.Softijs.Models
 
         public virtual ICollection<DetallesOrdenesPago> DetallesOrdenesPagos { get; set; }
         public virtual ICollection<Pago> Pagos { get; set; }
-        public virtual ICollection<Pedido> Pedidos { get; set; }
+        public virtual ICollection<PedidosFormasPago> PedidosFormasPagos { get; set; }
     }
 }
