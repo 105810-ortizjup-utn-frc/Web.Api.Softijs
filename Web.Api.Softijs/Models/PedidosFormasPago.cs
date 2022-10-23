@@ -2,19 +2,18 @@
 
 namespace Web.Api.Softijs.Models
 {
-    public partial class DetallesPedido : IAuditable
+    public partial class PedidosFormasPago : IAuditable
     {
-        public int NroDetallePedido { get; set; }
-        public int NroProducto { get; set; }
+        public int IdPedidoFormasPago { get; set; }
+        public int IdFormaPago { get; set; }
         public int NroPedido { get; set; }
         public decimal Monto { get; set; }
-        public int Cantidad { get; set; }
+        public string CreadoPor { get; set; } = null!;
         public DateTime FechaCreacion { get; set; }
         public string ModificadoPor { get; set; } = null!;
         public DateTime FechaModificacion { get; set; }
-        public string CreadoPor { get; set; } = null!;
 
+        public virtual FormasPago IdFormaPagoNavigation { get; set; } = null!;
         public virtual Pedido NroPedidoNavigation { get; set; } = null!;
-        public virtual Producto NroProductoNavigation { get; set; } = null!;
     }
 }

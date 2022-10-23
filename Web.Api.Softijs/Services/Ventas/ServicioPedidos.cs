@@ -48,9 +48,6 @@ namespace Web.Api.Softijs.Services.Ventas
             if (pedido.IdCliente == 0)
                 throw new Exception("Porfavor seleciones el cliente.");
 
-            if (!pedido.IdFormaPago.HasValue)
-                throw new Exception("Porfavor seleccione una forma de pago.");
-
             if (pedido.IdUsuario == 0)
                 throw new Exception("El vendedor no fue seleccionado.");
 
@@ -58,7 +55,10 @@ namespace Web.Api.Softijs.Services.Ventas
                 throw new Exception("Todos los productos deben tener al menos una cantidad mayor o igual a 1.");
 
             if (pedido.DetallesPedidos.Any(x => x.Monto == 0))
-                throw new Exception("Al menos uno de los productos que quiere agregar tiene un costo de $0.00.");
+                throw new Exception("El costo total del pedido no puede ser de $0.00.");
+
+            if (!pedido.PedidosFormasPagos.Any())
+                throw new Exception("Debe seleccionar al menos un medio de pago.");
 
             if (!pedido.DetallesPedidos.All(x => _softijsDevContext.Productos.AsNoTracking().Select(s => s.NroProducto).Contains(x.NroProducto)))
                 throw new Exception("Al menos uno de los productos que quiere agregar a su pedido no existe en nuestra base de datos.");
@@ -71,9 +71,6 @@ namespace Web.Api.Softijs.Services.Ventas
 
             if (!_softijsDevContext.EstadosPedidos.AsNoTracking().Any(x => x.IdEstadoPedido == pedido.IdEstadoPedido))
                 throw new Exception("El estado de pedido que selecciono no existe en la base de datos.");
-
-            if (!_softijsDevContext.FormasPagos.AsNoTracking().Any(x => x.IdFormaPago == pedido.IdFormaPago))
-                throw new Exception("La forma de pago que selecciono no existe en la base de datos.");
         }
     }
 }

@@ -50,6 +50,7 @@ namespace Web.Api.Softijs.Services
                 await context.SaveChangesAsync(Constantes.DefaultSecurityValues.DefaultUserName); //TODO: replace this with the logged in user.
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
+                resultado.Message = "El producto se guardo exitosamente.";
                 return resultado;
             }
             catch (Exception)
