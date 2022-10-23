@@ -77,5 +77,12 @@ namespace Web.Api.Softijs.Services.Ventas
         {
             return await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
         }
+
+        async Task<List<DetallesPedido>> IServicioPedidos.GetDetallePedidos(int id)
+        {
+            return await _softijsDevContext.DetallesPedidos.AsNoTracking().ToListAsync();
+        }
+
+
     }
 }

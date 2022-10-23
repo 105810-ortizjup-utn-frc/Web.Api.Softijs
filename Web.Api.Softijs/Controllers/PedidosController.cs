@@ -37,5 +37,11 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await _servicioPedidos.GetPedidos());
         }
+
+        [HttpGet("getDetallePedido/{id}")]
+        public async Task<IActionResult> GetPedidos(int id)
+        {
+            return Ok(await _servicioPedidos.GetDetallePedidos(id));
+        }
     }
 }

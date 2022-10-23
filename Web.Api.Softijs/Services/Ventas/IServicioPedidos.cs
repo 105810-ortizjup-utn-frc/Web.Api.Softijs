@@ -10,6 +10,7 @@ namespace Web.Api.Softijs.Services.Ventas
         Task<ResultadoBase> RegistrarPedido(Pedido pedido);
 
         Task<List<Pedido>> GetPedidos();
+        Task<List<DetallesPedido>> GetDetallePedidos(int id);
 
     }
 }
