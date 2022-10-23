@@ -8,5 +8,8 @@ namespace Web.Api.Softijs.Services.Ventas
     {
         Task<List<ComboBoxItemDto>> GetPedidosForComboBox();
         Task<ResultadoBase> RegistrarPedido(Pedido pedido);
+
+        Task<List<Pedido>> GetPedidos();
+
     }
 }

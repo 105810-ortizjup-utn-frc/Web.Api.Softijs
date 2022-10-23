@@ -75,5 +75,10 @@ namespace Web.Api.Softijs.Services.Ventas
             if (!_softijsDevContext.FormasPagos.AsNoTracking().Any(x => x.IdFormaPago == pedido.IdFormaPago))
                 throw new Exception("La forma de pago que selecciono no existe en la base de datos.");
         }
+
+       async Task<List<Pedido>> IServicioPedidos.GetPedidos()
+        {
+            return await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
+        }
     }
 }

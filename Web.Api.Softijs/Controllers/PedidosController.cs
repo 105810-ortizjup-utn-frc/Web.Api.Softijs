@@ -31,5 +31,11 @@ namespace Web.Api.Softijs.Controllers
 
             return BadRequest(retVal.Message);
         }
+
+        [HttpGet("getPedidos")]
+        public async Task<IActionResult> GetPedidos()
+        {
+            return Ok(await _servicioPedidos.GetPedidos());
+        }
     }
 }
