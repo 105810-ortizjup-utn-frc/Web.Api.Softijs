@@ -34,7 +34,7 @@ namespace Web.Api.Softijs.Controllers
             r.Apellido = comando.Apellido;
             r.Legajo = comando.Legajo;
             r.IdTipoUsuario = 1;
-            r.Activo = false;
+            r.Activo = true;
             r.HashContrasenia = ePass;
 
 
