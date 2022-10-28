@@ -11,5 +11,7 @@ namespace Web.Api.Softijs.Services
         Task<List<ComboBoxItemDto>> GetProductosForComboBox();
         Task<List<Producto>> GetProductos();
         Task<ResultadoBase> PostProducto(Producto producto);
+        Task<ResultadoBase> PutProducto(Producto producto);
+        Task<ResultadoBase> DeleteProducto(int  id);
     }
 }

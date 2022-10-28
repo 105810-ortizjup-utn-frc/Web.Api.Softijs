@@ -60,5 +60,29 @@ namespace Web.Api.Softijs.Controllers
 
             return Ok(await this.servicio.PostProducto(p));
         }
+
+
+        [HttpPut]
+        [Route("PutProducto")]
+
+        public async Task<ActionResult<ResultadoBase>> PutProducto([FromBody] ComandoProducto comando)
+        {
+            Producto p = new Producto();
+            p.Nombre = comando.Nombre;
+            p.FechaVencimiento = comando.FechaVencimiento;
+            p.IdProveedor = comando.IdProveedor;
+            p.Precio = comando.Precio;
+            p.Lote = comando.Lote;
+            p.PuntoNecesario = comando.PuntosNecesarios;
+            p.PuntoOtorgado = comando.PuntosOtorgados;
+            p.Activo = comando.Activo;
+            p.IdUnidadMedida = comando.IdUnidadMedida;
+            p.IdGusto = comando.IdGusto;
+            p.IdMarca = comando.IdMarca;
+            p.IdCategoria = comando.IdCategoria;
+            p.Codigo = comando.Codigo;
+
+            return Ok(await this.servicio.PutProducto(p));
+        }
     }
 }

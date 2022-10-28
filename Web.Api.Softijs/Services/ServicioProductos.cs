@@ -61,5 +61,15 @@ namespace Web.Api.Softijs.Services
                 return resultado;
             }
         }
+
+        Task<ResultadoBase> IServicioProductos.PutProducto(Producto producto)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ResultadoBase> IServicioProductos.DeleteProducto(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
