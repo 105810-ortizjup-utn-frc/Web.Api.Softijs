@@ -46,8 +46,29 @@ namespace Web.Api.Softijs.Services
             try
             {
 
-                context.Update(p);
+                await context.AddAsync(p);
                 await context.SaveChangesAsync(Constantes.DefaultSecurityValues.DefaultUserName); //TODO: replace this with the logged in user.
+                resultado.Ok = true;
+                resultado.CodigoEstado = 200;
+                resultado.Message = "El producto se guardo exitosamente.";
+                return resultado;
+            }
+            catch (Exception)
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al ingresar un producto";
+                return resultado;
+            }
+        }
+
+        public async Task<ResultadoBase> PutProducto(Producto p)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            try
+            {
+                context.Update(p);
+                await context.SaveChangesAsync();
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
                 resultado.Message = "El producto se actualizo exitosamente.";
@@ -60,11 +81,6 @@ namespace Web.Api.Softijs.Services
                 resultado.Message = "Error al actualizar un producto";
                 return resultado;
             }
-        }
-
-        public Task<ResultadoBase> PutProducto(Producto producto)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<ResultadoBase> DeleteProducto(int id)
