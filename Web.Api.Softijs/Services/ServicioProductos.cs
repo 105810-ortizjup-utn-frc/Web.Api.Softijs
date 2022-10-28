@@ -65,22 +65,26 @@ namespace Web.Api.Softijs.Services
         public async Task<ResultadoBase> PutProducto(Producto p)
         {
             ResultadoBase resultado = new ResultadoBase();
-            try
+            var producto = await context.Productos.Where(c => c.Codigo.Equals(p.Codigo)).FirstOrDefaultAsync();
+            if (producto != null)
             {
-                context.Update(p);
+                producto.PuntoNecesario = p.PuntoNecesario;
+                producto.PuntoOtorgado = p.PuntoOtorgado;
+                producto.Precio = p.Precio;
+                context.Update(producto);
                 await context.SaveChangesAsync();
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
-                resultado.Message = "El producto se actualizo exitosamente.";
-                return resultado;
+                resultado.Message = "El producto se modifico exitosamente.";
             }
-            catch (Exception)
+            else
             {
                 resultado.Ok = false;
                 resultado.CodigoEstado = 400;
-                resultado.Message = "Error al actualizar un producto";
-                return resultado;
+                resultado.Message = "Error al modificar un producto";
             }
+            return resultado;
+            
         }
 
         public async Task<ResultadoBase> DeleteProducto(int id)
