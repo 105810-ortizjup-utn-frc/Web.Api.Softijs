@@ -84,5 +84,14 @@ namespace Web.Api.Softijs.Controllers
 
             return Ok(await this.servicio.PutProducto(p));
         }
+
+
+        [HttpDelete]
+        [Route("DeleteProducto/{id}")]
+
+        public async Task<ActionResult<ResultadoBase>> DeleteProducto(int id)
+        { 
+            return Ok(await this.servicio.DeleteProducto(id));
+        }
     }
 }

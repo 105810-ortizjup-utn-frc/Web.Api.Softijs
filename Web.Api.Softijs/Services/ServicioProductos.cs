@@ -46,30 +46,48 @@ namespace Web.Api.Softijs.Services
             try
             {
 
-                await context.AddAsync(p);
+                context.Update(p);
                 await context.SaveChangesAsync(Constantes.DefaultSecurityValues.DefaultUserName); //TODO: replace this with the logged in user.
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
-                resultado.Message = "El producto se guardo exitosamente.";
+                resultado.Message = "El producto se actualizo exitosamente.";
                 return resultado;
             }
             catch (Exception)
             {
                 resultado.Ok = false;
                 resultado.CodigoEstado = 400;
-                resultado.Message = "Error al ingresar un producto";
+                resultado.Message = "Error al actualizar un producto";
                 return resultado;
             }
         }
 
-        Task<ResultadoBase> IServicioProductos.PutProducto(Producto producto)
+        public Task<ResultadoBase> PutProducto(Producto producto)
         {
             throw new NotImplementedException();
         }
 
-        Task<ResultadoBase> IServicioProductos.DeleteProducto(int id)
+        public async Task<ResultadoBase> DeleteProducto(int id)
         {
-            throw new NotImplementedException();
+            ResultadoBase resultado = new ResultadoBase();
+            var producto = await context.Productos.Where(c => c.NroProducto.Equals(id)).FirstOrDefaultAsync();
+            if(producto != null)
+            {
+                resultado.Ok = true;
+                resultado.CodigoEstado = 200;
+                resultado.Message = "El producto se elimino exitosamente.";
+                context.Remove(producto);
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al borrar un producto";
+                return resultado;
+            }
+
+            return resultado;
         }
     }
 }
