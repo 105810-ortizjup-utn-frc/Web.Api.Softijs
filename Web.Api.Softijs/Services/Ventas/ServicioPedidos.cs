@@ -74,26 +74,38 @@ namespace Web.Api.Softijs.Services.Ventas
                 throw new Exception("El estado de pedido que selecciono no existe en la base de datos.");
         }
 
-        async Task<List<DTOPedidos>> IServicioPedidos.GetPedidos()
+        public async Task<List<DTOPedidos>> GetPedidos()
         {
-            List<Pedido> lista = await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
-            List<DTOPedidos> listaDTO = new List<DTOPedidos>();
-            foreach (var item in lista)
-            {
-                var cliente = await _softijsDevContext.Clientes.Where(c => c.IdCliente.Equals(item.IdCliente)).FirstOrDefaultAsync();
-                var vendedor = await _softijsDevContext.Usuarios.Where(c => c.IdUsuario.Equals(item.IdUsuario)).FirstOrDefaultAsync();
-                var fecha = item.Fecha;
-                var nroPedido = item.NroPedido;
-                var detalles = await _softijsDevContext.DetallesPedidos.Where(c => c.NroPedido.Equals(item.NroPedido)).ToListAsync();
-                decimal total = 0;
-                foreach (var itemD in detalles)
-                {
-                    total += itemD.Monto * itemD.Cantidad;
-                }
-                DTOPedidos pedido = new DTOPedidos(nroPedido, cliente.Nombre, vendedor.Nombre, fecha,total);
-                listaDTO.Add(pedido);        
-            }
-            return listaDTO;
+            var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
+                         //join dtl in _softijsDevContext.DetallesPedidos.AsNoTracking() on prd.NroPedido equals dtl.NroPedido
+                         join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
+                         join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
+                         select new DTOPedidos { 
+                             NroPedido = prd.NroPedido,
+                             Cliente = $"{cl.Nombre} {cl.Apellido}",
+                             Vendedor = $"{vd.Nombre} {vd.Apellido}",
+                             Total = prd.DetallesPedidos.Sum(x=>x.Monto*x.Cantidad),
+                             Fecha = prd.Fecha
+                         });
+            return await query.ToListAsync();
+            //List<Pedido> lista = await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
+            //List<DTOPedidos> listaDTO = new List<DTOPedidos>();
+            //foreach (var item in lista)
+            //{
+            //    var cliente = await _softijsDevContext.Clientes.Where(c => c.IdCliente.Equals(item.IdCliente)).FirstOrDefaultAsync();
+            //    var vendedor = await _softijsDevContext.Usuarios.Where(c => c.IdUsuario.Equals(item.IdUsuario)).FirstOrDefaultAsync();
+            //    var fecha = item.Fecha;
+            //    var nroPedido = item.NroPedido;
+            //    var detalles = await _softijsDevContext.DetallesPedidos.Where(c => c.NroPedido.Equals(item.NroPedido)).ToListAsync();
+            //    decimal total = 0;
+            //    foreach (var itemD in detalles)
+            //    {
+            //        total += itemD.Monto * itemD.Cantidad;
+            //    }
+            //    DTOPedidos pedido = new DTOPedidos(nroPedido, cliente.Nombre, vendedor.Nombre, fecha,total);
+            //    listaDTO.Add(pedido);        
+            //}
+            //return listaDTO;
             
         }
 

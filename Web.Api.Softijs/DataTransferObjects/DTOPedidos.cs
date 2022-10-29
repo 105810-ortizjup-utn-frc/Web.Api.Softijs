@@ -21,5 +21,10 @@ namespace Web.Api.Softijs.DataTransferObjects
             this.Fecha = fecha;
             this.Total = total;
         }
+
+        public DTOPedidos()
+        {
+           
+        }
     }
 }
