@@ -4,6 +4,8 @@ using Web.Api.Softijs.Services.Ventas;
 
 namespace Web.Api.Softijs.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class BarriosController : Controller
     {
 

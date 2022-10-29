@@ -4,6 +4,8 @@ using Web.Api.Softijs.Services.Comunes;
 
 namespace Web.Api.Softijs.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class TipoFidelizacionController : Controller
     {
         private readonly IServicioTipoFidelizacion _servicioTipoFidelizacion;

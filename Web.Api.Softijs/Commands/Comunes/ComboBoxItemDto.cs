@@ -67,35 +67,5 @@ namespace Web.Api.Softijs.Commands.Comunes
                 Descripcion = entity.NroPedido.ToString()
             };
         }
-
-        public static implicit operator ComboBoxItemDto(Barrio entity)
-        {
-            return new ComboBoxItemDto
-            {
-                Id = entity.IdBarrio,
-                Codigo = entity.CodigoCiudad.ToString(),
-                Descripcion = entity.Descripcion.ToString()
-            };
-        }
-
-        public static implicit operator ComboBoxItemDto(Ciudade entity)
-        {
-            return new ComboBoxItemDto
-            {
-                Id = entity.IdCiudad,
-                Codigo = entity.Codigo.ToString(),
-                Descripcion = entity.Descripcion.ToString()
-            };
-        }
-
-        public static implicit operator ComboBoxItemDto(Provincia entity)
-        {
-            return new ComboBoxItemDto
-            {
-                Id = entity.IdProvincia,
-                Codigo = entity.Codigo.ToString(),
-                Descripcion = entity.Descripcion.ToString()
-            };
-        }
     }
 }
