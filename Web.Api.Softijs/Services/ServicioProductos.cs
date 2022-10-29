@@ -95,8 +95,9 @@ namespace Web.Api.Softijs.Services
             {
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
-                resultado.Message = "El producto se elimino exitosamente.";
-                context.Remove(producto);
+                resultado.Message = "El producto se desactivo exitosamente.";
+                producto.Activo = false;
+                context.Update(producto);
                 await context.SaveChangesAsync();
             }
             else
