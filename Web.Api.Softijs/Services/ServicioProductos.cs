@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Commands.Ventas;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 
@@ -62,7 +64,7 @@ namespace Web.Api.Softijs.Services
             }
         }
 
-        public async Task<ResultadoBase> PutProducto(Producto p)
+        public async Task<ResultadoBase> PutProducto(DTOProducto p)
         {
             ResultadoBase resultado = new ResultadoBase();
             var producto = await context.Productos.Where(c => c.Codigo.Equals(p.Codigo)).FirstOrDefaultAsync();
@@ -71,6 +73,7 @@ namespace Web.Api.Softijs.Services
                 producto.PuntoNecesario = p.PuntoNecesario;
                 producto.PuntoOtorgado = p.PuntoOtorgado;
                 producto.Precio = p.Precio;
+                producto.Activo = p.Activo;
                 context.Update(producto);
                 await context.SaveChangesAsync();
                 resultado.Ok = true;
@@ -109,6 +112,36 @@ namespace Web.Api.Softijs.Services
             }
 
             return resultado;
+        }
+
+        async Task<DTOProducto> IServicioProductos.GetProductoById(int id)
+        {
+            try
+            {
+                Producto producto = await context.Productos.Where(c => c.NroProducto.Equals(id)).FirstOrDefaultAsync();
+                DTOProducto dto = new DTOProducto();
+                dto.nroProducto = producto.NroProducto;
+                dto.Codigo = producto.Codigo;
+                dto.nombre = producto.Nombre;
+                dto.FechaVencimiento = producto.FechaVencimiento;
+                dto.IdProveedor = producto.IdProveedor;
+                dto.Precio = producto.Precio;
+                dto.Lote = producto.Lote;
+                dto.PuntoNecesario = producto.PuntoNecesario;
+                dto.PuntoOtorgado = producto.PuntoOtorgado;
+                dto.Activo = producto.Activo;
+                dto.IdUnidadMedida = producto.IdUnidadMedida;
+                dto.IdGusto = producto.IdGusto;
+                dto.IdMarca = producto.IdMarca;
+                dto.IdCategoria = producto.IdCategoria;
+
+                return dto;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

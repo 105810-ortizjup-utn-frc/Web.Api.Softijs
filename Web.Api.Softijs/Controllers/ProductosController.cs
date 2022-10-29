@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.DataContext;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services;
@@ -65,16 +66,15 @@ namespace Web.Api.Softijs.Controllers
         [HttpPut]
         [Route("PutProducto")]
 
-        public async Task<ActionResult<ResultadoBase>> PutProducto([FromBody] ComandoProducto comando)
+        public async Task<ActionResult<ResultadoBase>> PutProducto([FromBody] DTOProducto comando)
         {
-            Producto p = new Producto();
-            p.Nombre = comando.Nombre;
+            DTOProducto p = new DTOProducto();
             p.FechaVencimiento = comando.FechaVencimiento;
             p.IdProveedor = comando.IdProveedor;
             p.Precio = comando.Precio;
             p.Lote = comando.Lote;
-            p.PuntoNecesario = comando.PuntosNecesarios;
-            p.PuntoOtorgado = comando.PuntosOtorgados;
+            p.PuntoNecesario = comando.PuntoNecesario;
+            p.PuntoOtorgado = comando.PuntoOtorgado;
             p.Activo = comando.Activo;
             p.IdUnidadMedida = comando.IdUnidadMedida;
             p.IdGusto = comando.IdGusto;
@@ -92,6 +92,14 @@ namespace Web.Api.Softijs.Controllers
         public async Task<ActionResult<ResultadoBase>> DeleteProducto(int id)
         { 
             return Ok(await this.servicio.DeleteProducto(id));
+        }
+
+        [HttpGet]
+        [Route("GetProductoById/{id}")]
+
+        public async Task<ActionResult<ResultadoBase>> GetProductoById(int id)
+        {
+            return Ok(await this.servicio.GetProductoById(id));
         }
     }
 }
