@@ -76,7 +76,7 @@ namespace Web.Api.Softijs.Services.Ventas
 
         async Task<List<DTOPedidos>> IServicioPedidos.GetPedidos()
         {
-             List<Pedido> lista = await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
+            List<Pedido> lista = await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
             List<DTOPedidos> listaDTO = new List<DTOPedidos>();
             foreach (var item in lista)
             {
@@ -97,9 +97,21 @@ namespace Web.Api.Softijs.Services.Ventas
             
         }
 
-        async Task<List<DetallesPedido>> IServicioPedidos.GetDetallePedidos(int id)
+        async Task<List<DTODetallePedido>> IServicioPedidos.GetDetallePedidos(int id)
         {
-            return await _softijsDevContext.DetallesPedidos.Where(c=>c.NroPedido.Equals(id)).ToListAsync();
+           var detalles = await _softijsDevContext.DetallesPedidos.Where(c=>c.NroPedido.Equals(id)).ToListAsync();
+            List<DTODetallePedido> listaDTO = new List<DTODetallePedido>();
+            foreach (var item in detalles)
+            {
+                var producto = await _softijsDevContext.Productos.Where(c => c.NroProducto.Equals(item.NroProducto)).FirstOrDefaultAsync();
+                DTODetallePedido detalle = new DTODetallePedido();
+                detalle.nroDetalle = item.NroDetallePedido;
+                detalle.Producto = producto.Nombre;
+                detalle.Cantidad = item.Cantidad;
+                detalle.Monto = item.Monto;
+                listaDTO.Add(detalle);
+            }
+            return listaDTO;
         }
 
 
