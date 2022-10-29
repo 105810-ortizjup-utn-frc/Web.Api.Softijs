@@ -1,4 +1,5 @@
 ﻿using Web.Api.Softijs.Commands.Comunes;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 
@@ -9,7 +10,7 @@ namespace Web.Api.Softijs.Services.Ventas
         Task<List<ComboBoxItemDto>> GetPedidosForComboBox();
         Task<ResultadoBase> RegistrarPedido(Pedido pedido);
 
-        Task<List<Pedido>> GetPedidos();
+        Task<List<DTOPedidos>> GetPedidos();
         Task<List<DetallesPedido>> GetDetallePedidos(int id);
 
     }

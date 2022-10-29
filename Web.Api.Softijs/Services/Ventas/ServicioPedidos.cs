@@ -2,6 +2,7 @@
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 
@@ -73,14 +74,32 @@ namespace Web.Api.Softijs.Services.Ventas
                 throw new Exception("El estado de pedido que selecciono no existe en la base de datos.");
         }
 
-       async Task<List<Pedido>> IServicioPedidos.GetPedidos()
+        async Task<List<DTOPedidos>> IServicioPedidos.GetPedidos()
         {
-            return await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
+             List<Pedido> lista = await _softijsDevContext.Pedidos.AsNoTracking().ToListAsync();
+            List<DTOPedidos> listaDTO = new List<DTOPedidos>();
+            foreach (var item in lista)
+            {
+                var cliente = await _softijsDevContext.Clientes.Where(c => c.IdCliente.Equals(item.IdCliente)).FirstOrDefaultAsync();
+                var vendedor = await _softijsDevContext.Usuarios.Where(c => c.IdUsuario.Equals(item.IdUsuario)).FirstOrDefaultAsync();
+                var fecha = item.Fecha;
+                var nroPedido = item.NroPedido;
+                var detalles = await _softijsDevContext.DetallesPedidos.Where(c => c.NroPedido.Equals(item.NroPedido)).ToListAsync();
+                decimal total = 0;
+                foreach (var itemD in detalles)
+                {
+                    total += itemD.Monto * itemD.Cantidad;
+                }
+                DTOPedidos pedido = new DTOPedidos(nroPedido, cliente.Nombre, vendedor.Nombre, fecha,total);
+                listaDTO.Add(pedido);        
+            }
+            return listaDTO;
+            
         }
 
         async Task<List<DetallesPedido>> IServicioPedidos.GetDetallePedidos(int id)
         {
-            return await _softijsDevContext.DetallesPedidos.AsNoTracking().ToListAsync();
+            return await _softijsDevContext.DetallesPedidos.Where(c=>c.NroPedido.Equals(id)).ToListAsync();
         }
 
 
