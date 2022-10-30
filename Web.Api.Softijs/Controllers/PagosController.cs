@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Services.Pagos;
 
 namespace Web.Api.Softijs.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PagosController : ControllerBase

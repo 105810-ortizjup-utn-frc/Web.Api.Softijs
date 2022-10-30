@@ -7,7 +7,7 @@ namespace Web.Api.Softijs.Services.Pagos
 {
     public class ServicioPagos : IServicioPagos
     {
-
+        
         private readonly SoftijsDevContext context;
 
         public ServicioPagos(SoftijsDevContext _context)
