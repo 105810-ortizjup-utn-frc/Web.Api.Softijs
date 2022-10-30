@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.Api.Softijs.DataTransferObjects;
+using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Services.Comunes;
 
 namespace Web.Api.Softijs.Controllers
@@ -20,6 +22,12 @@ namespace Web.Api.Softijs.Controllers
         public async Task<ActionResult> GetUsuariosForComboBox()
         {
             return Ok(await _servicioUsuarios.GetUsuariosForComboBox());
+        }
+
+        [HttpGet("getUsuariosById/{id}")]
+        public async Task<DTOUsuarioById> GetUsuariosById(int id)
+        {
+            return await _servicioUsuarios.GetUsuariosById(id);
         }
     }
 }
