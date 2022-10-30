@@ -23,5 +23,15 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.GetOrdenP());
         }
+
+
+        [HttpGet]
+        [Route("GetPagosPendientes")]
+
+        public async Task<ActionResult> GetPagosPendientes()
+        {
+            return Ok(await this.servicio.GetPagosPendientes());
+        }
+
     }
 }
