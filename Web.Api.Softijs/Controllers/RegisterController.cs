@@ -39,6 +39,26 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.PostRegister(r));
         }
 
+        [HttpPut("PutUsuario")]
+        public async Task<ActionResult<ResultadoBase>> PutUsuario([FromBody] ComandoPutUsuario comando)
+        {
+
+            Usuario r = new Usuario();
+
+            byte[] ePass = GetHash(comando.ContraseniaNuevo);
+
+            r.Nombre = comando.Nombre;
+            r.Email = comando.Email;
+            r.Apellido = comando.Apellido;
+            r.Legajo = comando.Legajo;
+            r.IdTipoUsuario = 1;
+            r.Activo = true;
+            r.HashContrasenia = ePass;
+
+
+            return Ok(await this.servicio.PutUsuario(r));
+        }
+
         private byte[] GetHash(string key)
         {
             var bytes = Encoding.UTF8.GetBytes(key);
