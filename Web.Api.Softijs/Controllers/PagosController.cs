@@ -23,6 +23,5 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.GetOrdenP());
         }
-
     }
 }
