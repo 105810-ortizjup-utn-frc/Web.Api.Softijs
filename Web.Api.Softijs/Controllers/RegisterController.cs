@@ -12,7 +12,6 @@ namespace Web.Api.Softijs.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-
         private readonly IServicioRegister servicio;
 
         public RegisterController(IServicioRegister _servicio)
@@ -20,9 +19,7 @@ namespace Web.Api.Softijs.Controllers
             this.servicio = _servicio;
         }
 
-        [HttpPost]
-        [Route("PostRegister")]
-
+        [HttpPost("PostRegister")]
         public async Task<ActionResult<ResultadoBase>> PostRegister([FromBody] ComandoRegister comando)
         {
             Usuario r = new Usuario();
@@ -47,6 +44,5 @@ namespace Web.Api.Softijs.Controllers
             var bytes = Encoding.UTF8.GetBytes(key);
             return new SHA256Managed().ComputeHash(bytes);
         }
-
     }
 }

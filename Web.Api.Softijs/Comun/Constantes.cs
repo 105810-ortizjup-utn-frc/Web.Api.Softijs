@@ -12,5 +12,12 @@
         {
             public const string DefaultUserName = "usuario1";
         }
+
+        public static class DefinicionRoles
+        {
+            public const string AccesoTotal = "Tesorero,Contador,Admin,Vendedor";
+            public const string Pagos = "Tesorero,Contador,Admin";
+            public const string Ventas = "Admin,Vendedor";
+        }
     }
 }

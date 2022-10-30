@@ -1,21 +1,23 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Commands.Ventas;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
+using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Services
 {
     public class ServicioProductos : IServicioProductos
     {
         private readonly SoftijsDevContext context;
+        private readonly ISecurityService _securityService;
 
-        public ServicioProductos(SoftijsDevContext _context)
+        public ServicioProductos(SoftijsDevContext _context, ISecurityService securityService)
         {
             this.context = _context;
+            _securityService = securityService;
         }
 
         public async Task<InformacionProductoDto> GetInformacionProductoDtoById(int id)
@@ -47,7 +49,7 @@ namespace Web.Api.Softijs.Services
             {
 
                 await context.AddAsync(p);
-                await context.SaveChangesAsync(Constantes.DefaultSecurityValues.DefaultUserName); //TODO: replace this with the logged in user.
+                await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
                 resultado.Message = "El producto se guardo exitosamente.";

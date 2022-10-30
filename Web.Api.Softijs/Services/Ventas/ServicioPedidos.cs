@@ -4,16 +4,19 @@ using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
+using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Services.Ventas
 {
     public class ServicioPedidos : IServicioPedidos
     {
         private readonly SoftijsDevContext _softijsDevContext;
+        private readonly ISecurityService _securityService;
 
-        public ServicioPedidos(SoftijsDevContext softijsDevContext)
+        public ServicioPedidos(SoftijsDevContext softijsDevContext, ISecurityService securityService)
         {
             _softijsDevContext = softijsDevContext;
+            _securityService = securityService;
         }
 
         public async Task<List<ComboBoxItemDto>> GetPedidosForComboBox()
@@ -27,7 +30,7 @@ namespace Web.Api.Softijs.Services.Ventas
             {
                 ExecuteCustomValidations(pedido);
                 await _softijsDevContext.AddAsync(pedido);
-                await _softijsDevContext.SaveChangesAsync(Constantes.DefaultSecurityValues.DefaultUserName); //TODO: replace this with the logged in user.
+                await _softijsDevContext.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
             }
             catch (Exception ex)
             {

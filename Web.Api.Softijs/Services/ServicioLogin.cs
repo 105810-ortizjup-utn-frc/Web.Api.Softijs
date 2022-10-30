@@ -24,52 +24,53 @@ namespace Web.Api.Softijs.Services
             return await context.Usuarios.AsNoTracking().ToListAsync();
         }
 
-        public async Task<ActionResult<ResultadoBase>> Login([FromBody] ComandoLogin comando)
+        public async Task<ComandoLogin> Login([FromBody] ComandoLogin comando)
         {
-            var resultado = new ResultadoBase();
+            ComandoLogin emailPass = new ComandoLogin();
+
             try
             {
-
                 byte[] ePass = GetHash(comando.Contrasenia);
                 var activo = await context.Usuarios.FirstOrDefaultAsync(c => c.Activo);
 
-                var emailPass = await context.Usuarios.FirstOrDefaultAsync(c => c.Email == comando.Email && c.HashContrasenia == ePass);
+                emailPass = await context.Usuarios
+                    .Include(x => x.UsuariosRoles)
+                    .ThenInclude(x => x.IdRolNavigation)
+                    .FirstOrDefaultAsync(c => c.Email == comando.Email && c.HashContrasenia == ePass) ??  new ComandoLogin();
 
                 if (emailPass != null)
                 {
                     if (emailPass.Activo && activo != null)
                     {
-                        resultado.Ok = true;
-                        resultado.CodigoEstado = 200;
-                        resultado.Error = "Es activo y valido";
-                        return resultado;
+                        emailPass.Ok = true;
+                        emailPass.CodigoEstado = 200;
+                        emailPass.Error = "Es activo y valido";
+                        return emailPass;
                     }
                     else
                     {
-                        resultado.Ok = false;
-                        resultado.CodigoEstado = 400;
-                        resultado.Error = ("El email no esta activo");
-                        return resultado;
+                        emailPass.Ok = false;
+                        emailPass.CodigoEstado = 400;
+                        emailPass.Error = ("El email no esta activo");
+                        return emailPass;
                     }
                 }
                 else
                 {
-                    resultado.Ok = false;
-                    resultado.CodigoEstado = 400;
-                    resultado.Error = ("El email o contraseña no existe");
-                    return resultado;
+                    emailPass.Ok = false;
+                    emailPass.CodigoEstado = 400;
+                    emailPass.Error = ("El email o contraseña no existe");
+                    return emailPass;
                 }
             }
             catch (Exception ex)
             {
-                resultado.Ok = false;
-                resultado.CodigoEstado = 400;
-                resultado.Error = ex.Message;
-                return resultado;
+                emailPass.Ok = false;
+                emailPass.CodigoEstado = 400;
+                emailPass.Error = ex.Message;
+                return emailPass;
             }
         }
-
-
 
         //[HttpPost("login")]
         //public async Task<IActionResult> LoginUser(ComandoLogin userForLoginDto)

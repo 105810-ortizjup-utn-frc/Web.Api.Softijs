@@ -1,4 +1,6 @@
-﻿namespace Web.Api.Softijs.Results
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Web.Api.Softijs.Results
 {
     public class ResultadoBase
     {

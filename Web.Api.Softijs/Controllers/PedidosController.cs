@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Commands.Ventas;
 using Web.Api.Softijs.Services.Ventas;
 
 namespace Web.Api.Softijs.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PedidosController : Controller

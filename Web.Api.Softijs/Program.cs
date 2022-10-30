@@ -1,13 +1,18 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Services;
 using Web.Api.Softijs.Services.Comunes;
 using Web.Api.Softijs.Services.Pagos;
+using Web.Api.Softijs.Services.Security;
 using Web.Api.Softijs.Services.Ventas;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IServicioProductos, ServicioProductos>();
 builder.Services.AddScoped<IServicioGustos, ServicioGustos>();
 builder.Services.AddScoped<IServicioMarcas, ServicioMarcas>();
@@ -23,7 +28,27 @@ builder.Services.AddScoped<IServicioLogin, ServicioLogin>();
 builder.Services.AddScoped<IServicioRegister, ServicioRegister>();
 builder.Services.AddScoped<IServicioPagos, ServicioPagos>();
 builder.Services.AddScoped<IServicioEstadoOP, ServicioEstado>();
+builder.Services.AddScoped<ISecurityService, SecurityService>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,7 +61,6 @@ builder.Services.AddCors();
 builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options
 .UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
 
-
 var app = builder.Build();
 
 AppContext.SetSwitch("SqlServer.EnableLegacyTimestampBehavior", true);
@@ -47,18 +71,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHsts();
+}
 
+app.UseHttpsRedirection();
+app.UseRouting();
 app.UseCors(c =>
 {
     c.AllowAnyHeader();
     c.AllowAnyMethod();
     c.AllowAnyOrigin();
 });
-
-app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

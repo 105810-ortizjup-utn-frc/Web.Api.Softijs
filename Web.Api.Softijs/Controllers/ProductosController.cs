@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
@@ -7,6 +8,7 @@ using Web.Api.Softijs.Services;
 
 namespace Web.Api.Softijs.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductosController : ControllerBase
@@ -30,17 +32,13 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await servicio.GetProductosForComboBox());
         }
 
-        [HttpGet]
-        [Route("GetProductos")]
-
+        [HttpGet("GetProductos")]
         public async Task<ActionResult> GetProductos()
         {
             return Ok(await this.servicio.GetProductos());
         }
 
-        [HttpPost]
-        [Route("PostProducto")]
-
+        [HttpPost("PostProducto")]
         public async Task<ActionResult<ResultadoBase>> PostProducto([FromBody] ComandoProducto comando)
         {
             Producto p = new Producto();
