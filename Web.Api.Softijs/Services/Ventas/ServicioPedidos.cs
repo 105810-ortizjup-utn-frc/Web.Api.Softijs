@@ -2,6 +2,7 @@
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services.Security;
@@ -75,5 +76,40 @@ namespace Web.Api.Softijs.Services.Ventas
             if (!_softijsDevContext.EstadosPedidos.AsNoTracking().Any(x => x.IdEstadoPedido == pedido.IdEstadoPedido))
                 throw new Exception("El estado de pedido que selecciono no existe en la base de datos.");
         }
+
+        public async Task<List<DTOPedidos>> GetPedidos()
+        {
+            var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
+                    
+                         join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
+                         join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
+                         select new DTOPedidos { 
+                             NroPedido = prd.NroPedido,
+                             Cliente = $"{cl.Nombre} {cl.Apellido}",
+                             Vendedor = $"{vd.Nombre} {vd.Apellido}",
+                             Total = prd.DetallesPedidos.Sum(x=>x.Monto*x.Cantidad),
+                             Fecha = prd.Fecha
+                         });
+            return await query.ToListAsync();          
+        }
+
+        async Task<List<DTODetallePedido>> IServicioPedidos.GetDetallePedidos(int id)
+        {
+           var detalles = await _softijsDevContext.DetallesPedidos.Where(c=>c.NroPedido.Equals(id)).ToListAsync();
+            List<DTODetallePedido> listaDTO = new List<DTODetallePedido>();
+            foreach (var item in detalles)
+            {
+                var producto = await _softijsDevContext.Productos.Where(c => c.NroProducto.Equals(item.NroProducto)).FirstOrDefaultAsync();
+                DTODetallePedido detalle = new DTODetallePedido();
+                detalle.nroDetalle = item.NroDetallePedido;
+                detalle.Producto = producto.Nombre;
+                detalle.Cantidad = item.Cantidad;
+                detalle.Monto = item.Monto;
+                listaDTO.Add(detalle);
+            }
+            return listaDTO;
+        }
+
+
     }
 }

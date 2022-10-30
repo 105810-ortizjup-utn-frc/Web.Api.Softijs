@@ -28,6 +28,8 @@ builder.Services.AddScoped<IServicioLogin, ServicioLogin>();
 builder.Services.AddScoped<IServicioRegister, ServicioRegister>();
 builder.Services.AddScoped<IServicioPagos, ServicioPagos>();
 builder.Services.AddScoped<IServicioEstadoOP, ServicioEstado>();
+builder.Services.AddScoped<IServicioTipoFidelizacion, ServicioTipoFidelizacion>();
+builder.Services.AddScoped<IServicioBarrios, ServicioBarrios>();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
 
 builder.Services.AddAuthentication(options =>
