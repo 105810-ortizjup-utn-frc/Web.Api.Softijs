@@ -15,5 +15,12 @@ namespace Web.Api.Softijs.Services.Security
         {
             return _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value ?? null;
         }
+
+        public bool CheckUserHasroles(string[] roles)
+        {
+            var userRoles = (_httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty).Split(",").ToList();
+
+            return userRoles.Any() && userRoles.Any(x => roles.Contains(x));
+        }
     }
 }

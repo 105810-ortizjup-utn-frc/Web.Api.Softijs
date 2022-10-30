@@ -6,6 +6,7 @@ using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services;
+using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Controllers
 {
@@ -15,10 +16,12 @@ namespace Web.Api.Softijs.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IServicioProductos servicio;
+        private readonly ISecurityService _securityService;
 
-        public ProductosController(IServicioProductos _servicio, SoftijsDevContext _context)
+        public ProductosController(IServicioProductos _servicio, SoftijsDevContext _contextm, ISecurityService securityService)
         {
             this.servicio = _servicio;
+            _securityService = securityService;
         }
 
         [HttpGet("getPrecioProductoByProductoId/{id}")]
@@ -61,8 +64,7 @@ namespace Web.Api.Softijs.Controllers
         }
 
 
-        [HttpPut]
-        [Route("PutProducto")]
+        [HttpPut("PutProducto")]
 
         public async Task<ActionResult<ResultadoBase>> PutProducto([FromBody] DTOProducto comando)
         {
@@ -88,7 +90,10 @@ namespace Web.Api.Softijs.Controllers
         [Route("DeleteProducto/{id}")]
 
         public async Task<ActionResult<ResultadoBase>> DeleteProducto(int id)
-        { 
+        {
+            if (!_securityService.CheckUserHasroles(new string[] { "Admin" }))
+                return StatusCode(StatusCodes.Status403Forbidden, "No tiene los permisos para ejecutar esta acción.");
+
             return Ok(await this.servicio.DeleteProducto(id));
         }
 

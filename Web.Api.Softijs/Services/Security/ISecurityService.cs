@@ -3,5 +3,6 @@
     public interface ISecurityService
     {
         string? GetUserName();
+        bool CheckUserHasroles(string[] roles);
     }
 }

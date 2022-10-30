@@ -116,7 +116,7 @@ namespace Web.Api.Softijs.Services
             return resultado;
         }
 
-        async Task<DTOProducto> IServicioProductos.GetProductoById(int id)
+        public async Task<DTOProducto> GetProductoById(int id)
         {
             try
             {

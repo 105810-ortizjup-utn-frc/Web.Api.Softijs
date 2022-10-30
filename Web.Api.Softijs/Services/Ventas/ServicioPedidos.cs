@@ -93,7 +93,7 @@ namespace Web.Api.Softijs.Services.Ventas
             return await query.ToListAsync();          
         }
 
-        async Task<List<DTODetallePedido>> IServicioPedidos.GetDetallePedidos(int id)
+        public async Task<List<DTODetallePedido>> GetDetallePedidos(int id)
         {
            var detalles = await _softijsDevContext.DetallesPedidos.Where(c=>c.NroPedido.Equals(id)).ToListAsync();
             List<DTODetallePedido> listaDTO = new List<DTODetallePedido>();
