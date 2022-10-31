@@ -5,7 +5,7 @@ using Web.Api.Softijs.Results;
 
 namespace Web.Api.Softijs.Commands
 {
-    public class ComandoLogin : ResultadoBase
+    public class ComandoLogin
     {
         public int IdUsuario { get; set; }
         #region Command
@@ -22,7 +22,13 @@ namespace Web.Api.Softijs.Commands
         public string Apellido { get; set; }
         public string[] Roles { get; set; } 
         public string Token { get; set; }
+        #endregion
 
+        #region Resultado Base
+        public string Message { set; get; } = null!;
+        public bool Ok { set; get; }
+        public string Error { get; set; }
+        public int CodigoEstado { set; get; }
         #endregion
 
         public static implicit operator ComandoLogin(Usuario user)
