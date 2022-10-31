@@ -27,7 +27,10 @@ namespace Web.Api.Softijs.Services.Pagos
                              Tipo = tipo.Descripcion,
                              Estado = estado.Descripcion,
                              Fecha = prd.FechaVencimiento,
-                             CreadoPor = prd.CreadoPor
+                             CreadoPor = prd.CreadoPor,
+                             FechaCreacion = prd.FechaCreacion,
+                             Total = prd.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
+
                          });
             return await query.ToListAsync();
         }
