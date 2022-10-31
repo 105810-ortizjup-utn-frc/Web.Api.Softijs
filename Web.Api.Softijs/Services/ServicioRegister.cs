@@ -104,6 +104,7 @@ namespace Web.Api.Softijs.Services
                 {
                     usuario.Email = u.Email;
                     usuario.Nombre = u.Nombre;
+                    usuario.Apellido = u.Apellido;
                     usuario.HashContrasenia = u.HashContrasenia;
                     context.Update(usuario);
                     await context.SaveChangesAsync();

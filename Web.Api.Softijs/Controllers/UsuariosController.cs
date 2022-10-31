@@ -6,7 +6,7 @@ using Web.Api.Softijs.Services.Comunes;
 
 namespace Web.Api.Softijs.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuariosController : Controller
