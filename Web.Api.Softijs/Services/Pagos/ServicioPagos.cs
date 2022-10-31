@@ -15,9 +15,21 @@ namespace Web.Api.Softijs.Services.Pagos
             this.context = _context;
         }
 
-        public async Task<List<OrdenesPago>> GetOrdenP()
+        public async Task<List<DTOordenP>> GetOrdenP()
         {
-            return await context.OrdenesPagos.AsNoTracking().ToListAsync();
+            var query = (from prd in context.OrdenesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
+
+                         join tipo in context.TiposOrdenesPagos.AsNoTracking() on prd.IdTipoOrdenPago equals tipo.IdTipoOrdenPago
+                         join estado in context.EstadosOrdenesPagos.AsNoTracking() on prd.IdEstadoOrdenPago equals estado.IdEstadoOrdenPago
+                         select new DTOordenP
+                         {
+                             NroOrden = prd.IdOrdenPago,
+                             Tipo = tipo.Descripcion,
+                             Estado = estado.Descripcion,
+                             Fecha = prd.FechaVencimiento,
+                             CreadoPor = prd.CreadoPor
+                         });
+            return await query.ToListAsync();
         }
 
         public async Task<List<DTOPagosPendientes>> GetPagosPendientes()
@@ -36,20 +48,7 @@ namespace Web.Api.Softijs.Services.Pagos
                          }); ;
             return await query.ToListAsync();           
                           
-            /**
-               var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
-                    
-                         join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
-                         join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
-                         select new DTOPedidos { 
-                             NroPedido = prd.NroPedido,
-                             Cliente = $"{cl.Nombre} {cl.Apellido}",
-                             Vendedor = $"{vd.Nombre} {vd.Apellido}",
-                             Total = prd.DetallesPedidos.Sum(x=>x.Monto*x.Cantidad),
-                             Fecha = prd.Fecha
-                         });
-            return await query.ToListAsync();      
-             **/
+          
         }
     }
 }
