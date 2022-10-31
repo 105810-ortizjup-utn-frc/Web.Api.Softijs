@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
 	<PreserveCompilationContext>true</PreserveCompilationContext>
+	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Comun\PDF\Templates\Factura.cshtml" />

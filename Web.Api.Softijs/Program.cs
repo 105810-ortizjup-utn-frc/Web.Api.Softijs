@@ -23,7 +23,7 @@ if (Environment.Is64BitProcess && IntPtr.Size == 8)
     processSufix = "64bit";
 }
 var context = new CustomAssemblyLoadContext();
-context.LoadUnmanagedLibrary($"{Directory.GetCurrentDirectory()}\\Comun\\PDF\\PDFNative\\{processSufix}\\libwkhtmltox");
+context.LoadUnmanagedLibrary($"{Directory.GetCurrentDirectory()}\\Comun\\PDF\\PDFNative\\{processSufix}\\libwkhtmltox.dll");
 
 builder.Services.AddScoped<IRazorLightEngine>(sp =>
 {
