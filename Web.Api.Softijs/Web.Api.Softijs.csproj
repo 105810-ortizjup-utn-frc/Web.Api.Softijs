@@ -4,8 +4,48 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
+	<PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Comun\PDF\Templates\Factura.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Comun\PDF\Assets\logo2.jpg" />
+    <None Remove="Comun\PDF\PDFNative\32bit\libwkhtmltox.dll" />
+    <None Remove="Comun\PDF\PDFNative\32bit\libwkhtmltox.dylib" />
+    <None Remove="Comun\PDF\PDFNative\32bit\libwkhtmltox.so" />
+    <None Remove="Comun\PDF\PDFNative\64bit\libwkhtmltox.dll" />
+    <None Remove="Comun\PDF\PDFNative\64bit\libwkhtmltox.dylib" />
+    <None Remove="Comun\PDF\PDFNative\64bit\libwkhtmltox.so" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Comun\PDF\Assets\logo2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\PDFNative\32bit\libwkhtmltox.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\PDFNative\32bit\libwkhtmltox.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\PDFNative\32bit\libwkhtmltox.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\PDFNative\64bit\libwkhtmltox.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\PDFNative\64bit\libwkhtmltox.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\PDFNative\64bit\libwkhtmltox.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="Comun\PDF\Templates\Factura.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.10" />
@@ -23,6 +63,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.0" />
+    <PackageReference Include="RazorLight" Version="2.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
   </ItemGroup>

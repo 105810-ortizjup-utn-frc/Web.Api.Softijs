@@ -8,7 +8,7 @@ namespace Web.Api.Softijs.Commands.Ventas
         public int Nro_Pedido { get; set; }
         public int Cantidad { get; set; }
         public int IdProducto { get; set; }
-        public decimal Monto { get; set; }
+        public decimal PrecioUnitario { get; set; }
 
 
         public static implicit operator DetallesPedido(DetallePedidoDto? detallePedidoDto)
@@ -22,7 +22,7 @@ namespace Web.Api.Softijs.Commands.Ventas
                 NroPedido = detallePedidoDto.Nro_Pedido,
                 NroProducto = detallePedidoDto.IdProducto,
                 Cantidad = detallePedidoDto.Cantidad,
-                Monto = detallePedidoDto.Monto
+                PrecioUnitario = detallePedidoDto.PrecioUnitario
             };
         }
 
@@ -37,7 +37,7 @@ namespace Web.Api.Softijs.Commands.Ventas
                 Nro_Pedido = entity.NroPedido,
                 IdProducto = entity.NroProducto,
                 Cantidad = entity.Cantidad,
-                Monto = entity.Monto
+                PrecioUnitario = entity.PrecioUnitario
             };
         }
     }

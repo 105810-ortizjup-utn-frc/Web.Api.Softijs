@@ -2,6 +2,6 @@
 {
     public interface IServicioFacturas
     {
-        byte[] CreateFactura(int nroPedido);
+        Task<byte[]> CrearFactura(int nroPedido);
     }
 }

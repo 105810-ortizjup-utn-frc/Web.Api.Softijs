@@ -8,5 +8,6 @@ namespace Web.Api.Softijs.Results
         public bool Ok { set; get; }
         public string Error { get; set; }
         public int CodigoEstado { set; get; }
+        public dynamic Resultado { get; set; }
     }
 }

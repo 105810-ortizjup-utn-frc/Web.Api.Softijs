@@ -38,7 +38,40 @@ namespace Web.Api.Softijs.Services.Ventas
                 return await Task.FromResult(new ResultadoBase { CodigoEstado = 500, Message = ex.Message, Ok = false });
             }
 
-            return await Task.FromResult(new ResultadoBase { CodigoEstado = 200, Message = Constantes.DefaultMessages.DefaultSuccesMessage.ToString(), Ok = true });
+            return await Task.FromResult(new ResultadoBase { CodigoEstado = 200, Message = Constantes.DefaultMessages.DefaultSuccesMessage.ToString(), Ok = true, Resultado = pedido.NroPedido });
+        }
+
+        public async Task<List<DTOPedidos>> GetPedidos()
+        {
+            var query = (from prd in _softijsDevContext.Pedidos.Include(x => x.DetallesPedidos).AsNoTracking()
+                         join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
+                         join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
+                         select new DTOPedidos
+                         {
+                             NroPedido = prd.NroPedido,
+                             Cliente = $"{cl.Nombre} {cl.Apellido}",
+                             Vendedor = $"{vd.Nombre} {vd.Apellido}",
+                             Total = prd.DetallesPedidos.Sum(x => x.PrecioUnitario * x.Cantidad),
+                             Fecha = prd.Fecha
+                         });
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<DTODetallePedido>> GetDetallePedidos(int id)
+        {
+            var detalles = await _softijsDevContext.DetallesPedidos.Where(c => c.NroPedido.Equals(id)).ToListAsync();
+            List<DTODetallePedido> listaDTO = new List<DTODetallePedido>();
+            foreach (var item in detalles)
+            {
+                var producto = await _softijsDevContext.Productos.Where(c => c.NroProducto.Equals(item.NroProducto)).FirstOrDefaultAsync();
+                DTODetallePedido detalle = new DTODetallePedido();
+                detalle.nroDetalle = item.NroDetallePedido;
+                detalle.Producto = producto.Nombre;
+                detalle.Cantidad = item.Cantidad;
+                detalle.Monto = item.PrecioUnitario;
+                listaDTO.Add(detalle);
+            }
+            return listaDTO;
         }
 
         private void ExecuteCustomValidations(Pedido pedido)
@@ -58,7 +91,7 @@ namespace Web.Api.Softijs.Services.Ventas
             if (pedido.DetallesPedidos.Any(x => x.Cantidad == 0))
                 throw new Exception("Todos los productos deben tener al menos una cantidad mayor o igual a 1.");
 
-            if (pedido.DetallesPedidos.Any(x => x.Monto == 0))
+            if (pedido.DetallesPedidos.Any(x => x.PrecioUnitario == 0))
                 throw new Exception("El costo total del pedido no puede ser de $0.00.");
 
             if (!pedido.PedidosFormasPagos.Any())
@@ -76,40 +109,5 @@ namespace Web.Api.Softijs.Services.Ventas
             if (!_softijsDevContext.EstadosPedidos.AsNoTracking().Any(x => x.IdEstadoPedido == pedido.IdEstadoPedido))
                 throw new Exception("El estado de pedido que selecciono no existe en la base de datos.");
         }
-
-        public async Task<List<DTOPedidos>> GetPedidos()
-        {
-            var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
-                    
-                         join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
-                         join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
-                         select new DTOPedidos { 
-                             NroPedido = prd.NroPedido,
-                             Cliente = $"{cl.Nombre} {cl.Apellido}",
-                             Vendedor = $"{vd.Nombre} {vd.Apellido}",
-                             Total = prd.DetallesPedidos.Sum(x=>x.Monto*x.Cantidad),
-                             Fecha = prd.Fecha
-                         });
-            return await query.ToListAsync();          
-        }
-
-        public async Task<List<DTODetallePedido>> GetDetallePedidos(int id)
-        {
-           var detalles = await _softijsDevContext.DetallesPedidos.Where(c=>c.NroPedido.Equals(id)).ToListAsync();
-            List<DTODetallePedido> listaDTO = new List<DTODetallePedido>();
-            foreach (var item in detalles)
-            {
-                var producto = await _softijsDevContext.Productos.Where(c => c.NroProducto.Equals(item.NroProducto)).FirstOrDefaultAsync();
-                DTODetallePedido detalle = new DTODetallePedido();
-                detalle.nroDetalle = item.NroDetallePedido;
-                detalle.Producto = producto.Nombre;
-                detalle.Cantidad = item.Cantidad;
-                detalle.Monto = item.Monto;
-                listaDTO.Add(detalle);
-            }
-            return listaDTO;
-        }
-
-
     }
 }

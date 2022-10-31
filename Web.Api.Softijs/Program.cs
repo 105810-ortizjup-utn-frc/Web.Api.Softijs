@@ -1,7 +1,12 @@
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RazorLight;
+using System.Reflection;
 using System.Text;
+using Web.Api.Softijs.Comun.PDF;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Services;
 using Web.Api.Softijs.Services.Comunes;
@@ -12,6 +17,23 @@ using Web.Api.Softijs.Services.Ventas;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var processSufix = "32bit";
+if (Environment.Is64BitProcess && IntPtr.Size == 8)
+{
+    processSufix = "64bit";
+}
+var context = new CustomAssemblyLoadContext();
+context.LoadUnmanagedLibrary($"{Directory.GetCurrentDirectory()}\\Comun\\PDF\\PDFNative\\{processSufix}\\libwkhtmltox.dll");
+
+builder.Services.AddScoped<IRazorLightEngine>(sp =>
+{
+    var engine = new RazorLightEngineBuilder()
+        .UseFileSystemProject(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))
+        .UseMemoryCachingProvider()
+        .Build();
+    return engine;
+});
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IServicioProductos, ServicioProductos>();
 builder.Services.AddScoped<IServicioGustos, ServicioGustos>();
@@ -31,6 +53,8 @@ builder.Services.AddScoped<IServicioEstadoOP, ServicioEstado>();
 builder.Services.AddScoped<IServicioTipoFidelizacion, ServicioTipoFidelizacion>();
 builder.Services.AddScoped<IServicioBarrios, ServicioBarrios>();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
+builder.Services.AddScoped<IServicioFacturas, ServicioFacturas>();
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 builder.Services.AddAuthentication(options =>
 {
