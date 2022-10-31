@@ -1,0 +1,184 @@
+﻿@using Web.Api.Softijs.Comun.PDF.Models;
+@model FacturaModel;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Factura Softijs</title>
+	<link href="" rel="stylesheet" />
+	<style>
+		body,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		th{
+			text-align: center;
+		}
+		
+		td{
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div style="width: 100%; margin: auto;">
+		<div style="display: table; table-layout: fixed; width: 100%;">
+			<div style="display: table-row;">
+				<div style="display: table-cell; vertical-align: middle; justify-content: center; text-align: center;">
+					<h1>FACTURA X</h1>
+				</div>
+			</div>
+		</div>
+		<div style="display: table; table-layout: fixed; width: 100%">
+			<div style="display: table-row;">
+				<div style="display: table-cell; vertical-align: middle; justify-content: center;">
+					<img style="width: 50%; height: 15%; margin-left: 78px;" alt="" src="@Model.ImagePath">
+				</div>
+				<div style="display: table-cell; vertical-align: middle; justify-content: center;">
+					<div>
+						<h4>NRO FACTURA: <strong>@Model.NumeroFactura</strong></h4>
+						<h5>FECHA EMISIÓN: <strong>@Model.FechaEmision</strong></h5>
+						<h5>CUIT: <strong>@Model.CuitEmpresa</strong></h5>
+					</div>
+				</div>
+				<div style="display: table-cell; vertical-align: middle; justify-content: center;">
+					<div>
+						<h5>DIRECCIÓN: <strong>@Model.Direccion</strong></h5>
+						<h5>REGIMEN FISCAL: <strong>RESPONSABLE INSCRIPTO</strong></h5>
+						<h5>CONTACTO: <strong>SOFTIJS@CONTACTO.COM</strong></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div style="display: table; table-layout: fixed; width: 100%;">
+			<div style="display: table-row;">
+				<div style="display: table-cell; vertical-align: middle; justify-content: center; text-align: center; width: 100%;">
+					<h4>Datos Comprador</h4>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<div style="margin-top: 10px;">
+						<span><strong>Dirección Comprador: @Model.DireccionComprador</strong></span>
+					</div>
+					<div style="display: table-cell;">
+						<div style="margin-top: 10px;">
+							<span><strong>Régimen Fiscal: CONSUMIDOR FINAL IVA 21%</strong></span>
+						</div>
+						<div style="display: table-cell;">
+							<div style="margin-top: 10px; margin-bottom: 10px;">
+								<span><strong>CUIL/CUIT: @Model.CuilComprador</strong></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div style="display: table; width: 100%;">
+			<div style="display: table-row; width: 100%;">
+				<table style="width: 100%;">
+					<thead style="background-color: silver;">
+						<tr>
+							<th style="text-align: center;">
+								<h4>Producto</h4>
+							</th>
+							<th style="text-align: center;">
+								<h4>Cantidad</h4>
+							</th>
+							<th style="text-align: center;">
+								<h4>Precio unitario</h4>
+							</th>
+							<th style="text-align: center;">
+								<h4>Sub Total</h4>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (int i = 0; i < Model.PedidoFormaPagoProductos.Count; i++)
+						{
+							<tr>
+								<td><a href="#"> @Model.PedidoFormaPagoProductos[i].NombreProducto</a></td>
+								<td class="text-right">@Model.PedidoFormaPagoProductos[i].Cantidad</td>
+								<td class="text-right">@(Model.PedidoFormaPagoProductos[i].PrecioUnitario.ToString("C2"))</td>
+								<td class="text-right">@(Model.PedidoFormaPagoProductos[i].SubTotal.ToString("C2"))</td>
+							</tr>
+						}
+						<tr>
+							<td><a href="#"></a></td>
+							<td class="text-right"></td>
+							<td class="text-right"></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td><a href="#">&nbsp;</a></td>
+							<td class="text-right">&nbsp;</td>
+							<td class="text-right ">&nbsp;</td>
+						</tr>
+						<tr>
+							<td colspan="4" style="text-align: right; font-weight: bolder;">IVA 21%: @Model.MontoDelIva.ToString("C2")</td>
+						</tr>
+						<tr>
+							<td colspan="4" style="text-align: right; font-weight: bolder;">Total Venta: @Model.MontoTotalFactura.ToString("C2")</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: right; font-weight: bolder;">Motodo/s De Pago: @Model.MetodoPago</td>
+							<td colspan="2" style="text-align: right; font-weight: bolder;">Costo Expresado En Pesos Argentinos</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<hr />
+		<div style="display: table; width: 100%;">
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<div style="text-align: start;">
+						<h6>VENDEDOR: @Model.Vendedor</h6>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<div style="text-align: start;">
+						<h6>CAE: 72283921209512</h6>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<div style="text-align: start;">
+						<h6>PROXIMÓ VENCIMIENTO CAE: @Model.VtoCae</h6>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<div style="text-align: start;">
+						<h6>
+							"LA ALTERACI&Oacute;N, FALSIFICACI&Oacute;N O COMERCIALIZACI&Oacute;N ILEGAL DE ESTE
+							DOCUMENTO
+							ESTÁ PENADO POR LA LEY"
+						</h6>
+					</div>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<div style="text-align: start;">
+						<h6>"NO VALIDO COMO COMPROBANTE FISCAL"</h6>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

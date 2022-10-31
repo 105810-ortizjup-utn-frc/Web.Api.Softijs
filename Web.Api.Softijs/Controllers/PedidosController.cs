@@ -11,10 +11,12 @@ namespace Web.Api.Softijs.Controllers
     public class PedidosController : Controller
     {
         private readonly IServicioPedidos _servicioPedidos;
+        private readonly IServicioFacturas _servicioFacturas;
 
-        public PedidosController(IServicioPedidos servicioPedidos)
+        public PedidosController(IServicioPedidos servicioPedidos, IServicioFacturas servicioFacturas)
         {
             _servicioPedidos = servicioPedidos;
+            _servicioFacturas = servicioFacturas;
         }
 
         [HttpGet("getPedidosForComboBox")]
@@ -44,6 +46,13 @@ namespace Web.Api.Softijs.Controllers
         public async Task<IActionResult> GetPedidos(int id)
         {
             return Ok(await _servicioPedidos.GetDetallePedidos(id));
+        }
+
+        [HttpGet("imprimirFactura/{nroPedido}")]
+        public async Task<IActionResult> ImprimirFactura(int nroPedido)
+        {
+            var file = await _servicioFacturas.CrearFactura(nroPedido);
+            return File(file, "application/pdf");
         }
     }
 }

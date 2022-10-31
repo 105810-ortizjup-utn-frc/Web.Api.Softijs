@@ -409,7 +409,7 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false)
                     .HasColumnName("Modificado_Por");
 
-                entity.Property(e => e.Monto).HasColumnType("decimal(8, 2)");
+                entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(8, 2)");
 
                 entity.Property(e => e.NroPedido).HasColumnName("Nro_Pedido");
 

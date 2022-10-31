@@ -7,7 +7,7 @@ namespace Web.Api.Softijs.Models
         public int NroDetallePedido { get; set; }
         public int NroProducto { get; set; }
         public int NroPedido { get; set; }
-        public decimal Monto { get; set; }
+        public decimal PrecioUnitario { get; set; }
         public int Cantidad { get; set; }
         public DateTime FechaCreacion { get; set; }
         public string ModificadoPor { get; set; } = null!;
