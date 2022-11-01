@@ -1396,48 +1396,43 @@ namespace Web.Api.Softijs.DataContext
             OnModelCreatingPartial(modelBuilder);
         }
 
-        public virtual int SaveChanges(string userName)
+        public virtual int SaveChanges(string usuario)
         {
-            this.ApplyAuditForModifiedEntries(userName);
+            this.AplicarAutidoria(usuario);
             return base.SaveChanges();
         }
 
-        public async Task<int> SaveChangesAsync(string userName)
+        public async Task<int> SaveChangesAsync(string usuario)
         {
-            this.ApplyAuditForModifiedEntries(userName);
+            this.AplicarAutidoria(usuario);
             return await base.SaveChangesAsync();
         }
 
-        private void ApplyAuditForModifiedEntries(string userName = null, bool systemChanges = false)
+        private void AplicarAutidoria(string usuario = null, bool systemChanges = false)
         {
             this.ChangeTracker?
                 .Entries<IAuditable>()
                 .ToList()
-                .ForEach(e => this.ApplyAudit(e.Entity, e.State, userName, systemChanges));
+                .ForEach(e => this.Aplicar(e.Entity, e.State, usuario, systemChanges));
         }
 
-        private void ApplyAudit(IAuditable entity, EntityState state, string userName, bool systemChanges = false)
+        private void Aplicar(IAuditable entity, EntityState estado, string usuario, bool systemChanges = false)
         {
             var date = DateTime.Now;
 
-            var currentUser = userName;
-
-            if (state == EntityState.Added)
+            if (estado == EntityState.Added)
             {
-                // new horsemen
-                entity.CreadoPor = currentUser;
+                entity.CreadoPor = usuario;
                 entity.FechaCreacion = date;
 
-                // new horsemen
-                entity.ModificadoPor = currentUser;
+                entity.ModificadoPor = usuario;
                 entity.FechaModificacion = date;
                 return;
             }
 
-            if (state == EntityState.Modified)
+            if (estado == EntityState.Modified)
             {
-                // new horsemen
-                entity.ModificadoPor = currentUser;
+                entity.ModificadoPor = usuario;
                 entity.FechaModificacion = date;
                 return;
             }
