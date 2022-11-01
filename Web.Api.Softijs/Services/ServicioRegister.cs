@@ -97,7 +97,7 @@ namespace Web.Api.Softijs.Services
          async Task<ResultadoBase> IServicioRegister.PutUsuario(Usuario u)
         {
             ResultadoBase resultado = new ResultadoBase();
-            var usuario = await context.Usuarios.Where(c=>c.Legajo.Equals(u.Legajo)).FirstOrDefaultAsync();
+            var usuario = await context.Usuarios.Where(c => c.Legajo.Equals(u.Legajo)).FirstOrDefaultAsync();
             try
             {
                 if (usuario != null)
@@ -107,7 +107,7 @@ namespace Web.Api.Softijs.Services
                     usuario.Apellido = u.Apellido;
                     usuario.HashContrasenia = u.HashContrasenia;
                     context.Update(usuario);
-                    await context.SaveChangesAsync();
+                    await context.SaveChangesAsync(this._securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                     resultado.Ok = false;
                     resultado.CodigoEstado = 200;
                     resultado.Error = "Usuario actualizado";
@@ -125,8 +125,6 @@ namespace Web.Api.Softijs.Services
 
                 throw;
             }
-           
-            
         }
     }
 }
