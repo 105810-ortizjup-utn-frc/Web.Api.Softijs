@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.Models;
@@ -91,6 +92,41 @@ namespace Web.Api.Softijs.Services
         private bool validarExpresion(string email)
         {
             return email != null && Regex.IsMatch(email, "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@(([a-zA-Z]+[\\w-]+\\.){1,2}[a-zA-Z]{2,4})$");
+        }
+
+         async Task<ResultadoBase> IServicioRegister.PutUsuario(Usuario u)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            var usuario = await context.Usuarios.Where(c=>c.Legajo.Equals(u.Legajo)).FirstOrDefaultAsync();
+            try
+            {
+                if (usuario != null)
+                {
+                    usuario.Email = u.Email;
+                    usuario.Nombre = u.Nombre;
+                    usuario.Apellido = u.Apellido;
+                    usuario.HashContrasenia = u.HashContrasenia;
+                    context.Update(usuario);
+                    await context.SaveChangesAsync();
+                    resultado.Ok = false;
+                    resultado.CodigoEstado = 200;
+                    resultado.Error = "Usuario actualizado";
+                    return resultado;
+                }
+
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Error = "Error al actualizar un usuario";
+                return resultado;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+            
         }
     }
 }
