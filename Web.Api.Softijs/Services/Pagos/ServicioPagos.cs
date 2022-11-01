@@ -34,8 +34,8 @@ namespace Web.Api.Softijs.Services.Pagos
                              FechaCreacion = p.FechaCreacion,
                              Monto = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
                          }); ;
-            return await query.ToListAsync();           
-                          
+            return await query.ToListAsync();
+
             /**
                var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
                     
@@ -50,6 +50,30 @@ namespace Web.Api.Softijs.Services.Pagos
                          });
             return await query.ToListAsync();      
              **/
+        }
+
+        public async Task<List<DTOComprobanteDePago>> GetComprobantePago()
+        {
+            var query = (from p in context.ComprobantesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
+
+                         select new DTOComprobanteDePago
+                         {
+                             NroOrdenPago = p.NroComprobante,
+                             FechaCarga = p.FechaCreacion,
+                             ModificadoPor = p.ModificadoPor,
+                             FechaModificacion = p.FechaModificacion,
+                             CreadoPor = p.CreadoPor,
+                             FechaCreacion = p.FechaCreacion,
+                             MontoAbonado = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
+                             ConceptoAbonado = p.Descripcion
+                             
+                             //MontoAbonado = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
+                             //ConceptoAbonado = p.DetallesOrdenesPagos.
+                         });
+
+
+            return await query.ToListAsync();
+
         }
     }
 }

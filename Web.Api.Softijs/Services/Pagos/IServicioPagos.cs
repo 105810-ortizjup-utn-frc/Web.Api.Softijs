@@ -9,6 +9,7 @@ namespace Web.Api.Softijs.Services.Pagos
         Task<List<OrdenesPago>> GetOrdenP();
 
         Task<List<DTOPagosPendientes>> GetPagosPendientes();
+        Task<List<DTOComprobanteDePago>> GetComprobantePago();
 
     }
 }

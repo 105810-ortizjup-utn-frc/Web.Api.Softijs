@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Comun;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Services.Pagos;
 
 namespace Web.Api.Softijs.Controllers
@@ -33,5 +34,11 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetPagosPendientes());
         }
 
+        [HttpGet]
+        [Route("GetComprobanteDePago")]
+        public async Task<ActionResult> GetComprobantePago()
+        {
+            return Ok(await this.servicio.GetComprobantePago());
+        }
     }
 }
