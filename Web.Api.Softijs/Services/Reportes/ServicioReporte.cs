@@ -20,7 +20,7 @@ namespace Web.Api.Softijs.Services.Reportes
        async Task<List<DTORendimientoVendedor>> IServicioReportes.GetRedimientoVendedor(int id)
         {
 
-            var query = _context.Pedidos.Include(x => x.IdUsuarioNavigation).GroupBy(x => new { x.Fecha, x.IdUsuarioNavigation.Nombre }).
+            var query = _context.Pedidos.Where(c=>c.IdUsuario.Equals(id)).Include(x => x.IdUsuarioNavigation).GroupBy(x => new { x.Fecha, x.IdUsuarioNavigation.Nombre }).
                 Select(x => new DTORendimientoVendedor
                 {
                     fecha = x.Key.Fecha,
