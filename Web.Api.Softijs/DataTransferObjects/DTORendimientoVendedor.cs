@@ -9,6 +9,6 @@ namespace Web.Api.Softijs.DataTransferObjects
     {
         public string nombre { set; get; }
         public int cantidadVentas { set; get; }
-        public DateTime fecha { set; get; }
+        public string fecha { set; get; }
     }
 }

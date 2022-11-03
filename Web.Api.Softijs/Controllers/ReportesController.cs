@@ -7,6 +7,9 @@ using Web.Api.Softijs.Services;
 
 namespace Web.Api.Softijs.Controllers
 {
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class ReportesController : Controller
     {
         private readonly IServicioReportes servicio;
