@@ -81,7 +81,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              CreadoPor = p.IdComprobantePagoNavigation.CreadoPor,
                              FechaCreacion = p.IdComprobantePagoNavigation.FechaCreacion,
                              MontoAbonado = p.IdOrdenPagoNavigation.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
-                             ConceptoAbonado = p.IdComprobantePagoNavigation.Descripcion
+                             ConceptoAbonado = p.Descripcion
 
                          }) ;
 
