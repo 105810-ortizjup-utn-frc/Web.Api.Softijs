@@ -3,6 +3,7 @@ using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services.Security;
@@ -25,9 +26,34 @@ namespace Web.Api.Softijs.Services.Comunes
             return await _context.Clientes.AsNoTracking().Where(x => x.Activado).Select<Cliente, ComboBoxItemDto>(x => x).ToListAsync();
         }
 
-        public async Task<List<Cliente>> GetClientes()
+        public async Task<List<DTOCliente>> GetClientes()
         {
-            return await _context.Clientes.AsNoTracking().ToListAsync();
+            var query = (from cl in _context.Clientes.Where(c=>c.Activado.Equals(true)).AsNoTracking()
+                         join ic in _context.InformacionesContactos.AsNoTracking() on cl.IdInformacionContacto equals ic.IdInformacionContacto
+                         select new DTOCliente
+                         {
+                             idCliente = cl.IdCliente,
+                             nombre = cl.Nombre,
+                             apellido = cl.Apellido,
+                             calle = cl.Calle,
+                             celular = ic.Celular,
+                             numero = cl.Numero,
+                             email = ic.Email,
+                             dni = cl.Dni  
+                         }
+                         );
+            //var query = (from prd in _softijsDevContext.Pedidos.Include(x => x.DetallesPedidos).AsNoTracking()
+            //             join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
+            //             join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
+            //             select new DTOPedidos
+            //             {
+            //                 NroPedido = prd.NroPedido,
+            //                 Cliente = $"{cl.Nombre} {cl.Apellido}",
+            //                 Vendedor = $"{vd.Nombre} {vd.Apellido}",
+            //                 Total = prd.DetallesPedidos.Sum(x => x.PrecioUnitario * x.Cantidad),
+            //                 Fecha = prd.Fecha
+            //             });
+            return await query.ToListAsync();
         }
 
         public async Task<List<InformacionesContacto>> GetInfoContacto()
@@ -121,7 +147,7 @@ namespace Web.Api.Softijs.Services.Comunes
                 resultado.Message = "El cliente se desactivo exitosamente.";
                 cliente.Activado = false;
                 _context.Update(cliente);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
             }
             else
             {
