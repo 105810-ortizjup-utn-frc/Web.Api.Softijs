@@ -51,8 +51,6 @@ namespace Web.Api.Softijs.Services.Pagos
                          }); ;
             return await query.ToListAsync();           
                           
-          
-            return await query.ToListAsync();
 
             /**
                var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
