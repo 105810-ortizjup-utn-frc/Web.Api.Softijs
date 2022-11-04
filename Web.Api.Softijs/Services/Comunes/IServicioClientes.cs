@@ -12,7 +12,7 @@ namespace Web.Api.Softijs.Services.Comunes
         Task<List<DTOCliente>> GetClientes();
         Task<List<InformacionesContacto>> GetInfoContacto();
         Task<ResultadoBase> PostCliente(ComandoCliente cliente);
-        Task<Cliente> GetClienteByID(int id);
+        Task<ComandoCliente> GetClienteByID(int id);
         Task<ResultadoBase> PutCliente(ComandoCliente cliente);
         Task<ResultadoBase> DeleteCliente(int id);
     }

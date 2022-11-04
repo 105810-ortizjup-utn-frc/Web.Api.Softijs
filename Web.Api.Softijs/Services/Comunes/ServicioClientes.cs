@@ -94,15 +94,36 @@ namespace Web.Api.Softijs.Services.Comunes
             return await Task.FromResult(new ResultadoBase { CodigoEstado = 200, Message = Constantes.DefaultMessages.DefaultSuccesMessage.ToString(), Ok = true });
         }
 
-        public async Task<Cliente> GetClienteByID(int id)
+        public async Task<ComandoCliente> GetClienteByID(int id)
         {
-            return await _context.Clientes
+            var cliente =  await _context.Clientes
                 .AsNoTracking()
                 .Include(x => x.IdBarrioNavigation)
                 .Include(x => x.IdCiudadNavigation)
                 .Include(x => x.IdInformacionContactoNavigation)
                 .Include(x => x.IdTipoFidelizacionNavigation)
                 .FirstOrDefaultAsync(x => x.IdCliente == id);
+            ComandoCliente comando = new ComandoCliente();
+
+            if (cliente != null)
+            {
+                comando.IdCliente = cliente.IdCliente;
+                comando.Nombre = cliente.Nombre;
+                comando.Apellido = cliente.Apellido;
+                comando.Dni = cliente.Dni;
+                comando.Calle = cliente.Calle;
+                comando.Numero = cliente.Numero;
+                comando.Activado = cliente.Activado;
+                comando.IdBarrio = cliente.IdBarrio;
+                comando.IdCiudad = cliente.IdCiudad;
+                comando.Telefono = cliente.IdInformacionContactoNavigation.Telefono;
+                comando.Email = cliente.IdInformacionContactoNavigation.Email;
+                comando.Celular = cliente.IdInformacionContactoNavigation.Celular;
+                comando.IdTipoFidelizacion = cliente.IdTipoFidelizacion;
+            }
+            return comando;
+
+
         }
 
         public async Task<ResultadoBase> PutCliente(ComandoCliente comando)
