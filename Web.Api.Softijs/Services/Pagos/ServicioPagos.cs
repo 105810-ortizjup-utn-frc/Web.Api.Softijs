@@ -54,22 +54,20 @@ namespace Web.Api.Softijs.Services.Pagos
 
         public async Task<List<DTOComprobanteDePago>> GetComprobantePago()
         {
-            var query = (from p in context.ComprobantesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
+            var query = (from p in context.DetallesOrdenesPagos.Include(x => x.IdComprobantePagoNavigation).Include(x => x.IdOrdenPagoNavigation).AsNoTracking()
 
                          select new DTOComprobanteDePago
                          {
-                             NroOrdenPago = p.NroComprobante,
-                             FechaCarga = p.FechaCreacion,
-                             ModificadoPor = p.ModificadoPor,
-                             FechaModificacion = p.FechaModificacion,
-                             CreadoPor = p.CreadoPor,
-                             FechaCreacion = p.FechaCreacion,
-                             MontoAbonado = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
-                             ConceptoAbonado = p.Descripcion
-                             
-                             //MontoAbonado = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
-                             //ConceptoAbonado = p.DetallesOrdenesPagos.
-                         });
+                             NroOrdenPago = p.IdOrdenPagoNavigation.IdOrdenPago,
+                             FechaCarga = p.IdComprobantePagoNavigation.FechaCreacion,
+                             ModificadoPor = p.IdComprobantePagoNavigation.ModificadoPor,
+                             FechaModificacion = p.IdComprobantePagoNavigation.FechaModificacion,
+                             CreadoPor = p.IdComprobantePagoNavigation.CreadoPor,
+                             FechaCreacion = p.IdComprobantePagoNavigation.FechaCreacion,
+                             MontoAbonado = p.IdOrdenPagoNavigation.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
+                             ConceptoAbonado = p.IdComprobantePagoNavigation.Descripcion
+
+                         }) ;
 
 
             return await query.ToListAsync();
