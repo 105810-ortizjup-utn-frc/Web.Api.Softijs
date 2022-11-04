@@ -8,7 +8,7 @@ namespace Web.Api.Softijs.DataTransferObjects
     public class DTORendimientoVendedor
     {
         public string nombre { set; get; }
-        public int cantidadVentas { set; get; }
+        public decimal cantidadVentas { set; get; }
         public string fecha { set; get; }
     }
 }

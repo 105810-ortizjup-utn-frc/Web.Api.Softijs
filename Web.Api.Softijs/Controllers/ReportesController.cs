@@ -24,5 +24,11 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.GetRedimientoVendedor(id));
         }
+
+        [HttpGet("GetMontoVendido/{id}")]
+        public async Task<ActionResult> GetMontoVendido(int id)
+        {
+            return Ok(await this.servicio.GetMontoTotal(id));
+        }
     }
 }
