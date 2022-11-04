@@ -347,6 +347,11 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false)
                     .HasColumnName("Modificado_Por");
 
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Descripcion");
+
                 entity.Property(e => e.Monto).HasColumnType("decimal(8, 2)");
 
                 entity.HasOne(d => d.IdAutorizacion1Navigation)
