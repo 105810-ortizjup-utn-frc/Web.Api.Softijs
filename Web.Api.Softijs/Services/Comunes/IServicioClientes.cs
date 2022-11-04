@@ -11,5 +11,8 @@ namespace Web.Api.Softijs.Services.Comunes
         Task<List<Cliente>> GetClientes();
         Task<List<InformacionesContacto>> GetInfoContacto();
         Task<ResultadoBase> PostCliente(ComandoCliente cliente);
+        Task<Cliente> GetClienteByID(int id);
+        Task<ResultadoBase> PutCliente(ComandoCliente cliente);
+        Task<ResultadoBase> DeleteCliente(int id);
     }
 }
