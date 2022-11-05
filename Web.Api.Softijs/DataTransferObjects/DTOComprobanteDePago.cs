@@ -11,6 +11,7 @@
         public DateTime FechaCreacion { set; get; }
         public string? ModificadoPor { set; get; }
         public DateTime FechaModificacion { set; get; }
+        public IFormFile file { set; get; }
 
     }
 }

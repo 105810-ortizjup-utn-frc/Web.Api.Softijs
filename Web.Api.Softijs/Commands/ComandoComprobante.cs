@@ -1,9 +1,16 @@
-﻿namespace Web.Api.Softijs.Commands
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Web.Api.Softijs.Commands
 {
     public class ComandoComprobante
     {
-        public int? IdComprobantePago { get; set; }
-        public int NroComprobante { get; set; }
-        public string? Descripcion { get; set; }
+
+     
+
+        [Required(ErrorMessage = "La descripción en requerida.")]
+        public string Descripcion { get; set; }
+
+        [Required(ErrorMessage = "El archivo es requerido.")]
+        public IFormFile file { get; set; }
     }
 }

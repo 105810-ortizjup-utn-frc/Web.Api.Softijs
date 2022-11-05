@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
+using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Services.Pagos
@@ -76,6 +78,8 @@ namespace Web.Api.Softijs.Services.Pagos
             return await query.ToListAsync();
         }
 
+
+
         public async Task<DTOComprobanteDePago> GetComprobanteById(int id)
         {
             try
@@ -91,6 +95,28 @@ namespace Web.Api.Softijs.Services.Pagos
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        public async Task<ResultadoBase> PostComprobante(ComprobantesPago p)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            try
+            {
+                await context.AddAsync(p);
+                await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+
+                resultado.Ok = true;
+                resultado.CodigoEstado = 200;
+                resultado.Message = "El comprobante se guardo exitosamente.";
+                return resultado;
+            }
+            catch (Exception)
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al ingresar un comprobante";
+                return resultado;
             }
         }
     }

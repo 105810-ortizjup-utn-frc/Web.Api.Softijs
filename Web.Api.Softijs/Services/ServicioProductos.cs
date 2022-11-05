@@ -49,7 +49,6 @@ namespace Web.Api.Softijs.Services
             ResultadoBase resultado = new ResultadoBase();
             try
             {
-
                 await context.AddAsync(p);
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                 resultado.Ok = true;
@@ -65,6 +64,7 @@ namespace Web.Api.Softijs.Services
                 return resultado;
             }
         }
+
 
         public async Task<ResultadoBase> PutProducto(DTOProducto p)
         {
