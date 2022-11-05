@@ -35,7 +35,6 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetPagosPendientes());
         }
 
-<<<<<<< HEAD
         [HttpPost("saveOrdenPago")]
         public async Task<IActionResult> SaveOrdenPago([FromBody] AltaOrdenPagoDto dto)
         {
@@ -58,13 +57,13 @@ namespace Web.Api.Softijs.Controllers
         public async Task<IActionResult> GetLiquidacionesForComboBox()
         {
             return Ok(await this.servicio.GetLiquidacionForComboBox());
-=======
+        }
+
         [HttpGet]
         [Route("GetComprobanteDePago")]
         public async Task<ActionResult> GetComprobantePago()
         {
             return Ok(await this.servicio.GetComprobantePago());
->>>>>>> a670494c9944a5cfc28ef53228a7321e9c91dca0
         }
     }
 }
