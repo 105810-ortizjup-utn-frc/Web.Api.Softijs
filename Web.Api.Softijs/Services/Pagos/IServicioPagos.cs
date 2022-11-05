@@ -11,6 +11,7 @@ namespace Web.Api.Softijs.Services.Pagos
         Task<List<DTOordenP>> GetOrdenP();
 
         Task<List<DTOPagosPendientes>> GetPagosPendientes();
+        Task<List<DTOComprobanteDePago>> GetComprobantePago();
 
         Task<List<ComboBoxItemDto>> GetProveedoresForComboBox();
 

@@ -5,6 +5,7 @@ namespace Web.Api.Softijs.Commands
 {
     public class ComandoCliente
     {
+        public int? IdCliente { get; set; }
         public string? Nombre { get; set; }
         public string? Apellido { get; set; }
         public string Dni { get; set; } = null!;

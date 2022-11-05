@@ -16,6 +16,7 @@ namespace Web.Api.Softijs.Models
         public DateTime FechaCreacion { get; set; }
         public string ModificadoPor { get; set; } = null!;
         public DateTime FechaModificacion { get; set; }
+        public string Descripcion { get; set; }
 
         public virtual Autorizacione? IdAutorizacion1Navigation { get; set; }
         public virtual Autorizacione? IdAutorizacion2Navigation { get; set; }
