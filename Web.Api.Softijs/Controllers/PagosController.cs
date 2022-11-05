@@ -63,10 +63,12 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.PutOrden(o));
         }
 
-        private async Task<ActionResult<DTOComprobanteDePago>> GetComprobanteById(int id)
+        [HttpGet]
+        [Route("GetComprobanteById/{id}")]
+
+        public async Task<ActionResult<DTOComprobanteDePago>> GetComprobanteById(int id)
         {
             return Ok(await this.servicio.GetComprobanteById(id));
-
         }
     }
 }
