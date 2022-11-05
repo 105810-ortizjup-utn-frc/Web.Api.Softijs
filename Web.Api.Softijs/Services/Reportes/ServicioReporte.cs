@@ -60,7 +60,7 @@ namespace Web.Api.Softijs.Services.Reportes
                         .Include(x => x.DetallesPedidos).GroupBy(x => new { x.Fecha}).
                         Select(x => new DTOFacturacionDiaria
                         {
-                            dia = x.Key.Fecha.ToString("dddd", new CultureInfo("es-ES")).FirstLetterToUpperCase(),
+                            dia = x.Key.Fecha.ToString("dddd", new CultureInfo("es-ES")).FirstLetterToUpperCase() +" "+ x.Key.Fecha.Day,
                             montoVendido = x.SelectMany(x => x.DetallesPedidos).Sum(y => y.Cantidad * y.PrecioUnitario)
                         }).ToList();
 
