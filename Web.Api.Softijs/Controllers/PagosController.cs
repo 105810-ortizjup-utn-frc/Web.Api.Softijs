@@ -14,6 +14,7 @@ namespace Web.Api.Softijs.Controllers
 
         private readonly IServicioPagos servicio;
 
+
         public PagosController(IServicioPagos _servicio)
         {
             this.servicio = _servicio;
@@ -39,6 +40,15 @@ namespace Web.Api.Softijs.Controllers
         public async Task<ActionResult> GetComprobantePago()
         {
             return Ok(await this.servicio.GetComprobantePago());
+        }
+
+
+        [HttpGet]
+        [Route("GetComprobanteById/{id}")]
+
+        public async Task<ActionResult<DTOComprobanteDePago>> GetComprobanteById(int id)
+        {
+            return Ok(await this.servicio.GetComprobanteById(id));
         }
     }
 }
