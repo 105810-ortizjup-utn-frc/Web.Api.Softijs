@@ -62,6 +62,7 @@ namespace Web.Api.Softijs.Services.Pagos
 
                          select new DTOComprobanteDePago
                          {
+                             IdComprobante=p.IdComprobantePago,
                              NroOrdenPago = p.IdOrdenPagoNavigation.IdOrdenPago,
                              FechaCarga = p.IdComprobantePagoNavigation.FechaCreacion,
                              ModificadoPor = p.IdComprobantePagoNavigation.ModificadoPor,
@@ -81,7 +82,7 @@ namespace Web.Api.Softijs.Services.Pagos
             {
                 ComprobantesPago Comprobante = await context.ComprobantesPagos.Where(c => c.IdComprobantePago.Equals(id)).FirstOrDefaultAsync();
                 DTOComprobanteDePago dto = new DTOComprobanteDePago();
-                dto.idComprobante = Comprobante.IdComprobantePago;
+                dto.IdComprobante = Comprobante.IdComprobantePago;
                 dto.NroOrdenPago = Comprobante.NroComprobante;
                 dto.ConceptoAbonado = Comprobante.Descripcion;
 
