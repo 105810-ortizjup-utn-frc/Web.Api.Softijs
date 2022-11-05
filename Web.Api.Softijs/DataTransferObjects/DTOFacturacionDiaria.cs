@@ -8,6 +8,6 @@ namespace Web.Api.Softijs.DataTransferObjects
     public class DTOFacturacionDiaria
     {
         public decimal montoVendido { set; get; }
-        public int dia { set; get; }
+        public string dia { set; get; }
     }
 }

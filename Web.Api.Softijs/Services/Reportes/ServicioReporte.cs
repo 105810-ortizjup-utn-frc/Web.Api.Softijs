@@ -55,12 +55,12 @@ namespace Web.Api.Softijs.Services.Reportes
         public async Task<List<DTOFacturacionDiaria>> GetTotalVendidoDiario()
         {
 
-
+          
             var query = _context.Pedidos.Where(c => c.Fecha.Month.Equals(DateTime.Now.Month) && c.Fecha.Year.Equals(DateTime.Now.Year)).Include(x => x.IdUsuarioNavigation)
-                        .Include(x => x.DetallesPedidos).GroupBy(x => new { x.Fecha.Day}).
+                        .Include(x => x.DetallesPedidos).GroupBy(x => new { x.Fecha}).
                         Select(x => new DTOFacturacionDiaria
                         {
-                            dia = x.Key.Day,
+                            dia = x.Key.Fecha.ToString("dddd", new CultureInfo("es-ES")).FirstLetterToUpperCase(),
                             montoVendido = x.SelectMany(x => x.DetallesPedidos).Sum(y => y.Cantidad * y.PrecioUnitario)
                         }).ToList();
 
