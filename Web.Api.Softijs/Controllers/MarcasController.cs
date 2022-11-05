@@ -4,7 +4,7 @@ using Web.Api.Softijs.Services;
 
 namespace Web.Api.Softijs.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MarcasController : ControllerBase
