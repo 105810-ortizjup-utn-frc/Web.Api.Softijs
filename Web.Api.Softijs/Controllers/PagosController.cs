@@ -61,12 +61,9 @@ namespace Web.Api.Softijs.Controllers
             o.estado = comando.estado;
 
             return Ok(await this.servicio.PutOrden(o));
+        }
 
-
-        [HttpGet]
-        [Route("GetComprobanteById/{id}")]
-
-        public async Task<ActionResult<DTOComprobanteDePago>> GetComprobanteById(int id)
+        private async Task<ActionResult<DTOComprobanteDePago>> GetComprobanteById(int id)
         {
             return Ok(await this.servicio.GetComprobanteById(id));
 
