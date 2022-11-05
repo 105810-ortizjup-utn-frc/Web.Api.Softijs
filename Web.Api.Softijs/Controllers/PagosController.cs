@@ -16,6 +16,7 @@ namespace Web.Api.Softijs.Controllers
 
         private readonly IServicioPagos servicio;
 
+
         public PagosController(IServicioPagos _servicio)
         {
             this.servicio = _servicio;
@@ -42,6 +43,7 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetComprobantePago());
         }
 
+
         [HttpGet]
         [Route("GetOrdenById/{id}")]
 
@@ -59,6 +61,15 @@ namespace Web.Api.Softijs.Controllers
             o.estado = comando.estado;
 
             return Ok(await this.servicio.PutOrden(o));
+
+
+        [HttpGet]
+        [Route("GetComprobanteById/{id}")]
+
+        public async Task<ActionResult<DTOComprobanteDePago>> GetComprobanteById(int id)
+        {
+            return Ok(await this.servicio.GetComprobanteById(id));
+
         }
     }
 }
