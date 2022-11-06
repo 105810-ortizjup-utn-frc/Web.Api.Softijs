@@ -71,5 +71,6 @@
   <ItemGroup>
     <Folder Include="DbSchema\Dev\v2\" />
     <Folder Include="DbSchema\Dev\v1\" />
+    <Folder Include="Uploads\Comprobantes\" />
   </ItemGroup>
 </Project>

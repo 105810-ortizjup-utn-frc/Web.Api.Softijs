@@ -13,6 +13,7 @@ using Web.Api.Softijs.Services.Comunes;
 using Web.Api.Softijs.Services.Pagos;
 using Web.Api.Softijs.Services.Security;
 using Web.Api.Softijs.Services.Ventas;
+using Microsoft.AspNetCore.Hosting.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,7 +86,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options
-.UseSqlServer("Server=tcp:2022-softijs-sql-db-test.database.windows.net,1433;Initial Catalog=2022-softijs-sql-server-test;Persist Security Info=False;User ID=softijs-web-api;Password=MegustaElIceCream2022;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=200;"));
+.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
 
 var app = builder.Build();
 

@@ -1,7 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.Intrinsics.Arm;
+using System.Text.RegularExpressions;
+using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
+using Web.Api.Softijs.Results;
+using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Services.Pagos
 {
@@ -9,10 +15,12 @@ namespace Web.Api.Softijs.Services.Pagos
     {
 
         private readonly SoftijsDevContext context;
+        private readonly ISecurityService securityService;
 
-        public ServicioPagos(SoftijsDevContext _context)
+        public ServicioPagos(SoftijsDevContext _context, ISecurityService _securityService)
         {
             this.context = _context;
+            this.securityService = _securityService;
         }
 
         public async Task<List<DTOordenP>> GetOrdenP()
@@ -49,8 +57,8 @@ namespace Web.Api.Softijs.Services.Pagos
                              FechaCreacion = p.FechaCreacion,
                              Monto = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
                          }); ;
-            return await query.ToListAsync();           
-                          
+            return await query.ToListAsync();
+
 
             /**
                var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
@@ -70,24 +78,122 @@ namespace Web.Api.Softijs.Services.Pagos
 
         public async Task<List<DTOComprobanteDePago>> GetComprobantePago()
         {
-            var query = (from p in context.DetallesOrdenesPagos.Include(x => x.IdComprobantePagoNavigation).Include(x => x.IdOrdenPagoNavigation).AsNoTracking()
+            //var query = (from p in context.DetallesOrdenesPagos.Include(x => x.IdComprobantePagoNavigation).Include(x => x.IdOrdenPagoNavigation).AsNoTracking()
 
+            //             select new DTOComprobanteDePago
+            //             {
+            //                 //esta mostrando orden de pago y detalle, no comprobante
+            //                 NroOrdenPago = p.IdOrdenPagoNavigation.IdOrdenPago,
+            //                 FechaCarga = p.IdComprobantePagoNavigation.FechaCreacion,
+            //                 ModificadoPor = p.IdComprobantePagoNavigation.ModificadoPor,
+            //                 FechaModificacion = p.IdComprobantePagoNavigation.FechaModificacion,
+            //                 CreadoPor = p.IdComprobantePagoNavigation.CreadoPor,
+            //                 FechaCreacion = p.IdComprobantePagoNavigation.FechaCreacion,
+            //                 MontoAbonado = p.IdOrdenPagoNavigation.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
+            //                 ConceptoAbonado = p.Descripcion
+
+            //             });
+
+            var query = (from p in context.OrdenesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
+                         join id in context.DetallesOrdenesPagos.AsNoTracking() on p.IdOrdenPago equals id.IdOrdenPago
+                         join com in context.ComprobantesPagos.AsNoTracking() on id.IdComprobantePago equals com.IdComprobantePago
                          select new DTOComprobanteDePago
                          {
-                             NroOrdenPago = p.IdOrdenPagoNavigation.IdOrdenPago,
-                             FechaCarga = p.IdComprobantePagoNavigation.FechaCreacion,
-                             ModificadoPor = p.IdComprobantePagoNavigation.ModificadoPor,
-                             FechaModificacion = p.IdComprobantePagoNavigation.FechaModificacion,
-                             CreadoPor = p.IdComprobantePagoNavigation.CreadoPor,
-                             FechaCreacion = p.IdComprobantePagoNavigation.FechaCreacion,
-                             MontoAbonado = p.IdOrdenPagoNavigation.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
-                             ConceptoAbonado = p.Descripcion
-
-                         }) ;
-
-
+                             NroOrdenPago = com.IdComprobantePago,
+                             FechaCarga = com.FechaCreacion,
+                             ModificadoPor = com.ModificadoPor,
+                             FechaModificacion = com.FechaModificacion,
+                             CreadoPor = com.CreadoPor,
+                             FechaCreacion = com.FechaCreacion,
+                             MontoAbonado = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
+                             ConceptoAbonado = com.Descripcion
+                         });
             return await query.ToListAsync();
 
         }
+
+        public async Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago()
+        {
+            var query = (from det in context.DetallesOrdenesPagos.AsNoTracking()
+                         join fp in context.FormasPagos.AsNoTracking() on det.IdFormaPago equals fp.IdFormaPago
+                         join l in context.Liquidaciones.AsNoTracking() on det.IdLiquidacion equals l.IdLiquidacion into groupLiquidacion
+                         from gl in groupLiquidacion.DefaultIfEmpty()
+                         join aut in context.Autorizaciones.AsNoTracking() on det.IdAutorizacion1 equals aut.IdAutorizacion into groupAut1
+                         from group1 in groupAut1.DefaultIfEmpty()
+                         join aut2 in context.Autorizaciones.AsNoTracking() on det.IdAutorizacion2 equals aut2.IdAutorizacion into groupAut2
+                         from group2 in groupAut2.DefaultIfEmpty()
+                         join us in context.Usuarios.AsNoTracking() on gl.IdUsuario equals us.IdUsuario into groupUsuario
+                         from group3 in groupUsuario.DefaultIfEmpty()
+
+                         select new DTODetalleOrdenPago
+                         {
+                             forma_pago = fp.Descripcion,
+                             Monto = det.Monto,
+                             destinatario = group3 != null ? $"{group3.Legajo} - {group3.Nombre} {group3.Apellido}" : null,
+                             liquidacion = gl != null ? gl.IdLiquidacion : (int?)null,
+                             IdAutorizacion1 = group1 != null ? true : false,
+                             IdAutorizacion2 = group2 != null ? true : false,
+                             ModificadoPor = det.ModificadoPor,
+                             FechaModificacion = det.FechaModificacion
+                         });
+
+
+            return await query.ToListAsync();
+        }
+
+
+
+        public async Task<ResultadoBase> AutorizarFirma1(int idDetalleOrdenPago)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            var det = await context.DetallesOrdenesPagos.Where(c => c.IdDetalleOrdenPago.Equals(idDetalleOrdenPago)).FirstOrDefaultAsync();
+            if (det != null)
+            {
+                if (det.IdFormaPago == 3)
+                {
+                    det.IdAutorizacion1 = 1;
+                    context.Update(det);
+                    await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+                    resultado.Ok = true;
+                    resultado.CodigoEstado = 200;
+                    resultado.Message = "La firma se registró exitosamente";
+
+                }
+            }
+            else
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al autorizar la firma 1";
+            }
+            return resultado;
+        }
+
+        public async Task<ResultadoBase> AutorizarFirma2(int idDetalleOrdenPago)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            var det = await context.DetallesOrdenesPagos.Where(c => c.IdDetalleOrdenPago.Equals(idDetalleOrdenPago)).FirstOrDefaultAsync();
+            if (det != null)
+            {
+                if (det.IdFormaPago == 3 && det.Monto > 200000)
+                {
+                    det.IdAutorizacion2 = 2;
+                    context.Update(det);
+                    await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+                    resultado.Ok = true;
+                    resultado.CodigoEstado = 200;
+                    resultado.Message = "La firma se registró exitosamente";
+
+                }
+            }
+            else
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al autorizar la firma 2";
+            }
+            return resultado;
+        }
     }
 }
+
