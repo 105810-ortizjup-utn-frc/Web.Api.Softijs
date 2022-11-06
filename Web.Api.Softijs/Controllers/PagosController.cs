@@ -62,11 +62,13 @@ namespace Web.Api.Softijs.Controllers
 
             ComprobantesPago p = new ComprobantesPago();
 
-            p.NroComprobante = 8; // se guarda como 0 porque todavia no hay nada en el p.IdComprobantePago
-                                                    //opcion 1: sacar nroComprobante de la bd porque esta definido como not null 
-                                                    //y usar para identificar el pdf el idComprobante
-
+            p.NroComprobante = 9;
             p.Descripcion = comando.Descripcion;
+
+            //p.ModificadoPor = comando.ModificadoPor;
+            //p.FechaModificacion = comando.FechaModificacion;
+            //p.FechaCreacion = comando.FechaCreacion;
+            //p.CreadoPor = comando.ModificadoPor;
 
             var id =   await this.servicio.PostComprobante(p);
 
