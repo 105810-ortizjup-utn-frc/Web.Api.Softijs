@@ -13,7 +13,7 @@ namespace Web.Api.Softijs.Services.Pagos
         Task<List<DTOComprobanteDePago>> GetComprobantePago();
         Task<DTOComprobanteDePago> GetComprobanteById(int id);
 
-        Task<ResultadoBase> PostComprobante(ComprobantesPago comprobantes);
+        Task<int> PostComprobante(ComprobantesPago comprobantes);
 
     }
 }

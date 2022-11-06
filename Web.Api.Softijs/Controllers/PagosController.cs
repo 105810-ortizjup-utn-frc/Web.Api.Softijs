@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.Commands.Ventas;
 using Web.Api.Softijs.Comun;
@@ -56,21 +57,28 @@ namespace Web.Api.Softijs.Controllers
         }
 
         [HttpPost("PostProducto")]
-        public async Task<ActionResult<ResultadoBase>> PostComprobante([FromBody] ComandoComprobante comando)
+        public async Task<IActionResult> PostComprobante([FromForm] ComandoComprobante comando)
         {
+
             ComprobantesPago p = new ComprobantesPago();
             p.NroComprobante = p.IdComprobantePago;
             p.Descripcion = comando.Descripcion;
 
-            byte[] fileBytes;
-            using (var ms = new MemoryStream())
-            {
-                comando.file.CopyTo(ms);
-                fileBytes = ms.ToArray();
-            }
-            System.IO.File.WriteAllBytes($"{Directory.GetCurrentDirectory()}\\Uploads\\Comprobantes\\{p.NroComprobante}.pdf", fileBytes);
+            var id =   await this.servicio.PostComprobante(p);
 
-            return Ok(await this.servicio.PostComprobante(p));
+            var path = $"{Directory.GetCurrentDirectory()}\\Uploads\\Comprobantes\\";
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            using (var fileStream = new FileStream(Path.Combine(path, $"{id}.pdf"), FileMode.Create))
+            {
+                await comando.file.CopyToAsync(fileStream);
+            }
+
+            return Ok();
+          
         }
     }
 }

@@ -98,26 +98,14 @@ namespace Web.Api.Softijs.Services.Pagos
             }
         }
 
-        public async Task<ResultadoBase> PostComprobante(ComprobantesPago p)
+        public async Task<int> PostComprobante(ComprobantesPago p)
         {
-            ResultadoBase resultado = new ResultadoBase();
-            try
-            {
+
                 await context.AddAsync(p);
                 await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
 
-                resultado.Ok = true;
-                resultado.CodigoEstado = 200;
-                resultado.Message = "El comprobante se guardo exitosamente.";
-                return resultado;
-            }
-            catch (Exception)
-            {
-                resultado.Ok = false;
-                resultado.CodigoEstado = 400;
-                resultado.Message = "Error al ingresar un comprobante";
-                return resultado;
-            }
+                return p.IdComprobantePago;
+           
         }
     }
 }
