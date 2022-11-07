@@ -23,7 +23,7 @@ namespace Web.Api.Softijs.DataTransferObjects
         { set; get; }
         public int IdUnidadMedida
         { set; get; }
-        public int IdGusto
+        public int? IdGusto
         { set; get; }
         public int IdMarca
         { set; get; }

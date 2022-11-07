@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
+using Web.Api.Softijs.Comun;
 using System.Runtime.Intrinsics.Arm;
 using System.Text.RegularExpressions;
 using Web.Api.Softijs.Comun;
@@ -7,6 +9,10 @@ using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
+using Web.Api.Softijs.Services.Security;
+
+using Web.Api.Softijs.Results;
+
 using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Services.Pagos
@@ -17,16 +23,17 @@ namespace Web.Api.Softijs.Services.Pagos
         private readonly SoftijsDevContext context;
         private readonly ISecurityService securityService;
 
+        public ServicioPagos(SoftijsDevContext _context, ISecurityService securityService)
         public ServicioPagos(SoftijsDevContext _context, ISecurityService _securityService)
         {
             this.context = _context;
+            this.securityService = securityService;
             this.securityService = _securityService;
         }
 
         public async Task<List<DTOordenP>> GetOrdenP()
         {
             var query = (from prd in context.OrdenesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
-
                          join tipo in context.TiposOrdenesPagos.AsNoTracking() on prd.IdTipoOrdenPago equals tipo.IdTipoOrdenPago
                          join estado in context.EstadosOrdenesPagos.AsNoTracking() on prd.IdEstadoOrdenPago equals estado.IdEstadoOrdenPago
                          select new DTOordenP
@@ -60,20 +67,6 @@ namespace Web.Api.Softijs.Services.Pagos
             return await query.ToListAsync();
 
 
-            /**
-               var query = (from prd in _softijsDevContext.Pedidos.Include(x=>x.DetallesPedidos).AsNoTracking()
-                    
-                         join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
-                         join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
-                         select new DTOPedidos { 
-                             NroPedido = prd.NroPedido,
-                             Cliente = $"{cl.Nombre} {cl.Apellido}",
-                             Vendedor = $"{vd.Nombre} {vd.Apellido}",
-                             Total = prd.DetallesPedidos.Sum(x=>x.Monto*x.Cantidad),
-                             Fecha = prd.Fecha
-                         });
-            return await query.ToListAsync();      
-             **/
         }
 
         public async Task<List<DTOComprobanteDePago>> GetComprobantePago()
@@ -99,6 +92,15 @@ namespace Web.Api.Softijs.Services.Pagos
                          join com in context.ComprobantesPagos.AsNoTracking() on id.IdComprobantePago equals com.IdComprobantePago
                          select new DTOComprobanteDePago
                          {
+                             IdComprobante=p.IdComprobantePago,
+                             NroOrdenPago = p.IdOrdenPagoNavigation.IdOrdenPago,
+                             FechaCarga = p.IdComprobantePagoNavigation.FechaCreacion,
+                             ModificadoPor = p.IdComprobantePagoNavigation.ModificadoPor,
+                             FechaModificacion = p.IdComprobantePagoNavigation.FechaModificacion,
+                             CreadoPor = p.IdComprobantePagoNavigation.CreadoPor,
+                             FechaCreacion = p.IdComprobantePagoNavigation.FechaCreacion,
+                             MontoAbonado = p.IdOrdenPagoNavigation.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
+                             ConceptoAbonado = p.Descripcion
                              NroOrdenPago = com.IdComprobantePago,
                              FechaCarga = com.FechaCreacion,
                              ModificadoPor = com.ModificadoPor,
@@ -110,6 +112,19 @@ namespace Web.Api.Softijs.Services.Pagos
                          });
             return await query.ToListAsync();
 
+                         }) ;
+            return await query.ToListAsync();
+        }
+
+        public async Task<DTOComprobanteDePago> GetComprobanteById(int id)
+        {
+            try
+            {
+                ComprobantesPago Comprobante = await context.ComprobantesPagos.Where(c => c.IdComprobantePago.Equals(id)).FirstOrDefaultAsync();
+                DTOComprobanteDePago dto = new DTOComprobanteDePago();
+                dto.IdComprobante = Comprobante.IdComprobantePago;
+                dto.NroOrdenPago = Comprobante.NroComprobante;
+                dto.ConceptoAbonado = Comprobante.Descripcion;
         }
 
         public async Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago()
@@ -137,7 +152,65 @@ namespace Web.Api.Softijs.Services.Pagos
                              FechaModificacion = det.FechaModificacion
                          });
 
+                return dto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
+        public async Task<DTOestadoOP> GetOrdenPagoById(int id)
+        {
+            try
+            {
+                OrdenesPago orden = await context.OrdenesPagos.Where(c => c.IdOrdenPago.Equals(id)).FirstOrDefaultAsync();
+                DTOestadoOP dto = new DTOestadoOP();
+
+                dto.nroOrden = orden.IdOrdenPago;
+                dto.estado = orden.IdEstadoOrdenPago;
+
+                return dto;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResultadoBase> PutOrden(DTOestadoOP p)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            var orden = await context.OrdenesPagos.Where(c => c.IdOrdenPago.Equals(p.nroOrden)).FirstOrDefaultAsync();
+            try {
+            if (orden != null)
+            {
+                orden.IdEstadoOrdenPago = p.estado;
+
+                context.Update(orden);
+
+                await context.SaveChangesAsync(this.securityService.GetUserName()?? Constantes.DefaultSecurityValues.DefaultUserName);
+                resultado.Ok = true;
+                resultado.CodigoEstado = 200;
+                resultado.Message = "La orden se modifico exitosamente.";
+            }
+
+            else
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al modificar la orden";
+            }
+            }
+            catch(Exception ex) {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Error = ex.ToString();
+                resultado.Message = "Error al modificar la orden";
+            }
+
+            return resultado;
             return await query.ToListAsync();
         }
 
@@ -184,6 +257,10 @@ namespace Web.Api.Softijs.Services.Pagos
                     resultado.CodigoEstado = 200;
                     resultado.Message = "La firma se registró exitosamente";
 
+        }
+
+
+    }
                 }
             }
             else

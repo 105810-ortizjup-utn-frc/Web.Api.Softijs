@@ -10,7 +10,7 @@ using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductosController : ControllerBase
@@ -95,6 +95,15 @@ namespace Web.Api.Softijs.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, "No tiene los permisos para ejecutar esta acción.");
 
             return Ok(await this.servicio.DeleteProducto(id));
+        }
+
+        [HttpPut]
+        [Route("ActivarProducto/{id}")]
+
+        public async Task<ActionResult<ResultadoBase>> ActivarProducto(int id)
+        {
+
+            return Ok(await this.servicio.ActivarProducto(id));
         }
 
         [HttpGet]
