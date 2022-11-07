@@ -76,7 +76,7 @@ namespace Web.Api.Softijs.Services.Reportes
                             Email = g.Key.Email,
                             Producto = g.Key.Producto,
                             Cantidad = g.Select(x=>x.Cantidad).Sum()
-                        }).FirstOrDefault();
+                        });
 
             return query.ToList();
         }
