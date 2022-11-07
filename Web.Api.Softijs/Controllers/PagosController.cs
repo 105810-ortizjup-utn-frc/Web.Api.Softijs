@@ -77,15 +77,15 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.AutorizarFirma2(idDetalleOrdenPago));
         }
-        [AllowAnonymous]
+        
 
-        [HttpGet("detalleLiquidacio")]
+        [HttpGet("detalleLiquidacion")]
         public async Task<ActionResult> GetDetalleLiquidacion()
         {
             return Ok(await this.servicio.GetDetallesLiquidaciones());
         }
 
-        [AllowAnonymous]
+        
         [HttpGet("Liquidacion/{id}")]
         public async Task<ActionResult<DTOLiquidaciones>> GetLiquidacionById(int id)
         {
