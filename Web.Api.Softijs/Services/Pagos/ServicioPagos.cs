@@ -66,10 +66,33 @@ namespace Web.Api.Softijs.Services.Pagos
 
         public async Task<List<ComboBoxItemDto>> GetLiquidacionForComboBox()
         {
+            var alreadyPaid = await context.DetallesOrdenesPagos.Include(x => x.IdLiquidacionNavigation).AsNoTracking().Select(s => s.IdLiquidacion).ToListAsync();
+            var all = await context.Liquidaciones.AsNoTracking().Select(x => x.IdLiquidacion).ToListAsync();
+            var currents = all.Where(x => !alreadyPaid.Contains(x)).ToList();
+
             return await context.Liquidaciones.AsNoTracking()
                 .Include(x => x.IdUsuarioNavigation)
+                .Where(x => currents.Contains(x.IdLiquidacion))
                 .Select<Liquidacione, ComboBoxItemDto>(x => x)
                 .ToListAsync();
+        }
+
+        public async Task<List<LIquidacionFullDto>> GetLiquidacionForList()
+        {
+            var alreadyPaid = await context.DetallesOrdenesPagos.Include(x => x.IdLiquidacionNavigation).AsNoTracking().Select(s => s.IdLiquidacion).ToListAsync();
+            var all = await context.Liquidaciones.AsNoTracking().Select(x => x.IdLiquidacion).ToListAsync();
+            var currents = all.Where(x => !alreadyPaid.Contains(x)).ToList();
+
+            return await context.Liquidaciones.AsNoTracking()
+                .Include(x => x.IdUsuarioNavigation)
+                .Where(x => currents.Contains(x.IdLiquidacion))
+                .Select<Liquidacione, LIquidacionFullDto>(x => x)
+                .ToListAsync();
+        }
+
+        public async Task<List<ComboBoxItemDto>> GetFormasDePagosForComboBoxItem()
+        {
+            return await context.FormasPagos.AsNoTracking().Select<FormasPago, ComboBoxItemDto>(x => x).ToListAsync();
         }
 
         public async Task<ResultadoBase> SaveOrdenPago(OrdenesPago entity)
@@ -115,7 +138,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              MontoAbonado = p.IdOrdenPagoNavigation.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0),
                              ConceptoAbonado = p.Descripcion
 
-                         }) ;
+                         });
 
 
             return await query.ToListAsync();

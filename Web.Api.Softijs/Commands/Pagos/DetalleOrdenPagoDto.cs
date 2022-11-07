@@ -10,6 +10,7 @@ namespace Web.Api.Softijs.Commands.Pagos
         public int IdLiquidacion { get; set; }
         public int IdComproabnte { get; set; }
         public decimal Monto { get; set; }
+        public string Concepto { get; set; } 
         public int IdAutorizacion1 { get; set; }
         public int IdAutorizacion2 { get; set; }
 
@@ -23,7 +24,8 @@ namespace Web.Api.Softijs.Commands.Pagos
                 IdComprobantePago = dto.IdComproabnte,
                 IdAutorizacion1 = dto.IdAutorizacion1,
                 IdAutorizacion2 = dto.IdAutorizacion2,
-                Monto = dto.Monto
+                Monto = dto.Monto,
+                Descripcion = dto.Concepto
             };
         }
 
@@ -37,7 +39,8 @@ namespace Web.Api.Softijs.Commands.Pagos
                 IdComprobantePago = entity.IdComprobantePago,
                 IdAutorizacion1 = entity.IdAutorizacion1,
                 IdAutorizacion2 = entity.IdAutorizacion2,
-                Monto = entity.Monto
+                Monto = entity.Monto,
+                Descripcion = entity.Descripcion
             };
         }
     }

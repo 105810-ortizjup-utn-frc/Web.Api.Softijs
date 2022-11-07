@@ -47,6 +47,12 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetAltaOrdenPagoDtoById(id));
         }
 
+        [HttpGet("getFormasPagoForComboBox")]
+        public async Task<IActionResult> GetFormasPagoForComboBox()
+        {
+            return Ok(await this.servicio.GetFormasDePagosForComboBoxItem());
+        }
+
         [HttpGet("getProveedoresForComboBox")]
         public async Task<IActionResult> GetProveedoresForComboBox()
         {
@@ -59,8 +65,13 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetLiquidacionForComboBox());
         }
 
-        [HttpGet]
-        [Route("GetComprobanteDePago")]
+        [HttpGet("getLiquidacionForList")]
+        public async Task<IActionResult> GetLiquidacionesForList()
+        {
+            return Ok(await this.servicio.GetLiquidacionForList());
+        }
+
+        [HttpGet("GetComprobanteDePago")]
         public async Task<ActionResult> GetComprobantePago()
         {
             return Ok(await this.servicio.GetComprobantePago());

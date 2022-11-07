@@ -17,6 +17,10 @@ namespace Web.Api.Softijs.Services.Pagos
 
         Task<List<ComboBoxItemDto>> GetLiquidacionForComboBox();
 
+        Task<List<LIquidacionFullDto>> GetLiquidacionForList();
+
+        Task<List<ComboBoxItemDto>> GetFormasDePagosForComboBoxItem();
+
         Task<ResultadoBase> SaveOrdenPago(OrdenesPago entity);
 
         Task<AltaOrdenPagoDto> GetAltaOrdenPagoDtoById(int id);

@@ -7,6 +7,35 @@ namespace Web.Api.Softijs.Commands.Comunes
         public int Id { get; set; }
         public string? Codigo { get; set; }
         public string? Descripcion { get; set; }
+        public static implicit operator ComboBoxItemDto(Provincia entity)
+        {
+            return new ComboBoxItemDto
+            {
+                Id = entity.IdProvincia,
+                Codigo = entity.Codigo,
+                Descripcion = entity.Descripcion
+            };
+        }
+
+        public static implicit operator ComboBoxItemDto(Ciudade entity)
+        {
+            return new ComboBoxItemDto
+            {
+                Id = entity.IdCiudad,
+                Codigo = entity.CodigoProvincia,
+                Descripcion = entity.Descripcion
+            };
+        }
+
+        public static implicit operator ComboBoxItemDto(Barrio entity)
+        {
+            return new ComboBoxItemDto
+            {
+                Id = entity.IdBarrio,
+                Codigo = entity.CodigoCiudad,
+                Descripcion = entity.Descripcion
+            };
+        }
 
         public static implicit operator ComboBoxItemDto(EstadosPedido entity)
         {
@@ -84,7 +113,7 @@ namespace Web.Api.Softijs.Commands.Comunes
             {
                 Id = liquidacione.IdLiquidacion,
                 Codigo = liquidacione?.IdUsuarioNavigation?.Legajo,
-                Descripcion = $"{liquidacione?.IdUsuarioNavigation?.Legajo} - {liquidacione?.IdUsuarioNavigation?.Nombre} - {liquidacione?.IdUsuarioNavigation?.Apellido}"
+                Descripcion = $"Legajo: {liquidacione?.IdUsuarioNavigation?.Legajo} - Fecha Liquidacion: {liquidacione?.FechaLiquidacion:dd/MM/yyyy} - Empleado: {liquidacione?.IdUsuarioNavigation?.Nombre}, {liquidacione?.IdUsuarioNavigation?.Apellido}"
             };
         }
     }

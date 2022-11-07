@@ -167,11 +167,11 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false);
 
                 entity.Property(e => e.Codigo)
-                    .HasMaxLength(10)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CodigoProvincia)
-                    .HasMaxLength(10)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("Codigo_Provincia");
 
@@ -181,7 +181,7 @@ namespace Web.Api.Softijs.DataContext
                     .HasColumnName("Creado_Por");
 
                 entity.Property(e => e.Descripcion)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FechaCreacion)
@@ -978,6 +978,11 @@ namespace Web.Api.Softijs.DataContext
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.HasOne(d => d.IdProvinciaNavigation)
+                    .WithMany(p => p.Proveedores)
+                    .HasForeignKey(d => d.IdProvincia)
+                    .HasConstraintName("FK_Proveedores_Provincias");
+
                 entity.HasOne(d => d.IdBarrioNavigation)
                     .WithMany(p => p.Proveedores)
                     .HasForeignKey(d => d.IdBarrio)
@@ -1001,7 +1006,7 @@ namespace Web.Api.Softijs.DataContext
                 entity.Property(e => e.IdProvincia).HasColumnName("Id_Provincia");
 
                 entity.Property(e => e.Codigo)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CreadoPor)
@@ -1009,7 +1014,7 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false)
                     .HasColumnName("Creado_Por");
 
-                entity.Property(e => e.Descripcion).HasMaxLength(50);
+                entity.Property(e => e.Descripcion).HasMaxLength(100);
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
