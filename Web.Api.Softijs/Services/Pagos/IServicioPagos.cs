@@ -14,6 +14,9 @@ namespace Web.Api.Softijs.Services.Pagos
         Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago();
         Task<ResultadoBase> AutorizarFirma1(int idDetalleOrdenPago);
         Task<ResultadoBase> AutorizarFirma2(int idDetalleOrdenPago);
+        Task<List<DTOLiquidaciones>> GetDetallesLiquidaciones();
+
+        Task<DTOLiquidaciones> GetLiquidacionesById(int id);
 
     }
 }

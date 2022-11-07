@@ -42,25 +42,25 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetComprobantePago());
         }
 
-        
+
         [HttpGet]
         [Route("GetDetallesOrdenesPagos")]
         public async Task<ActionResult> GetDetallesOrdenesPago()
         {
             return Ok(await this.servicio.GetDetallesOrdenesPago());
         }
-        
+
         [HttpGet("descargarComprobante/{idComprobante}")]
         public async Task<IActionResult> DescargarComprobante(int idComprobante)
         {
-            var directorio  = $"{Directory.GetCurrentDirectory()}\\Uploads\\Comprobantes\\{idComprobante}.pdf";
+            var directorio = $"{Directory.GetCurrentDirectory()}\\Uploads\\Comprobantes\\{idComprobante}.pdf";
             if (!System.IO.File.Exists(directorio))
             {
                 return NotFound("El archivo no existe!!");
             }
             var file = await System.IO.File.ReadAllBytesAsync(directorio);
             return File(file, "application/pdf");
-            
+
         }
 
         [HttpPut("autorizarFirma1")]
@@ -70,12 +70,26 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.AutorizarFirma1(idDetalleOrdenPago));
         }
 
-        
+
         [HttpPut("autorizarFirma2")]
 
         public async Task<ActionResult<ResultadoBase>> AutorizarFirma2([FromBody] int idDetalleOrdenPago)
         {
             return Ok(await this.servicio.AutorizarFirma2(idDetalleOrdenPago));
+        }
+        [AllowAnonymous]
+
+        [HttpGet("detalleLiquidacio")]
+        public async Task<ActionResult> GetDetalleLiquidacion()
+        {
+            return Ok(await this.servicio.GetDetallesLiquidaciones());
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Liquidacion/{id}")]
+        public async Task<ActionResult<DTOLiquidaciones>> GetLiquidacionById(int id)
+        {
+            return Ok(await this.servicio.GetLiquidacionesById(id));
         }
     }
 }

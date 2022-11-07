@@ -194,6 +194,50 @@ namespace Web.Api.Softijs.Services.Pagos
             }
             return resultado;
         }
+
+        public async Task<List<DTOLiquidaciones>> GetDetallesLiquidaciones()
+        {
+            var query = (from liq in context.Liquidaciones.AsNoTracking()
+                         join us in context.Usuarios.AsNoTracking() on liq.IdUsuario equals us.IdUsuario
+                         join dop in context.DetallesOrdenesPagos.AsNoTracking() on liq.IdLiquidacion equals dop.IdLiquidacion
+
+
+                         select new DTOLiquidaciones
+                         {
+                             id_liquidaciones = liq.IdLiquidacion,
+                             fecha_liquidacion = liq.FechaLiquidacion,
+                             nombre_empleado = us.Nombre,
+                             monto = dop.Monto,
+                             precio_hora = liq.MontoPorHora,
+                             cant_horas = liq.CantidadHoraTrabajada
+
+                         });
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<DTOLiquidaciones> GetLiquidacionesById(int id)
+        {
+            try
+            {
+                Liquidacione liquidacion = await context.Liquidaciones.Where(c => c.IdLiquidacion.Equals(id)).Include(x=>x.DetallesOrdenesPagos).FirstOrDefaultAsync();
+                DTOLiquidaciones dto = new DTOLiquidaciones();
+                dto.id_liquidaciones = liquidacion.IdLiquidacion;
+                dto.fecha_liquidacion = liquidacion.FechaLiquidacion;
+                dto.precio_hora = liquidacion.MontoPorHora;
+                dto.cant_horas=liquidacion.CantidadHoraTrabajada;
+                //dto.nombre_empleado = liquidacion.IdUsuarioNavigation.Nombre;
+                dto.monto = liquidacion.MontoPorHora * liquidacion.CantidadHoraTrabajada;
+
+                return dto;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
 
