@@ -15,5 +15,6 @@ namespace Web.Api.Softijs.Services
         Task<ResultadoBase> PostProducto(Producto producto);
         Task<ResultadoBase> PutProducto(DTOProducto producto);
         Task<ResultadoBase> DeleteProducto(int  id);
+        Task<ResultadoBase> ActivarProducto(int id);
     }
 }

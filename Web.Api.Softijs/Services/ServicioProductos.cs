@@ -145,5 +145,29 @@ namespace Web.Api.Softijs.Services
                 throw;
             }
         }
+
+        async public Task<ResultadoBase> ActivarProducto(int id)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            var producto = await context.Productos.Where(c => c.NroProducto.Equals(id)).FirstOrDefaultAsync();
+            if (producto != null)
+            {
+                resultado.Ok = true;
+                resultado.CodigoEstado = 200;
+                resultado.Message = "El producto se activo exitosamente.";
+                producto.Activo = true;
+                context.Update(producto);
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al borrar un producto";
+                return resultado;
+            }
+
+            return resultado;
+        }
     }
 }
