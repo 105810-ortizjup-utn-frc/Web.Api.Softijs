@@ -220,13 +220,13 @@ namespace Web.Api.Softijs.Services.Pagos
         {
             try
             {
-                Liquidacione liquidacion = await context.Liquidaciones.Where(c => c.IdLiquidacion.Equals(id)).Include(x=>x.DetallesOrdenesPagos).FirstOrDefaultAsync();
+                Liquidacione liquidacion = await context.Liquidaciones.Where(c => c.IdLiquidacion.Equals(id)).Include(x=>x.DetallesOrdenesPagos).Include(x=>x.IdUsuarioNavigation).FirstOrDefaultAsync();
                 DTOLiquidaciones dto = new DTOLiquidaciones();
                 dto.id_liquidaciones = liquidacion.IdLiquidacion;
                 dto.fecha_liquidacion = liquidacion.FechaLiquidacion;
                 dto.precio_hora = liquidacion.MontoPorHora;
                 dto.cant_horas=liquidacion.CantidadHoraTrabajada;
-                //dto.nombre_empleado = liquidacion.IdUsuarioNavigation.Nombre;
+                dto.nombre_empleado = liquidacion.IdUsuarioNavigation.Nombre;
                 dto.monto = liquidacion.MontoPorHora * liquidacion.CantidadHoraTrabajada;
 
                 return dto;
