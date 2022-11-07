@@ -6,7 +6,7 @@ namespace Web.Api.Softijs.Commands
     {
 
      
-
+        public int idDetalle { get; set; }
         [Required(ErrorMessage = "La descripción en requerida.")]
         public string Descripcion { get; set; }
 

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Web.Api.Softijs.Commands;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services.Security;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Web.Api.Softijs.Services.Pagos
 {
@@ -98,12 +100,28 @@ namespace Web.Api.Softijs.Services.Pagos
             }
         }
 
-        public async Task<int> PostComprobante(ComprobantesPago p)
+        public async Task<int> PostComprobante(ComandoComprobante comando)
         {
 
-                await context.AddAsync(p);
-                await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+            ComprobantesPago p = new ComprobantesPago();
 
+            p.NroComprobante = 0;
+            p.Descripcion = comando.Descripcion;
+
+            //p.ModificadoPor = comando.ModificadoPor;
+            //p.FechaModificacion = comando.FechaModificacion;
+            //p.FechaCreacion = comando.FechaCreacion;
+            //p.CreadoPor = comando.ModificadoPor;
+
+            await context.AddAsync(p);
+            await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+
+            var detalle = await context.DetallesOrdenesPagos.FirstOrDefaultAsync(x => x.IdDetalleOrdenPago == comando.idDetalle);
+
+            detalle.IdComprobantePago = p.IdComprobantePago;
+
+            await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+         
                 return p.IdComprobantePago;
            
         }

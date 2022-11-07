@@ -60,17 +60,8 @@ namespace Web.Api.Softijs.Controllers
         public async Task<IActionResult> PostComprobante([FromForm] ComandoComprobante comando)
         {
 
-            ComprobantesPago p = new ComprobantesPago();
 
-            p.NroComprobante = 9;
-            p.Descripcion = comando.Descripcion;
-
-            //p.ModificadoPor = comando.ModificadoPor;
-            //p.FechaModificacion = comando.FechaModificacion;
-            //p.FechaCreacion = comando.FechaCreacion;
-            //p.CreadoPor = comando.ModificadoPor;
-
-            var id =   await this.servicio.PostComprobante(p);
+            var id =   await this.servicio.PostComprobante(comando);
 
             var path = $"{Directory.GetCurrentDirectory()}\\Uploads\\Comprobantes\\";
 
