@@ -14,5 +14,7 @@ namespace Web.Api.Softijs.Comun.Extensiones
 
             return $"{ char.ToUpper(value[0])}{value.Substring(1,value.Length-1).ToLower()}";
         }
+
+
     }
 }
