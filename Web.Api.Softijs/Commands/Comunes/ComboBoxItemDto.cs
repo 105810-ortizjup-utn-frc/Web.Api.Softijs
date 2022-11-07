@@ -7,6 +7,7 @@ namespace Web.Api.Softijs.Commands.Comunes
         public int Id { get; set; }
         public string? Codigo { get; set; }
         public string? Descripcion { get; set; }
+
         public static implicit operator ComboBoxItemDto(Provincia entity)
         {
             return new ComboBoxItemDto
