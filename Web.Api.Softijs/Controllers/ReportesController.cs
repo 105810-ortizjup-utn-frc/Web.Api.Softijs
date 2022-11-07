@@ -30,5 +30,11 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.GetMontoTotal(id));
         }
+
+        [HttpGet("GetEstadisticaClientes")]
+        public async Task<ActionResult> GetEstadisticaClientes()
+        {
+            return Ok(await this.servicio.GetEstadisticaClientes());
+        }
     }
 }

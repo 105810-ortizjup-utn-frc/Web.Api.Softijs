@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using RazorLight.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 using Web.Api.Softijs.Comun.Extensiones;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.DataTransferObjects;
+using Web.Api.Softijs.Models;
 
 namespace Web.Api.Softijs.Services.Reportes
 {
@@ -49,6 +55,30 @@ namespace Web.Api.Softijs.Services.Reportes
 
 
             return query;
+        }
+
+        public async Task<List<DTOEstadisticaClientes>> GetEstadisticaClientes()
+        {
+            var query = (from p in _context.Pedidos.Where(c => c.Fecha.Month.Equals(DateTime.Now.Month - 1) && c.Fecha.Year.Equals(DateTime.Now.Year))
+                         join dp in _context.DetallesPedidos.AsNoTracking() on p.NroPedido equals dp.NroPedido
+                         join prod in _context.Productos.AsNoTracking() on dp.NroProducto equals prod.NroProducto
+                         join cl in _context.Clientes.AsNoTracking() on p.IdCliente equals cl.IdCliente
+                         join ic in _context.InformacionesContactos.AsNoTracking() on cl.IdInformacionContacto equals ic.IdInformacionContacto
+                         select new { p.IdCliente, cl.Nombre, cl.Apellido, ic.Telefono, ic.Celular, ic.Email, Producto = prod.Nombre, dp.Cantidad })
+                        .GroupBy(o => new { o.IdCliente, o.Nombre, o.Apellido, o.Telefono, o.Celular, o.Email, o.Producto })
+                        .Select(g => new DTOEstadisticaClientes
+                        {
+                            IdCliente = g.Key.IdCliente,
+                            Nombre = g.Key.Nombre,
+                            Apellido = g.Key.Apellido,
+                            Telefono = g.Key.Telefono,
+                            Celular = g.Key.Celular,
+                            Email = g.Key.Email,
+                            Producto = g.Key.Producto,
+                            Cantidad = g.Select(x=>x.Cantidad).Sum()
+                        }).FirstOrDefault();
+
+            return query.ToList();
         }
     }
 }
