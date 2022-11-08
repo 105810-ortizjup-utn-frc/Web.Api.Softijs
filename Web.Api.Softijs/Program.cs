@@ -13,6 +13,7 @@ using Web.Api.Softijs.Services.Comunes;
 using Web.Api.Softijs.Services.Pagos;
 using Web.Api.Softijs.Services.Security;
 using Web.Api.Softijs.Services.Ventas;
+using Web.Api.Softijs.Seed.Helpers;
 using Web.Api.Softijs.Services.Reportes;
 using Microsoft.AspNetCore.Hosting.Server;
 
@@ -56,6 +57,7 @@ builder.Services.AddScoped<IServicioTipoFidelizacion, ServicioTipoFidelizacion>(
 builder.Services.AddScoped<IServicioBarrios, ServicioBarrios>();
 builder.Services.AddScoped<ISecurityService, SecurityService>();
 builder.Services.AddScoped<IServicioFacturas, ServicioFacturas>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IServicioReportes, ServicioReporte>();
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
@@ -87,11 +89,20 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddCors();
-builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
+builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options
+.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
 
 var app = builder.Build();
 
 AppContext.SetSwitch("SqlServer.EnableLegacyTimestampBehavior", true);
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<SoftijsDevContext>();
+    Seed seedData = new Seed();
+    seedData.SeedProvincias(dbContext);
+    seedData.SeedCiudades(dbContext);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

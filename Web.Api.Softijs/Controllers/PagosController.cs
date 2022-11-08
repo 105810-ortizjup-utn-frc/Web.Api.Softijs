@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.Api.Softijs.Commands.Pagos;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
@@ -37,8 +38,43 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetPagosPendientes());
         }
 
-        [HttpGet]
-        [Route("GetComprobanteDePago")]
+        [HttpPost("saveOrdenPago")]
+        public async Task<IActionResult> SaveOrdenPago([FromBody] AltaOrdenPagoDto dto)
+        {
+            return Ok(await this.servicio.SaveOrdenPago(dto));
+        }
+
+        [HttpPost("getOrdenPagoForUpdate/{id}")]
+        public async Task<IActionResult> GetOrdenPagoForUpdate(int id)
+        {
+            return Ok(await this.servicio.GetAltaOrdenPagoDtoById(id));
+        }
+
+        [HttpGet("getFormasPagoForComboBox")]
+        public async Task<IActionResult> GetFormasPagoForComboBox()
+        {
+            return Ok(await this.servicio.GetFormasDePagosForComboBoxItem());
+        }
+
+        [HttpGet("getProveedoresForComboBox")]
+        public async Task<IActionResult> GetProveedoresForComboBox()
+        {
+            return Ok(await this.servicio.GetProveedoresForComboBox());
+        }
+
+        [HttpGet("getLiquidacionesForComboBox")]
+        public async Task<IActionResult> GetLiquidacionesForComboBox()
+        {
+            return Ok(await this.servicio.GetLiquidacionForComboBox());
+        }
+
+        [HttpGet("getLiquidacionForList")]
+        public async Task<IActionResult> GetLiquidacionesForList()
+        {
+            return Ok(await this.servicio.GetLiquidacionForList());
+        }
+
+        [HttpGet("GetComprobanteDePago")]
         public async Task<ActionResult> GetComprobantePago()
         {
             return Ok(await this.servicio.GetComprobantePago());

@@ -1,4 +1,6 @@
-﻿using Web.Api.Softijs.DataTransferObjects;
+﻿using Web.Api.Softijs.Commands.Comunes;
+using Web.Api.Softijs.Commands.Pagos;
+using Web.Api.Softijs.DataTransferObjects;
 using Web.Api.Softijs.Models;
 using Web.Api.Softijs.Results;
 
@@ -22,5 +24,16 @@ namespace Web.Api.Softijs.Services.Pagos
         Task<DTOestadoOP> GetOrdenPagoById(int id);
         Task<ResultadoBase> PutOrden(DTOestadoOP ordenesPagos); 
 
+        Task<List<ComboBoxItemDto>> GetProveedoresForComboBox();
+
+        Task<List<ComboBoxItemDto>> GetLiquidacionForComboBox();
+
+        Task<List<LIquidacionFullDto>> GetLiquidacionForList();
+
+        Task<List<ComboBoxItemDto>> GetFormasDePagosForComboBoxItem();
+
+        Task<ResultadoBase> SaveOrdenPago(OrdenesPago entity);
+
+        Task<AltaOrdenPagoDto> GetAltaOrdenPagoDtoById(int id);
     }
 }

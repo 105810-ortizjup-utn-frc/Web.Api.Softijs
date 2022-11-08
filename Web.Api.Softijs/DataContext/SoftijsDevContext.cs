@@ -167,11 +167,11 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false);
 
                 entity.Property(e => e.Codigo)
-                    .HasMaxLength(10)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CodigoProvincia)
-                    .HasMaxLength(10)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("Codigo_Provincia");
 
@@ -181,7 +181,7 @@ namespace Web.Api.Softijs.DataContext
                     .HasColumnName("Creado_Por");
 
                 entity.Property(e => e.Descripcion)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FechaCreacion)
@@ -978,6 +978,11 @@ namespace Web.Api.Softijs.DataContext
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.HasOne(d => d.IdProvinciaNavigation)
+                    .WithMany(p => p.Proveedores)
+                    .HasForeignKey(d => d.IdProvincia)
+                    .HasConstraintName("FK_Proveedores_Provincias");
+
                 entity.HasOne(d => d.IdBarrioNavigation)
                     .WithMany(p => p.Proveedores)
                     .HasForeignKey(d => d.IdBarrio)
@@ -1001,7 +1006,7 @@ namespace Web.Api.Softijs.DataContext
                 entity.Property(e => e.IdProvincia).HasColumnName("Id_Provincia");
 
                 entity.Property(e => e.Codigo)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.CreadoPor)
@@ -1009,7 +1014,7 @@ namespace Web.Api.Softijs.DataContext
                     .IsUnicode(false)
                     .HasColumnName("Creado_Por");
 
-                entity.Property(e => e.Descripcion).HasMaxLength(50);
+                entity.Property(e => e.Descripcion).HasMaxLength(100);
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
@@ -1401,48 +1406,43 @@ namespace Web.Api.Softijs.DataContext
             OnModelCreatingPartial(modelBuilder);
         }
 
-        public virtual int SaveChanges(string userName)
+        public virtual int SaveChanges(string usuario)
         {
-            this.ApplyAuditForModifiedEntries(userName);
+            this.AplicarAutidoria(usuario);
             return base.SaveChanges();
         }
 
-        public async Task<int> SaveChangesAsync(string userName)
+        public async Task<int> SaveChangesAsync(string usuario)
         {
-            this.ApplyAuditForModifiedEntries(userName);
+            this.AplicarAutidoria(usuario);
             return await base.SaveChangesAsync();
         }
 
-        private void ApplyAuditForModifiedEntries(string userName = null, bool systemChanges = false)
+        private void AplicarAutidoria(string usuario = null, bool systemChanges = false)
         {
             this.ChangeTracker?
                 .Entries<IAuditable>()
                 .ToList()
-                .ForEach(e => this.ApplyAudit(e.Entity, e.State, userName, systemChanges));
+                .ForEach(e => this.Aplicar(e.Entity, e.State, usuario, systemChanges));
         }
 
-        private void ApplyAudit(IAuditable entity, EntityState state, string userName, bool systemChanges = false)
+        private void Aplicar(IAuditable entity, EntityState estado, string usuario, bool systemChanges = false)
         {
             var date = DateTime.Now;
 
-            var currentUser = userName;
-
-            if (state == EntityState.Added)
+            if (estado == EntityState.Added)
             {
-                // new horsemen
-                entity.CreadoPor = currentUser;
+                entity.CreadoPor = usuario;
                 entity.FechaCreacion = date;
 
-                // new horsemen
-                entity.ModificadoPor = currentUser;
+                entity.ModificadoPor = usuario;
                 entity.FechaModificacion = date;
                 return;
             }
 
-            if (state == EntityState.Modified)
+            if (estado == EntityState.Modified)
             {
-                // new horsemen
-                entity.ModificadoPor = currentUser;
+                entity.ModificadoPor = usuario;
                 entity.FechaModificacion = date;
                 return;
             }
