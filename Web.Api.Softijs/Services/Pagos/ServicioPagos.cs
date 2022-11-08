@@ -171,9 +171,9 @@ namespace Web.Api.Softijs.Services.Pagos
             }
         }
 
-        public async Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago()
+        public async Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago(int id)
         {
-            var query = (from det in context.DetallesOrdenesPagos.AsNoTracking()
+            var query = (from det in context.DetallesOrdenesPagos.Where(c=>c.IdOrdenPago.Equals(id)).AsNoTracking()
                          join fp in context.FormasPagos.AsNoTracking() on det.IdFormaPago equals fp.IdFormaPago
                          join l in context.Liquidaciones.AsNoTracking() on det.IdLiquidacion equals l.IdLiquidacion into groupLiquidacion
                          from gl in groupLiquidacion.DefaultIfEmpty()
@@ -347,6 +347,79 @@ namespace Web.Api.Softijs.Services.Pagos
 
                 return dto;
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResultadoBase> PutOrden(DTOestadoOP p)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            var orden = await context.OrdenesPagos.Where(c => c.IdOrdenPago.Equals(p.nroOrden)).FirstOrDefaultAsync();
+            try
+            {
+                if (orden != null)
+                {
+                    orden.IdEstadoOrdenPago = p.estado;
+
+                    context.Update(orden);
+
+                    await context.SaveChangesAsync(this.securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+                    resultado.Ok = true;
+                    resultado.CodigoEstado = 200;
+                    resultado.Message = "La orden se modifico exitosamente.";
+                }
+
+                else
+                {
+                    resultado.Ok = false;
+                    resultado.CodigoEstado = 400;
+                    resultado.Message = "Error al modificar la orden";
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Error = ex.ToString();
+                resultado.Message = "Error al modificar la orden";
+            }
+
+            return resultado;
+
+        }
+        public async Task<DTOComprobanteDePago> GetComprobanteById(int id)
+        {
+            try
+            {
+                ComprobantesPago Comprobante = await context.ComprobantesPagos.Where(c => c.IdComprobantePago.Equals(id)).FirstOrDefaultAsync();
+                DTOComprobanteDePago dto = new DTOComprobanteDePago();
+                dto.IdComprobante = Comprobante.IdComprobantePago;
+                dto.NroOrdenPago = Comprobante.NroComprobante;
+                dto.ConceptoAbonado = Comprobante.Descripcion;
+
+                return dto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DTOestadoOP> GetOrdenPagoById(int id)
+        {
+            try
+            {
+                OrdenesPago orden = await context.OrdenesPagos.Where(c => c.IdOrdenPago.Equals(id)).FirstOrDefaultAsync();
+                DTOestadoOP dto = new DTOestadoOP();
+
+                dto.nroOrden = orden.IdOrdenPago;
+                dto.estado = orden.IdEstadoOrdenPago;
+
+                return dto;
             }
             catch (Exception)
             {

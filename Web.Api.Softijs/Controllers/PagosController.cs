@@ -79,10 +79,10 @@ namespace Web.Api.Softijs.Controllers
 
 
         [HttpGet]
-        [Route("GetDetallesOrdenesPagos")]
-        public async Task<ActionResult> GetDetallesOrdenesPago()
+        [Route("GetDetallesOrdenesPagos/{id}")]
+        public async Task<ActionResult> GetDetallesOrdenesPago(int id)
         {
-            return Ok(await this.servicio.GetDetallesOrdenesPago());
+            return Ok(await this.servicio.GetDetallesOrdenesPago(id));
         }
 
         [HttpGet("descargarComprobante/{idComprobante}")]
@@ -125,6 +125,34 @@ namespace Web.Api.Softijs.Controllers
         public async Task<ActionResult<DTOLiquidaciones>> GetLiquidacionById(int id)
         {
             return Ok(await this.servicio.GetLiquidacionesById(id));
+        }
+
+
+        [HttpGet]
+        [Route("GetOrdenById/{id}")]
+
+        public async Task<ActionResult<DTOestadoOP>> GetOrdenPagoById(int id)
+        {
+            return Ok(await this.servicio.GetOrdenPagoById(id));
+        }
+
+        [HttpPut("PutOrden")]
+
+        public async Task<ActionResult<ResultadoBase>> PutOrden([FromBody] DTOestadoOP comando)
+        {
+            DTOestadoOP o = new DTOestadoOP();
+            o.nroOrden = comando.nroOrden;
+            o.estado = comando.estado;
+
+            return Ok(await this.servicio.PutOrden(o));
+        }
+
+        [HttpGet]
+        [Route("GetComprobanteById/{id}")]
+
+        public async Task<ActionResult<DTOComprobanteDePago>> GetComprobanteById(int id)
+        {
+            return Ok(await this.servicio.GetComprobanteById(id));
         }
     }
 }
