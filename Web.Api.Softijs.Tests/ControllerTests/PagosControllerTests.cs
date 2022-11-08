@@ -56,10 +56,11 @@ namespace Web.Api.Softijs.Tests.ControllerTests
         public void GetDetallesOrdenesPago_Retorna_Ordenes()
         {
             //Arrange
-            _mockServicio.Setup(x => x.GetDetallesOrdenesPago()).Returns(Task.FromResult(new List<DTODetalleOrdenPago>() { new DTODetalleOrdenPago { } }));
+            var id = 1;
+            _mockServicio.Setup(x => x.GetDetallesOrdenesPago(It.IsAny<int>())).Returns(Task.FromResult(new List<DTODetalleOrdenPago>() { new DTODetalleOrdenPago { } }));
 
             //Act
-            var result = _pagosController.GetDetallesOrdenesPago();
+            var result = _pagosController.GetDetallesOrdenesPago(id);
 
             //Assert
             Assert.IsTrue(((result.Result as OkObjectResult).Value as List<DTODetalleOrdenPago>).Any());
@@ -69,10 +70,11 @@ namespace Web.Api.Softijs.Tests.ControllerTests
         public void GetDetallesOrdenesPago_No_Retorna_Ordenes()
         {
             //Arrange
-            _mockServicio.Setup(x => x.GetDetallesOrdenesPago()).Returns(Task.FromResult(new List<DTODetalleOrdenPago>()));
+            var id = 1;
+            _mockServicio.Setup(x => x.GetDetallesOrdenesPago(It.IsAny<int>())).Returns(Task.FromResult(new List<DTODetalleOrdenPago>()));
 
             //Act
-            var result = _pagosController.GetDetallesOrdenesPago();
+            var result = _pagosController.GetDetallesOrdenesPago(id);
 
             //Assert
             Assert.IsFalse(((result.Result as OkObjectResult).Value as List<DTODetalleOrdenPago>).Any());
