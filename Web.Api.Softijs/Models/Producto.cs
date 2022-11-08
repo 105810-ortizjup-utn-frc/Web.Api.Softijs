@@ -23,14 +23,14 @@ namespace Web.Api.Softijs.Models
         public string ModificadoPor { get; set; } = null!;
         public DateTime FechaModificacion { get; set; }
         public int IdUnidadMedida { get; set; }
-        public int IdGusto { get; set; }
+        public int? IdGusto { get; set; }
         public int IdMarca { get; set; }
         public string CreadoPor { get; set; } = null!;
         public int IdCategoria { get; set; }
         public int Codigo { get; set; }
 
         public virtual Categoria IdCategoriaNavigation { get; set; } = null!;
-        public virtual Gusto IdGustoNavigation { get; set; } = null!;
+        public virtual Gusto? IdGustoNavigation { get; set; } = null!;
         public virtual Marca IdMarcaNavigation { get; set; } = null!;
         public virtual Proveedore IdProveedorNavigation { get; set; } = null!;
         public virtual UnidadesMedida IdUnidadMedidaNavigation { get; set; } = null!;

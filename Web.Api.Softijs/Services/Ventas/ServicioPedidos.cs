@@ -43,7 +43,7 @@ namespace Web.Api.Softijs.Services.Ventas
 
         public async Task<List<DTOPedidos>> GetPedidos()
         {
-            var query = (from prd in _softijsDevContext.Pedidos.Include(x => x.DetallesPedidos).AsNoTracking()
+            var query = (from prd in _softijsDevContext.Pedidos.Where(c=>c.Fecha.Month.Equals(DateTime.Now.Month) && c.Fecha.Year.Equals(DateTime.Now.Year)).Include(x => x.DetallesPedidos).AsNoTracking()
                          join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
                          join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
                          select new DTOPedidos

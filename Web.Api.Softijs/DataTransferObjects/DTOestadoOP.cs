@@ -14,9 +14,9 @@
         public DTOestadoOP()
         {
         }
+     
 
-
-
+       
 
     }
 }

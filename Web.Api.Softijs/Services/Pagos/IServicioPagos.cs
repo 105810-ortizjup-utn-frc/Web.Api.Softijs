@@ -6,10 +6,9 @@ namespace Web.Api.Softijs.Services.Pagos
 {
     public interface IServicioPagos
     {
-
         Task<List<DTOordenP>> GetOrdenP();
-
         Task<List<DTOPagosPendientes>> GetPagosPendientes();
+
         Task<List<DTOComprobanteDePago>> GetComprobantePago();
         Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago(int id);
         Task<ResultadoBase> AutorizarFirma1(int idDetalleOrdenPago);
@@ -21,7 +20,7 @@ namespace Web.Api.Softijs.Services.Pagos
 
 
         Task<DTOestadoOP> GetOrdenPagoById(int id);
-        Task<ResultadoBase> PutOrden(DTOestadoOP ordenesPagos);
+        Task<ResultadoBase> PutOrden(DTOestadoOP ordenesPagos); 
 
     }
 }

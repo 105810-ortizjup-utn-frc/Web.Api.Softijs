@@ -2,8 +2,8 @@
 {
     public class DTOComprobanteDePago
     {
-        
         public int IdComprobante { set; get; }
+        public int NroOrdenPago { set; get; }
         public DateTime FechaCarga { set; get; }
         public decimal MontoAbonado { set; get; }
         public string? ConceptoAbonado { get; set; }
