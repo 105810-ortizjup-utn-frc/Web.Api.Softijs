@@ -25,7 +25,7 @@ namespace Web.Api.Softijs.Services.Reportes
             var query = _context.Pedidos.Where(c => c.IdUsuario.Equals(id) && c.Fecha.Month.Equals(DateTime.Now.Month)).Include(x => x.IdUsuarioNavigation).GroupBy(x => new { x.Fecha, x.IdUsuarioNavigation.Nombre }).
                 Select(x => new DTORendimientoVendedor
                 {
-                    fecha = x.Key.Fecha.ToString("MMMM dd"),
+                    fecha = x.Key.Fecha.ToString("MMMM dd").FirstLetterToUpperCase(),
                     nombre = x.Key.Nombre,
                     cantidadVentas = x.Select(y => y.IdUsuario).Count()
                 }).ToList();
