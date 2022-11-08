@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Web.Api.Softijs.Commands.Comunes;
 using Web.Api.Softijs.Commands.Pagos;
-using Web.Api.Softijs.Comun;
-using System.Reflection.Metadata;
 using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataContext;
 using Web.Api.Softijs.DataTransferObjects;
@@ -21,7 +18,6 @@ namespace Web.Api.Softijs.Services.Pagos
         private readonly ISecurityService securityService;
 
         public ServicioPagos(SoftijsDevContext _context, ISecurityService securityService)
-        public ServicioPagos(SoftijsDevContext _context, ISecurityService _securityService)
         {
             this.context = _context;
             _securityService = securityService;
@@ -31,7 +27,6 @@ namespace Web.Api.Softijs.Services.Pagos
         public async Task<List<DTOordenP>> GetOrdenP()
         {
             return await (from prd in context.OrdenesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
-
                           join tipo in context.TiposOrdenesPagos.AsNoTracking() on prd.IdTipoOrdenPago equals tipo.IdTipoOrdenPago
                           join estado in context.EstadosOrdenesPagos.AsNoTracking() on prd.IdEstadoOrdenPago equals estado.IdEstadoOrdenPago
                           select new DTOordenP
@@ -43,19 +38,6 @@ namespace Web.Api.Softijs.Services.Pagos
                               CreadoPor = prd.CreadoPor,
                               FechaCreacion = prd.FechaCreacion,
                               Total = prd.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
-            var query = (from prd in context.OrdenesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
-                         join tipo in context.TiposOrdenesPagos.AsNoTracking() on prd.IdTipoOrdenPago equals tipo.IdTipoOrdenPago
-                         join estado in context.EstadosOrdenesPagos.AsNoTracking() on prd.IdEstadoOrdenPago equals estado.IdEstadoOrdenPago
-                         select new DTOordenP
-                         {
-                             NroOrden = prd.IdOrdenPago,
-                             Tipo = tipo.Descripcion,
-                             Estado = estado.Descripcion,
-                             Fecha = prd.FechaVencimiento,
-                             CreadoPor = prd.CreadoPor,
-                             FechaCreacion = prd.FechaCreacion,
-                             Total = prd.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
-
                           }).ToListAsync();
         }
 
@@ -127,21 +109,12 @@ namespace Web.Api.Softijs.Services.Pagos
                 }
 
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
-            var query = (from p in context.OrdenesPagos.Include(x => x.DetallesOrdenesPagos).AsNoTracking()
-                         where p.FechaVencimiento >= DateTime.Now.AddDays(-15)
-                         select new DTOPagosPendientes
-                         {
-                             NroOrdenPago = p.IdOrdenPago,
-                             FechaVencimiento = p.FechaVencimiento,
-                             ModificadoPor = p.ModificadoPor,
-                             FechaModificacion = p.FechaModificacion,
-                             CreadoPor = p.CreadoPor,
-                             FechaCreacion = p.FechaCreacion,
-                             Monto = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
-                         }); ;
-            return await query.ToListAsync();
-
-
+                return new ResultadoBase { Ok = true, CodigoEstado = 200, Error = string.Empty, Message = "La orden de pago se guardo correctamente." };
+            }
+            catch (Exception ex)
+            {
+                return new ResultadoBase { Ok = false, CodigoEstado = 500, Error = ex.Message };
+            }
         }
 
         public async Task<List<DTOComprobanteDePago>> GetComprobantePago()
@@ -281,8 +254,6 @@ namespace Web.Api.Softijs.Services.Pagos
             return resultado;
         }
 
-
-
         public async Task<ResultadoBase> AutorizarFirma1(int idDetalleOrdenPago)
         {
             ResultadoBase resultado = new ResultadoBase();
@@ -307,12 +278,6 @@ namespace Web.Api.Softijs.Services.Pagos
                 resultado.Message = "Error al autorizar la firma 1";
             }
             return resultado;
-                return new ResultadoBase { Ok = true, CodigoEstado = 200, Error = string.Empty, Message = "La orden de pago se guardo correctamente." };
-            }
-            catch (Exception ex)
-            {
-                return new ResultadoBase { Ok = false, CodigoEstado = 500, Error = ex.Message };
-            }
         }
 
         public async Task<AltaOrdenPagoDto> GetAltaOrdenPagoDtoById(int id)
@@ -364,8 +329,6 @@ namespace Web.Api.Softijs.Services.Pagos
                              cant_horas = liq.CantidadHoraTrabajada
                          });
 
-                         });
-
             return await query.ToListAsync();
         }
 
@@ -373,12 +336,12 @@ namespace Web.Api.Softijs.Services.Pagos
         {
             try
             {
-                Liquidacione liquidacion = await context.Liquidaciones.Where(c => c.IdLiquidacion.Equals(id)).Include(x=>x.DetallesOrdenesPagos).Include(x=>x.IdUsuarioNavigation).FirstOrDefaultAsync();
+                Liquidacione liquidacion = await context.Liquidaciones.Where(c => c.IdLiquidacion.Equals(id)).Include(x => x.DetallesOrdenesPagos).Include(x => x.IdUsuarioNavigation).FirstOrDefaultAsync();
                 DTOLiquidaciones dto = new DTOLiquidaciones();
                 dto.id_liquidaciones = liquidacion.IdLiquidacion;
                 dto.fecha_liquidacion = liquidacion.FechaLiquidacion;
                 dto.precio_hora = liquidacion.MontoPorHora;
-                dto.cant_horas=liquidacion.CantidadHoraTrabajada;
+                dto.cant_horas = liquidacion.CantidadHoraTrabajada;
                 dto.nombre_empleado = liquidacion.IdUsuarioNavigation.Nombre;
                 dto.monto = liquidacion.MontoPorHora * liquidacion.CantidadHoraTrabajada;
 

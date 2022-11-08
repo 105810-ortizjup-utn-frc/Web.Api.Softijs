@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Api.Softijs.Commands.Pagos;
-using Web.Api.Softijs.Comun;
 using Web.Api.Softijs.DataTransferObjects;
-using Web.Api.Softijs.Models;
-using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Results;
 using Web.Api.Softijs.Services.Pagos;
 
@@ -115,7 +112,7 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.AutorizarFirma2(idDetalleOrdenPago));
         }
-        
+
 
         [HttpGet("detalleLiquidacion")]
         public async Task<ActionResult> GetDetalleLiquidacion()
@@ -123,7 +120,7 @@ namespace Web.Api.Softijs.Controllers
             return Ok(await this.servicio.GetDetallesLiquidaciones());
         }
 
-        
+
         [HttpGet("Liquidacion/{id}")]
         public async Task<ActionResult<DTOLiquidaciones>> GetLiquidacionById(int id)
         {
