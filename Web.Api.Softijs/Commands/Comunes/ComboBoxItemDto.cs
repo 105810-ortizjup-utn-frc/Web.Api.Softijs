@@ -104,7 +104,7 @@ namespace Web.Api.Softijs.Commands.Comunes
             {
                 Id = entity.IdProveedor,
                 Codigo = $"{entity.IdProveedor}",
-                Descripcion = $"{entity.IdProveedor} - {entity.Nombre} - {entity.Nombre}"
+                Descripcion = $"{entity.IdProveedor} - {entity.Nombre}"
             };
         }
 

@@ -173,7 +173,7 @@ namespace Web.Api.Softijs.Services.Pagos
 
         public async Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago(int id)
         {
-            var query = (from det in context.DetallesOrdenesPagos.Where(c=>c.IdOrdenPago.Equals(id)).AsNoTracking()
+            var query = (from det in context.DetallesOrdenesPagos.Where(c => c.IdOrdenPago.Equals(id)).AsNoTracking()
                          join fp in context.FormasPagos.AsNoTracking() on det.IdFormaPago equals fp.IdFormaPago
                          join l in context.Liquidaciones.AsNoTracking() on det.IdLiquidacion equals l.IdLiquidacion into groupLiquidacion
                          from gl in groupLiquidacion.DefaultIfEmpty()
@@ -353,6 +353,12 @@ namespace Web.Api.Softijs.Services.Pagos
 
                 throw;
             }
+        }
+
+        public async Task SaveProveedor(Proveedore proveedor)
+        {
+            await context.AddAsync(proveedor);
+            await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
         }
     }
 }

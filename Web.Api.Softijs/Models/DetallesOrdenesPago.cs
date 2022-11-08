@@ -5,10 +5,11 @@ namespace Web.Api.Softijs.Models
     public partial class DetallesOrdenesPago : IAuditable
     {
         public int IdDetalleOrdenPago { get; set; }
+        public int? IdProveedor { get; set; }
         public int IdFormaPago { get; set; }
         public int? IdLiquidacion { get; set; }
         public int? IdOrdenPago { get; set; }
-        public int IdComprobantePago { get; set; }
+        public int? IdComprobantePago { get; set; }
         public decimal? Monto { get; set; }
         public int? IdAutorizacion1 { get; set; }
         public int? IdAutorizacion2 { get; set; }
@@ -24,5 +25,6 @@ namespace Web.Api.Softijs.Models
         public virtual FormasPago IdFormaPagoNavigation { get; set; } = null!;
         public virtual Liquidacione? IdLiquidacionNavigation { get; set; }
         public virtual OrdenesPago? IdOrdenPagoNavigation { get; set; }
+        public virtual Proveedore? IdProveedoreNavigation { get; set; }
     }
 }

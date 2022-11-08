@@ -35,5 +35,7 @@ namespace Web.Api.Softijs.Services.Pagos
         Task<ResultadoBase> SaveOrdenPago(OrdenesPago entity);
 
         Task<AltaOrdenPagoDto> GetAltaOrdenPagoDtoById(int id);
+
+        Task SaveProveedor(Proveedore proveedor);
     }
 }

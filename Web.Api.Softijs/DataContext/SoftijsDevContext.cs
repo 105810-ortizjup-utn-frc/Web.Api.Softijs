@@ -330,6 +330,8 @@ namespace Web.Api.Softijs.DataContext
                     .HasColumnType("datetime")
                     .HasColumnName("Fecha_Modificacion");
 
+                entity.Property(e => e.IdProveedor).HasColumnName("Id_Proveedor");
+
                 entity.Property(e => e.IdAutorizacion1).HasColumnName("Id_Autorizacion_1");
 
                 entity.Property(e => e.IdAutorizacion2).HasColumnName("Id_Autorizacion_2");
@@ -385,6 +387,12 @@ namespace Web.Api.Softijs.DataContext
                     .HasForeignKey(d => d.IdOrdenPago)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_DetallesOrdenesPagos_OrdenesPagos");
+
+                entity.HasOne(d => d.IdProveedoreNavigation)
+                   .WithMany(p => p.Proveedores)
+                   .HasForeignKey(d => d.IdProveedor)
+                   .OnDelete(DeleteBehavior.Cascade)
+                   .HasConstraintName("FK_DetallesOrdenesPagos_Proveedores");
             });
 
             modelBuilder.Entity<DetallesPedido>(entity =>
@@ -962,6 +970,8 @@ namespace Web.Api.Softijs.DataContext
                 entity.Property(e => e.FechaModificacion)
                     .HasColumnType("datetime")
                     .HasColumnName("Fecha_Modificacion");
+
+                entity.Property(e => e.IdProvincia).HasColumnName("Id_Provincia");
 
                 entity.Property(e => e.IdBarrio).HasColumnName("Id_Barrio");
 

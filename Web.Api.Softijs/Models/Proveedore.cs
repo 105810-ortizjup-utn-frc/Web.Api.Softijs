@@ -27,5 +27,6 @@ namespace Web.Api.Softijs.Models
         public virtual Ciudade? IdCiudadNavigation { get; set; }
         public virtual InformacionesContacto? IdInformacionContactoNavigation { get; set; }
         public virtual ICollection<Producto> Productos { get; set; }
+        public virtual ICollection<DetallesOrdenesPago> Proveedores { get; set; }
     }
 }

@@ -154,5 +154,12 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.GetComprobanteById(id));
         }
+
+        [HttpPost("guardarProveedor")]
+        public async Task<IActionResult> GuardarProveedor([FromBody]FormularioAltaProveedorDto formularioAltaProveedorDto)
+        {
+            await this.servicio.SaveProveedor(formularioAltaProveedorDto);
+            return Ok();
+        }
     }
 }
