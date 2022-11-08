@@ -11,12 +11,17 @@ namespace Web.Api.Softijs.Services.Pagos
 
         Task<List<DTOPagosPendientes>> GetPagosPendientes();
         Task<List<DTOComprobanteDePago>> GetComprobantePago();
-        Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago();
+        Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago(int id);
         Task<ResultadoBase> AutorizarFirma1(int idDetalleOrdenPago);
         Task<ResultadoBase> AutorizarFirma2(int idDetalleOrdenPago);
         Task<List<DTOLiquidaciones>> GetDetallesLiquidaciones();
 
         Task<DTOLiquidaciones> GetLiquidacionesById(int id);
+        Task<DTOComprobanteDePago> GetComprobanteById(int id);
+
+
+        Task<DTOestadoOP> GetOrdenPagoById(int id);
+        Task<ResultadoBase> PutOrden(DTOestadoOP ordenesPagos);
 
     }
 }
