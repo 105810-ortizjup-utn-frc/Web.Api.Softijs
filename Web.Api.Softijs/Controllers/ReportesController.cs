@@ -36,5 +36,22 @@ namespace Web.Api.Softijs.Controllers
         {
             return Ok(await this.servicio.GetTotalVendidoDiario());
         }
+
+        [HttpGet("GetReporteLiquidaciones")]
+        public async Task<ActionResult> GetLiquidacionesEmpleados()
+        {
+            return Ok(await this.servicio.GetLiquidacionesEmpleados());
+        }
+
+        [HttpGet("GetCantXCat")]
+        public async Task<ActionResult> GetCantXCat()
+        {
+            return Ok(await this.servicio.GetCantXCat());
+        }
+        [HttpGet("GetEstadisticaClientes")]
+        public async Task<ActionResult> GetEstadisticaClientes()
+        {
+            return Ok(await this.servicio.GetEstadisticaClientes());
+        }
     }
 }

@@ -12,5 +12,8 @@ namespace Web.Api.Softijs.Services
         Task<List<DTORendimientoVendedor>> GetRedimientoVendedor(int id);
         Task<List<DTORendimientoVendedor>> GetMontoTotal(int id);
         Task<List<DTOFacturacionDiaria>> GetTotalVendidoDiario();
+        Task<List<DTOReporteLiquidaciones>> GetLiquidacionesEmpleados();
+        Task<List<DTOCantXCat>> GetCantXCat();
+        Task<List<DTOEstadisticaClientes>> GetEstadisticaClientes();
     }
 }
