@@ -38,7 +38,7 @@ namespace Web.Api.Softijs.Services.Pagos
                               CreadoPor = prd.CreadoPor,
                               FechaCreacion = prd.FechaCreacion,
                               Total = prd.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
-                          }).ToListAsync();
+                          }).OrderByDescending(x=>x.Fecha).ToListAsync();
         }
 
         public async Task<List<DTOPagosPendientes>> GetPagosPendientes()
@@ -54,7 +54,7 @@ namespace Web.Api.Softijs.Services.Pagos
                               CreadoPor = p.CreadoPor,
                               FechaCreacion = p.FechaCreacion,
                               Monto = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
-                          }).ToListAsync();
+                          }).OrderByDescending(x=>x.FechaVencimiento).ToListAsync();
         }
 
         public async Task<List<ComboBoxItemDto>> GetProveedoresForComboBox()
@@ -151,7 +151,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              ConceptoAbonado = com.Descripcion
                          });
 
-            return await query.ToListAsync();
+            return await query.OrderByDescending(x=>x.FechaCarga).ToListAsync();
         }
 
         public async Task<DTOComprobanteDePago> GetComprobanteById(int id)
@@ -196,7 +196,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              FechaModificacion = det.FechaModificacion
                          });
 
-            return await query.ToListAsync();
+            return await query.OrderByDescending(x=>x.id_detalle_orden).ToListAsync();
         }
 
         public async Task<DTOestadoOP> GetOrdenPagoById(int id)
@@ -329,7 +329,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              cant_horas = liq.CantidadHoraTrabajada
                          });
 
-            return await query.ToListAsync();
+            return await query.OrderByDescending(x=>x.fecha_liquidacion).ToListAsync();
         }
 
         public async Task<DTOLiquidaciones> GetLiquidacionesById(int id)
