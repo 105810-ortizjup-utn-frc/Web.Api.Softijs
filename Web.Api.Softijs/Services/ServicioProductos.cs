@@ -41,7 +41,7 @@ namespace Web.Api.Softijs.Services
 
         public async Task<List<Producto>> GetProductos()
         {
-            return await context.Productos.Include(x => x.IdGustoNavigation).AsNoTracking().OrderBy(x => x.FechaModificacion).ToListAsync();
+            return await context.Productos.Include(x => x.IdGustoNavigation).AsNoTracking().OrderByDescending(x => x.FechaModificacion).ToListAsync();
         }
 
         public async Task<ResultadoBase> PostProducto(Producto p)
