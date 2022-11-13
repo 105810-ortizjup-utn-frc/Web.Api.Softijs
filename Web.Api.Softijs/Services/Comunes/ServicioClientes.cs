@@ -30,6 +30,7 @@ namespace Web.Api.Softijs.Services.Comunes
         {
             var query = (from cl in _context.Clientes.Where(c=>c.Activado.Equals(true)).AsNoTracking()
                          join ic in _context.InformacionesContactos.AsNoTracking() on cl.IdInformacionContacto equals ic.IdInformacionContacto
+                         orderby cl.FechaModificacion descending
                          select new DTOCliente
                          {
                              idCliente = cl.IdCliente,

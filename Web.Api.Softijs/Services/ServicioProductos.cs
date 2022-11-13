@@ -41,7 +41,7 @@ namespace Web.Api.Softijs.Services
 
         public async Task<List<Producto>> GetProductos()
         {
-            return await context.Productos.AsNoTracking().ToListAsync();
+            return await context.Productos.Include(x => x.IdGustoNavigation).AsNoTracking().OrderBy(x => x.FechaModificacion).ToListAsync();
         }
 
         public async Task<ResultadoBase> PostProducto(Producto p)
@@ -49,7 +49,8 @@ namespace Web.Api.Softijs.Services
             ResultadoBase resultado = new ResultadoBase();
             try
             {
-
+                var gusto = await context.Gustos.FirstOrDefaultAsync();
+                p.IdGusto = gusto?.IdGusto;
                 await context.AddAsync(p);
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                 resultado.Ok = true;
