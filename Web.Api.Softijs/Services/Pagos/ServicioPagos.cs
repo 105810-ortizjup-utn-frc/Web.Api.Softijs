@@ -196,7 +196,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              FechaModificacion = det.FechaModificacion
                          });
 
-            return await query.OrderByDescending(x=>x.id_detalle_orden).ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<DTOestadoOP> GetOrdenPagoById(int id)

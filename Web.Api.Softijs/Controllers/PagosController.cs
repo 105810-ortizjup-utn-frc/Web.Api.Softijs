@@ -7,7 +7,7 @@ using Web.Api.Softijs.Services.Pagos;
 
 namespace Web.Api.Softijs.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PagosController : ControllerBase
