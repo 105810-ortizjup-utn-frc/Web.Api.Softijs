@@ -89,7 +89,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddCors();
-builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-dev.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-dev"));
+builder.Services.AddEntityFrameworkSqlServer().AddDbContext<SoftijsDevContext>(options => options.UseSqlServer("Persist Security Info=False;Data Source=2022-softijs-sql-server-uat.database.windows.net;User ID=softijs-web-api;Password=MeGustaElIceCream2022;Initial Catalog=2022-softijs-sql-db-uat"));
 
 var app = builder.Build();
 
