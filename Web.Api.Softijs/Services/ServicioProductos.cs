@@ -78,7 +78,7 @@ namespace Web.Api.Softijs.Services
                 producto.Precio = p.Precio;
                 producto.Activo = p.Activo;
                 context.Update(producto);
-                await context.SaveChangesAsync();
+                await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
                 resultado.Message = "El producto se modifico exitosamente.";
@@ -104,7 +104,7 @@ namespace Web.Api.Softijs.Services
                 resultado.Message = "El producto se desactivo exitosamente.";
                 producto.Activo = false;
                 context.Update(producto);
-                await context.SaveChangesAsync();
+                await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
             }
             else
             {
@@ -158,7 +158,7 @@ namespace Web.Api.Softijs.Services
                 resultado.Message = "El producto se activo exitosamente.";
                 producto.Activo = true;
                 context.Update(producto);
-                await context.SaveChangesAsync();
+                await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
             }
             else
             {
