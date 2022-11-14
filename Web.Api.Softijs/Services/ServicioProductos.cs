@@ -36,7 +36,7 @@ namespace Web.Api.Softijs.Services
 
         public async Task<List<ComboBoxItemDto>> GetProductosForComboBox()
         {
-            return await context.Productos.AsNoTracking().Where(x => x.Activo).Select<Producto, ComboBoxItemDto>(x => x).ToListAsync();
+            return await context.Productos.Include(x => x.IdUnidadMedidaNavigation).AsNoTracking().Where(x => x.Activo).Select<Producto, ComboBoxItemDto>(x => x).ToListAsync();
         }
 
         public async Task<List<Producto>> GetProductos()
