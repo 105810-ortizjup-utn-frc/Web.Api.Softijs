@@ -10,7 +10,7 @@ using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductosController : ControllerBase

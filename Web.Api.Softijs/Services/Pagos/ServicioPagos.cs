@@ -38,7 +38,7 @@ namespace Web.Api.Softijs.Services.Pagos
                               CreadoPor = prd.CreadoPor,
                               FechaCreacion = prd.FechaCreacion,
                               Total = prd.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
-                          }).OrderByDescending(x=>x.Fecha).ToListAsync();
+                          }).OrderByDescending(x => x.Fecha).ToListAsync();
         }
 
         public async Task<List<DTOPagosPendientes>> GetPagosPendientes()
@@ -54,7 +54,7 @@ namespace Web.Api.Softijs.Services.Pagos
                               CreadoPor = p.CreadoPor,
                               FechaCreacion = p.FechaCreacion,
                               Monto = p.DetallesOrdenesPagos.Sum(x => x.Monto ?? 0)
-                          }).OrderByDescending(x=>x.FechaVencimiento).ToListAsync();
+                          }).OrderByDescending(x => x.FechaVencimiento).ToListAsync();
         }
 
         public async Task<List<ComboBoxItemDto>> GetProveedoresForComboBox()
@@ -151,7 +151,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              ConceptoAbonado = com.Descripcion
                          });
 
-            return await query.OrderByDescending(x=>x.FechaCarga).ToListAsync();
+            return await query.OrderByDescending(x => x.FechaCarga).ToListAsync();
         }
 
         public async Task<DTOComprobanteDePago> GetComprobanteById(int id)
@@ -173,7 +173,7 @@ namespace Web.Api.Softijs.Services.Pagos
 
         public async Task<List<DTODetalleOrdenPago>> GetDetallesOrdenesPago(int id)
         {
-            var query = (from det in context.DetallesOrdenesPagos.Where(c => c.IdOrdenPago.Equals(id)).AsNoTracking()
+            var query = (from det in context.DetallesOrdenesPagos.Include(x => x.IdOrdenPagoNavigation).ThenInclude(x => x.IdTipoOrdenPagoNavigation).Where(c => c.IdOrdenPago.Equals(id)).AsNoTracking()
                          join fp in context.FormasPagos.AsNoTracking() on det.IdFormaPago equals fp.IdFormaPago
                          join l in context.Liquidaciones.AsNoTracking() on det.IdLiquidacion equals l.IdLiquidacion into groupLiquidacion
                          from gl in groupLiquidacion.DefaultIfEmpty()
@@ -183,17 +183,23 @@ namespace Web.Api.Softijs.Services.Pagos
                          from group2 in groupAut2.DefaultIfEmpty()
                          join us in context.Usuarios.AsNoTracking() on gl.IdUsuario equals us.IdUsuario into groupUsuario
                          from group3 in groupUsuario.DefaultIfEmpty()
-
+                         join prv in context.Proveedores.AsNoTracking() on det.IdProveedor equals prv.IdProveedor into gj
+                         from group4 in gj.DefaultIfEmpty()
                          select new DTODetalleOrdenPago
                          {
-                             forma_pago = fp.Descripcion,
+                             IdDetalleOrden = det.IdDetalleOrdenPago,
+                             FormaPago = fp.Descripcion,
                              Monto = det.Monto,
-                             destinatario = group3 != null ? $"{group3.Legajo} - {group3.Nombre} {group3.Apellido}" : null,
-                             liquidacion = gl != null ? gl.IdLiquidacion : (int?)null,
+                             IdTipoOrden = det.IdOrdenPagoNavigation.IdTipoOrdenPago,
+                             Destinatario = group3 != null ? $"{group3.Legajo} - {group3.Nombre} {group3.Apellido}" : $"{group4.Nombre}",
+                             Liquidacion = gl != null ? gl.IdLiquidacion : (int?)null,
                              IdAutorizacion1 = group1 != null ? true : false,
+                             UsuarioAutorizoFirma1 = group1 != null ? group1.ModificadoPor : string.Empty,
                              IdAutorizacion2 = group2 != null ? true : false,
+                             UsuarioAutorizoFirma2 = group2 != null ? group2.ModificadoPor : string.Empty,
                              ModificadoPor = det.ModificadoPor,
-                             FechaModificacion = det.FechaModificacion
+                             FechaModificacion = det.FechaModificacion,
+                             Descripcion = det.Descripcion
                          });
 
             return await query.ToListAsync();
@@ -257,26 +263,40 @@ namespace Web.Api.Softijs.Services.Pagos
         public async Task<ResultadoBase> AutorizarFirma1(int idDetalleOrdenPago)
         {
             ResultadoBase resultado = new ResultadoBase();
-            var det = await context.DetallesOrdenesPagos.Where(c => c.IdDetalleOrdenPago.Equals(idDetalleOrdenPago)).FirstOrDefaultAsync();
-            if (det != null)
-            {
-                if (det.IdFormaPago == 3)
-                {
-                    det.IdAutorizacion1 = 1;
-                    context.Update(det);
-                    await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
-                    resultado.Ok = true;
-                    resultado.CodigoEstado = 200;
-                    resultado.Message = "La firma se registró exitosamente";
 
+            try
+            {
+                var det = await context.DetallesOrdenesPagos.Include(x => x.IdFormaPagoNavigation).Where(c => c.IdDetalleOrdenPago.Equals(idDetalleOrdenPago)).FirstOrDefaultAsync();
+
+                if (det != null)
+                {
+                    if (det.IdFormaPagoNavigation.Codigo == "CH")
+                    {
+                        var autorizacion = new Autorizacione();
+                        await context.AddAsync(autorizacion);
+                        await context.SaveChangesAsync("contador@contador.com");
+
+                        det.IdAutorizacion1 = autorizacion.IdAutorizacion;
+                        context.Update(det);
+                        await context.SaveChangesAsync("contador@contador.com");
+
+                        resultado.Ok = true;
+                        resultado.CodigoEstado = 200;
+                        resultado.Message = "La firma se registró exitosamente";
+                    }
+                }
+                else
+                {
+                    resultado.Ok = false;
+                    resultado.CodigoEstado = 400;
+                    resultado.Message = "Error al autorizar la firma 1";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                resultado.Ok = false;
-                resultado.CodigoEstado = 400;
-                resultado.Message = "Error al autorizar la firma 1";
+                throw ex;
             }
+            
             return resultado;
         }
 
@@ -288,25 +308,38 @@ namespace Web.Api.Softijs.Services.Pagos
         public async Task<ResultadoBase> AutorizarFirma2(int idDetalleOrdenPago)
         {
             ResultadoBase resultado = new ResultadoBase();
-            var det = await context.DetallesOrdenesPagos.Where(c => c.IdDetalleOrdenPago.Equals(idDetalleOrdenPago)).FirstOrDefaultAsync();
-            if (det != null)
-            {
-                if (det.IdFormaPago == 3 && det.Monto > 200000)
-                {
-                    det.IdAutorizacion2 = 2;
-                    context.Update(det);
-                    await context.SaveChangesAsync(securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
-                    resultado.Ok = true;
-                    resultado.CodigoEstado = 200;
-                    resultado.Message = "La firma se registró exitosamente";
 
-                }
-                else
+            try
+            {
+                var det = await context.DetallesOrdenesPagos.Include(x => x.IdFormaPagoNavigation).Where(c => c.IdDetalleOrdenPago.Equals(idDetalleOrdenPago)).FirstOrDefaultAsync();
+                if (det != null)
                 {
-                    resultado.Ok = false;
-                    resultado.CodigoEstado = 400;
-                    resultado.Message = "Error al autorizar la firma 2";
+                    if (det.IdFormaPagoNavigation.Codigo == "CH")
+                    {
+                        var autorizacion = new Autorizacione();
+                        await context.AddAsync(autorizacion);
+                        await context.SaveChangesAsync("admin@admin.com");
+
+                        det.IdAutorizacion2 = autorizacion.IdAutorizacion;
+                        context.Update(det);
+                        await context.SaveChangesAsync("admin@admin.com");
+                        resultado.Ok = true;
+                        resultado.CodigoEstado = 200;
+                        resultado.Message = "La firma se registró exitosamente";
+
+                    }
+                    else
+                    {
+                        resultado.Ok = false;
+                        resultado.CodigoEstado = 400;
+                        resultado.Message = "Error al autorizar la firma 2";
+                    }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             return resultado;
@@ -329,7 +362,7 @@ namespace Web.Api.Softijs.Services.Pagos
                              cant_horas = liq.CantidadHoraTrabajada
                          });
 
-            return await query.OrderByDescending(x=>x.fecha_liquidacion).ToListAsync();
+            return await query.OrderByDescending(x => x.fecha_liquidacion).ToListAsync();
         }
 
         public async Task<DTOLiquidaciones> GetLiquidacionesById(int id)

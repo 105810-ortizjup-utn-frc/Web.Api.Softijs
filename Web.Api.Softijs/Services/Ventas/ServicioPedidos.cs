@@ -43,7 +43,7 @@ namespace Web.Api.Softijs.Services.Ventas
 
         public async Task<List<DTOPedidos>> GetPedidos()
         {
-            var query = (from prd in _softijsDevContext.Pedidos.Where(c=>c.Fecha.Month.Equals(DateTime.Now.Month) && c.Fecha.Year.Equals(DateTime.Now.Year)).Include(x => x.DetallesPedidos).AsNoTracking()
+            var query = (from prd in _softijsDevContext.Pedidos.Where(c => c.Fecha.Month.Equals(DateTime.Now.Month) && c.Fecha.Year.Equals(DateTime.Now.Year)).Include(x => x.DetallesPedidos).AsNoTracking()
                          join cl in _softijsDevContext.Clientes.AsNoTracking() on prd.IdCliente equals cl.IdCliente
                          join vd in _softijsDevContext.Usuarios.AsNoTracking() on prd.IdUsuario equals vd.IdUsuario
                          select new DTOPedidos
@@ -54,24 +54,17 @@ namespace Web.Api.Softijs.Services.Ventas
                              Total = prd.DetallesPedidos.Sum(x => x.PrecioUnitario * x.Cantidad),
                              Fecha = prd.Fecha
                          });
-            return await query.OrderByDescending(x=>x.Fecha).ToListAsync();
+            return await query.OrderByDescending(x => x.Fecha).ToListAsync();
         }
 
         public async Task<List<DTODetallePedido>> GetDetallePedidos(int id)
         {
-            var detalles = await _softijsDevContext.DetallesPedidos.Where(c => c.NroPedido.Equals(id)).ToListAsync();
-            List<DTODetallePedido> listaDTO = new List<DTODetallePedido>();
-            foreach (var item in detalles)
-            {
-                var producto = await _softijsDevContext.Productos.Where(c => c.NroProducto.Equals(item.NroProducto)).FirstOrDefaultAsync();
-                DTODetallePedido detalle = new DTODetallePedido();
-                detalle.nroDetalle = item.NroDetallePedido;
-                detalle.Producto = producto.Nombre;
-                detalle.Cantidad = item.Cantidad;
-                detalle.Monto = item.PrecioUnitario;
-                listaDTO.Add(detalle);
-            }
-            return listaDTO;
+            return await _softijsDevContext.DetallesPedidos.AsNoTracking()
+                .Include(x => x.NroProductoNavigation)
+                .ThenInclude(x => x.IdUnidadMedidaNavigation)
+                .Where(c => c.NroPedido.Equals(id))
+                .Select<DetallesPedido, DTODetallePedido>(x => x)
+                .ToListAsync();
         }
 
         private void ExecuteCustomValidations(Pedido pedido)

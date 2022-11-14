@@ -7,14 +7,13 @@ using Web.Api.Softijs.Services.Pagos;
 
 namespace Web.Api.Softijs.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PagosController : ControllerBase
     {
 
         private readonly IServicioPagos servicio;
-
 
         public PagosController(IServicioPagos _servicio)
         {
@@ -98,19 +97,17 @@ namespace Web.Api.Softijs.Controllers
 
         }
 
-        [HttpPut("autorizarFirma1")]
-
-        public async Task<ActionResult<ResultadoBase>> AutorizarFirma1([FromBody] int idDetalleOrdenPago)
+        [HttpPost("autorizarFirma1")]
+        public async Task<ActionResult> AutorizarFirma1([FromBody] int idDetalleOrdern)
         {
-            return Ok(await this.servicio.AutorizarFirma1(idDetalleOrdenPago));
+            return Ok(await this.servicio.AutorizarFirma1(idDetalleOrdern));
         }
 
 
-        [HttpPut("autorizarFirma2")]
-
-        public async Task<ActionResult<ResultadoBase>> AutorizarFirma2([FromBody] int idDetalleOrdenPago)
+        [HttpPost("autorizarFirma2")]
+        public async Task<ActionResult> AutorizarFirma2([FromBody] int idDetalleOrdern)
         {
-            return Ok(await this.servicio.AutorizarFirma2(idDetalleOrdenPago));
+            return Ok(await this.servicio.AutorizarFirma2(idDetalleOrdern));
         }
 
 

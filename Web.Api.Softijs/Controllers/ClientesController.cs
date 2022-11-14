@@ -7,7 +7,7 @@ using Web.Api.Softijs.Services.Security;
 
 namespace Web.Api.Softijs.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ClientesController : Controller
