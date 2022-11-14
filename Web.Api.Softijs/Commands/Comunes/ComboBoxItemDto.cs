@@ -83,8 +83,8 @@ namespace Web.Api.Softijs.Commands.Comunes
             return new ComboBoxItemDto
             {
                 Id = entity.NroProducto,
-                Codigo = $"{entity.Codigo} - {entity.Nombre}",
-                Descripcion = $"{entity.Codigo} - {entity.Nombre}"
+                Codigo = $"{entity.Codigo} - {entity.Nombre} - {entity.IdUnidadMedidaNavigation.Descripcion}",
+                Descripcion = $"{entity.Codigo} - {entity.Nombre} - {entity.IdUnidadMedidaNavigation.Descripcion}"
             };
         }
 
