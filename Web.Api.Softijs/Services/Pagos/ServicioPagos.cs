@@ -274,11 +274,11 @@ namespace Web.Api.Softijs.Services.Pagos
                     {
                         var autorizacion = new Autorizacione();
                         await context.AddAsync(autorizacion);
-                        await context.SaveChangesAsync("contador@contador.com");
+                        await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
 
                         det.IdAutorizacion1 = autorizacion.IdAutorizacion;
                         context.Update(det);
-                        await context.SaveChangesAsync("contador@contador.com");
+                        await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
 
                         resultado.Ok = true;
                         resultado.CodigoEstado = 200;
@@ -318,11 +318,11 @@ namespace Web.Api.Softijs.Services.Pagos
                     {
                         var autorizacion = new Autorizacione();
                         await context.AddAsync(autorizacion);
-                        await context.SaveChangesAsync("admin@admin.com");
+                        await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
 
                         det.IdAutorizacion2 = autorizacion.IdAutorizacion;
                         context.Update(det);
-                        await context.SaveChangesAsync("admin@admin.com");
+                        await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                         resultado.Ok = true;
                         resultado.CodigoEstado = 200;
                         resultado.Message = "La firma se registró exitosamente";
