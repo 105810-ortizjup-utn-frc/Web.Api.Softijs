@@ -83,7 +83,7 @@ namespace Web.Api.Softijs.Services.Ventas
                        FechaEmision = $"{p.FechaCreacion:MM/dd/yyyy HH:mm:ss}",
                        NumeroFactura = $"{p.NroPedido:000000000}",
                        CuilComprador = $"{p.IdClienteNavigation.Dni}",
-                       DireccionComprador = $"{p.IdClienteNavigation.Calle}, {p.IdClienteNavigation.Numero}. Barrio: ${p.IdClienteNavigation.IdBarrioNavigation.Descripcion} - Ciudad: ${p.IdClienteNavigation.IdCiudadNavigation.Descripcion} - Estado: ${p.IdClienteNavigation.IdBarrioNavigation.Descripcion}",
+                       DireccionComprador = $"{p.IdClienteNavigation.Calle}, {p.IdClienteNavigation.Numero}. Barrio: {p.IdClienteNavigation.IdBarrioNavigation.Descripcion} - Ciudad: {p.IdClienteNavigation.IdCiudadNavigation.Descripcion} - Estado: {p.IdClienteNavigation.IdBarrioNavigation.Descripcion}",
                        Pedido = p,
                        MontoTotalFactura = p.DetallesPedidos.Sum(x => x.Cantidad * x.PrecioUnitario),
                        MetodoPago = string.Join(" - ", p.PedidosFormasPagos.Select(s => s.IdFormaPagoNavigation.Descripcion).ToList()),
