@@ -55,7 +55,7 @@ namespace Web.Api.Softijs.Services
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
-                resultado.Message = "El producto se guardo exitosamente.";
+                resultado.Message = "El producto se guardó exitosamente.";
                 return resultado;
             }
             catch (Exception)
@@ -81,7 +81,7 @@ namespace Web.Api.Softijs.Services
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
-                resultado.Message = "El producto se modifico exitosamente.";
+                resultado.Message = "El producto se modificó exitosamente.";
             }
             else
             {
@@ -101,7 +101,7 @@ namespace Web.Api.Softijs.Services
             {
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
-                resultado.Message = "El producto se desactivo exitosamente.";
+                resultado.Message = "El producto se desactivó exitosamente.";
                 producto.Activo = false;
                 context.Update(producto);
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
@@ -155,7 +155,7 @@ namespace Web.Api.Softijs.Services
             {
                 resultado.Ok = true;
                 resultado.CodigoEstado = 200;
-                resultado.Message = "El producto se activo exitosamente.";
+                resultado.Message = "El producto se activó exitosamente.";
                 producto.Activo = true;
                 context.Update(producto);
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);

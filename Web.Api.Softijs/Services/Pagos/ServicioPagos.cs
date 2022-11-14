@@ -109,7 +109,7 @@ namespace Web.Api.Softijs.Services.Pagos
                 }
 
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
-                return new ResultadoBase { Ok = true, CodigoEstado = 200, Error = string.Empty, Message = "La orden de pago se guardo correctamente." };
+                return new ResultadoBase { Ok = true, CodigoEstado = 200, Error = string.Empty, Message = "La orden de pago se guardó correctamente." };
             }
             catch (Exception ex)
             {
@@ -239,7 +239,7 @@ namespace Web.Api.Softijs.Services.Pagos
                     await context.SaveChangesAsync(this.securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
                     resultado.Ok = true;
                     resultado.CodigoEstado = 200;
-                    resultado.Message = "La orden se modifico exitosamente.";
+                    resultado.Message = "La orden se modificó exitosamente.";
                 }
 
                 else

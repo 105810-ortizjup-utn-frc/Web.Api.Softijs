@@ -70,13 +70,13 @@ namespace Web.Api.Softijs.Services.Ventas
         private void ExecuteCustomValidations(Pedido pedido)
         {
             if (pedido == null)
-                throw new Exception("El pedido esta vacion.");
+                throw new Exception("El pedido esta vacio.");
 
             if (!pedido.DetallesPedidos.Any())
                 throw new Exception("El pedido no tiene productos asociados.");
 
             if (pedido.IdCliente == 0)
-                throw new Exception("Porfavor seleciones el cliente.");
+                throw new Exception("Por favor seleccione el cliente.");
 
             if (pedido.IdUsuario == 0)
                 throw new Exception("El vendedor no fue seleccionado.");
