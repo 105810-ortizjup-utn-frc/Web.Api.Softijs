@@ -5,6 +5,6 @@
         public string NombreProducto { get; set; }
         public int Cantidad { get; set; }
         public decimal PrecioUnitario { get; set; }
-        public decimal SubTotal => (PrecioUnitario * Cantidad) - (((Cantidad * PrecioUnitario) * 21) / 100);
+        public decimal SubTotal => (PrecioUnitario * (decimal)Cantidad);
     }
 }

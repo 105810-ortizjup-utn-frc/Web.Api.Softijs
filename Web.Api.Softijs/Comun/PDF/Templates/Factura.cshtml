@@ -106,8 +106,8 @@
 						@for (int i = 0; i < Model.PedidoFormaPagoProductos.Count; i++)
 						{
 							<tr>
-								<td><a href="#"> @Model.PedidoFormaPagoProductos[i].NombreProducto</a></td>
-								<td class="text-right">@Model.PedidoFormaPagoProductos[i].Cantidad</td>
+								<td class="text-right">@(Model.PedidoFormaPagoProductos[i].NombreProducto)</td>
+								<td class="text-right">@(Model.PedidoFormaPagoProductos[i].Cantidad)</td>
 								<td class="text-right">@(Model.PedidoFormaPagoProductos[i].PrecioUnitario.ToString("C2"))</td>
 								<td class="text-right">@(Model.PedidoFormaPagoProductos[i].SubTotal.ToString("C2"))</td>
 							</tr>
@@ -127,7 +127,7 @@
 							<td colspan="4" style="text-align: right; font-weight: bolder;">IVA 21%: @Model.MontoDelIva.ToString("C2")</td>
 						</tr>
 						<tr>
-							<td colspan="4" style="text-align: right; font-weight: bolder;">Total Venta: @Model.MontoTotalFactura.ToString("C2")</td>
+							<td colspan="4" style="text-align: right; font-weight: bolder;">Total Venta: @((Model.MontoTotalFactura + Model.MontoDelIva).ToString("C2"))</td>
 						</tr>
 						<tr>
 							<td colspan="2" style="text-align: right; font-weight: bolder;">Motodo/s De Pago: @Model.MetodoPago</td>
