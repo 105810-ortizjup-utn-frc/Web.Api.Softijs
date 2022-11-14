@@ -84,7 +84,7 @@ namespace Web.Api.Softijs.Commands.Comunes
             {
                 Id = entity.NroProducto,
                 Codigo = $"{entity.Codigo} - {entity.Nombre} - {entity.IdUnidadMedidaNavigation.Descripcion}",
-                Descripcion = $"{entity.Codigo} - {entity.Nombre} - {entity.IdUnidadMedidaNavigation.Descripcion}"
+                Descripcion = $"{entity.Nombre} - {entity.IdUnidadMedidaNavigation.Descripcion}"
             };
         }
 

@@ -5,7 +5,7 @@ using Web.Api.Softijs.Services.Ventas;
 
 namespace Web.Api.Softijs.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PedidosController : Controller
