@@ -55,6 +55,7 @@ namespace Web.Api.Softijs.Services.Ventas
                              Fecha = prd.Fecha
                          });
             return await query.OrderByDescending(x => x.Fecha).ToListAsync();
+            return await query.OrderByDescending(x=>x.NroPedido).ToListAsync();
         }
 
         public async Task<List<DTODetallePedido>> GetDetallePedidos(int id)
