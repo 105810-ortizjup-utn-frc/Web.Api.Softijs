@@ -12,6 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Comun\PDF\Assets\logo2.jpg" />
+    <None Remove="Comun\PDF\Assets\logo3.png" />
+    <None Remove="Comun\PDF\Assets\logo4.png" />
+    <None Remove="Comun\PDF\Assets\logo5.png" />
+    <None Remove="Comun\PDF\Assets\logo6.png" />
     <None Remove="Comun\PDF\PDFNative\32bit\libwkhtmltox.dll" />
     <None Remove="Comun\PDF\PDFNative\32bit\libwkhtmltox.dylib" />
     <None Remove="Comun\PDF\PDFNative\32bit\libwkhtmltox.so" />
@@ -20,7 +24,21 @@
     <None Remove="Comun\PDF\PDFNative\64bit\libwkhtmltox.so" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Comun\PDF\Assets\logo6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Comun\PDF\Assets\logo2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\Assets\logo3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\Assets\logo4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Comun\PDF\Assets\logo5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Comun\PDF\PDFNative\32bit\libwkhtmltox.dll">

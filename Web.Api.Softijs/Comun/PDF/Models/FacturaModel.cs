@@ -6,7 +6,7 @@ namespace Web.Api.Softijs.Comun.PDF.Models
     public class FacturaModel
     {
         #region Empresa
-        public string ImagePath => Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), $"Comun/PDF/Assets/logo2.jpg");
+        public string ImagePath => Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), $"Comun/PDF/Assets/logo6.png");
         public string NumeroFactura { get; set; }
         public string FechaEmision { get; set; }
         public string CuitEmpresa => "20-35958556-3";
